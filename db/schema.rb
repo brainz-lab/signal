@@ -1,0 +1,233 @@
+# This file is auto-generated from the current state of the database. Instead
+# of editing this file, please use the migrations feature of Active Record to
+# incrementally modify your database, and then regenerate this schema definition.
+#
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
+# be faster and is potentially less error prone than running all of your
+# migrations from scratch. Old migrations may fail to apply correctly if those
+# migrations use external dependencies or application code.
+#
+# It's strongly recommended that you check this file into your version control system.
+
+ActiveRecord::Schema[8.1].define(version: 2023_12_23_000010) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_catalog.plpgsql"
+  enable_extension "pgcrypto"
+  enable_extension "timescaledb"
+
+  create_table "alert_histories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "alert_rule_id", null: false
+    t.string "fingerprint"
+    t.jsonb "labels", default: {}
+    t.uuid "project_id", null: false
+    t.string "state", null: false
+    t.datetime "timestamp", null: false
+    t.float "value"
+    t.index ["alert_rule_id", "timestamp"], name: "index_alert_histories_on_alert_rule_id_and_timestamp"
+    t.index ["alert_rule_id"], name: "index_alert_histories_on_alert_rule_id"
+    t.index ["project_id", "timestamp"], name: "index_alert_histories_on_project_id_and_timestamp"
+    t.index ["project_id"], name: "index_alert_histories_on_project_id"
+  end
+
+  create_table "alert_rules", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "aggregation"
+    t.jsonb "annotations", default: {}
+    t.string "baseline_window"
+    t.string "composite_operator"
+    t.jsonb "composite_rules", default: []
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.boolean "enabled", default: true
+    t.uuid "escalation_policy_id"
+    t.integer "evaluation_interval", default: 60
+    t.string "expected_interval"
+    t.jsonb "group_by", default: []
+    t.jsonb "labels", default: {}
+    t.datetime "last_evaluated_at"
+    t.string "last_state"
+    t.boolean "muted", default: false
+    t.string "muted_reason"
+    t.datetime "muted_until"
+    t.string "name", null: false
+    t.jsonb "notify_channels", default: []
+    t.string "operator"
+    t.integer "pending_period", default: 0
+    t.uuid "project_id", null: false
+    t.jsonb "query", default: {}
+    t.integer "resolve_period", default: 300
+    t.string "rule_type", null: false
+    t.float "sensitivity"
+    t.string "severity", default: "warning"
+    t.string "slug", null: false
+    t.string "source", null: false
+    t.string "source_name"
+    t.string "source_type"
+    t.float "threshold"
+    t.datetime "updated_at", null: false
+    t.string "window"
+    t.index ["project_id", "severity"], name: "index_alert_rules_on_project_id_and_severity"
+    t.index ["project_id", "slug"], name: "index_alert_rules_on_project_id_and_slug", unique: true
+    t.index ["project_id", "source", "enabled"], name: "index_alert_rules_on_project_id_and_source_and_enabled"
+    t.index ["project_id"], name: "index_alert_rules_on_project_id"
+  end
+
+  create_table "alerts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.boolean "acknowledged", default: false
+    t.datetime "acknowledged_at"
+    t.string "acknowledged_by"
+    t.text "acknowledgment_note"
+    t.uuid "alert_rule_id", null: false
+    t.datetime "created_at", null: false
+    t.float "current_value"
+    t.string "fingerprint", null: false
+    t.uuid "incident_id"
+    t.jsonb "labels", default: {}
+    t.datetime "last_fired_at"
+    t.datetime "last_notified_at"
+    t.integer "notification_count", default: 0
+    t.uuid "project_id", null: false
+    t.datetime "resolved_at"
+    t.datetime "started_at", null: false
+    t.string "state", null: false
+    t.float "threshold_value"
+    t.datetime "updated_at", null: false
+    t.index ["alert_rule_id", "fingerprint"], name: "index_alerts_on_alert_rule_id_and_fingerprint", unique: true, where: "((state)::text <> 'resolved'::text)"
+    t.index ["alert_rule_id"], name: "index_alerts_on_alert_rule_id"
+    t.index ["fingerprint"], name: "index_alerts_on_fingerprint"
+    t.index ["project_id", "started_at"], name: "index_alerts_on_project_id_and_started_at"
+    t.index ["project_id", "state"], name: "index_alerts_on_project_id_and_state"
+    t.index ["project_id"], name: "index_alerts_on_project_id"
+  end
+
+  create_table "escalation_policies", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.boolean "enabled", default: true
+    t.integer "max_repeats"
+    t.string "name", null: false
+    t.uuid "project_id", null: false
+    t.boolean "repeat", default: false
+    t.integer "repeat_after_minutes"
+    t.string "slug", null: false
+    t.jsonb "steps", default: []
+    t.datetime "updated_at", null: false
+    t.index ["project_id", "slug"], name: "index_escalation_policies_on_project_id_and_slug", unique: true
+    t.index ["project_id"], name: "index_escalation_policies_on_project_id"
+  end
+
+  create_table "incidents", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "acknowledged_at"
+    t.string "acknowledged_by"
+    t.jsonb "affected_services", default: []
+    t.datetime "created_at", null: false
+    t.string "external_id"
+    t.string "external_url"
+    t.uuid "project_id", null: false
+    t.text "resolution_note"
+    t.datetime "resolved_at"
+    t.string "resolved_by"
+    t.string "severity", null: false
+    t.string "status", null: false
+    t.text "summary"
+    t.jsonb "timeline", default: []
+    t.string "title", null: false
+    t.datetime "triggered_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id", "severity"], name: "index_incidents_on_project_id_and_severity"
+    t.index ["project_id", "status"], name: "index_incidents_on_project_id_and_status"
+    t.index ["project_id", "triggered_at"], name: "index_incidents_on_project_id_and_triggered_at"
+    t.index ["project_id"], name: "index_incidents_on_project_id"
+  end
+
+  create_table "maintenance_windows", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.boolean "active", default: true
+    t.datetime "created_at", null: false
+    t.string "created_by"
+    t.text "description"
+    t.datetime "ends_at", null: false
+    t.string "name", null: false
+    t.uuid "project_id", null: false
+    t.string "recurrence_rule"
+    t.boolean "recurring", default: false
+    t.jsonb "rule_ids", default: []
+    t.jsonb "services", default: []
+    t.datetime "starts_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id", "active"], name: "index_maintenance_windows_on_project_id_and_active"
+    t.index ["project_id", "starts_at", "ends_at"], name: "idx_on_project_id_starts_at_ends_at_5580d5ef95"
+    t.index ["project_id"], name: "index_maintenance_windows_on_project_id"
+  end
+
+  create_table "notification_channels", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "channel_type", null: false
+    t.jsonb "config", default: {}
+    t.datetime "created_at", null: false
+    t.boolean "enabled", default: true
+    t.integer "failure_count", default: 0
+    t.string "last_test_status"
+    t.datetime "last_tested_at"
+    t.datetime "last_used_at"
+    t.string "name", null: false
+    t.uuid "project_id", null: false
+    t.string "slug", null: false
+    t.integer "success_count", default: 0
+    t.datetime "updated_at", null: false
+    t.boolean "verified", default: false
+    t.index ["project_id", "channel_type"], name: "index_notification_channels_on_project_id_and_channel_type"
+    t.index ["project_id", "slug"], name: "index_notification_channels_on_project_id_and_slug", unique: true
+    t.index ["project_id"], name: "index_notification_channels_on_project_id"
+  end
+
+  create_table "notifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "alert_id"
+    t.datetime "created_at", null: false
+    t.text "error_message"
+    t.uuid "incident_id"
+    t.datetime "next_retry_at"
+    t.uuid "notification_channel_id", null: false
+    t.string "notification_type", null: false
+    t.jsonb "payload", default: {}
+    t.uuid "project_id", null: false
+    t.jsonb "response", default: {}
+    t.integer "retry_count", default: 0
+    t.datetime "sent_at"
+    t.string "status", null: false
+    t.datetime "updated_at", null: false
+    t.index ["alert_id"], name: "index_notifications_on_alert_id"
+    t.index ["incident_id"], name: "index_notifications_on_incident_id"
+    t.index ["notification_channel_id", "status"], name: "index_notifications_on_notification_channel_id_and_status"
+    t.index ["notification_channel_id"], name: "index_notifications_on_notification_channel_id"
+    t.index ["project_id", "created_at"], name: "index_notifications_on_project_id_and_created_at"
+    t.index ["project_id"], name: "index_notifications_on_project_id"
+    t.index ["status", "next_retry_at"], name: "index_notifications_on_status_and_next_retry_at", where: "((status)::text = 'failed'::text)"
+  end
+
+  create_table "on_call_schedules", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "current_on_call"
+    t.datetime "current_shift_end"
+    t.datetime "current_shift_start"
+    t.boolean "enabled", default: true
+    t.jsonb "members", default: []
+    t.string "name", null: false
+    t.uuid "project_id", null: false
+    t.datetime "rotation_start"
+    t.string "rotation_type"
+    t.string "schedule_type", null: false
+    t.string "slug", null: false
+    t.string "timezone", default: "UTC"
+    t.datetime "updated_at", null: false
+    t.jsonb "weekly_schedule", default: {}
+    t.index ["project_id", "slug"], name: "index_on_call_schedules_on_project_id_and_slug", unique: true
+    t.index ["project_id"], name: "index_on_call_schedules_on_project_id"
+  end
+
+  add_foreign_key "alert_histories", "alert_rules"
+  add_foreign_key "alert_rules", "escalation_policies"
+  add_foreign_key "alerts", "alert_rules"
+  add_foreign_key "alerts", "incidents"
+  add_foreign_key "notifications", "alerts"
+  add_foreign_key "notifications", "incidents"
+  add_foreign_key "notifications", "notification_channels"
+end
