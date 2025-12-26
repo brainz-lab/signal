@@ -1,0 +1,138 @@
+<div class="space-y-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <div>
+      <div class="flex items-center gap-2 mb-1">
+        <%= link_to "Alerts", dashboard_project_alerts_path(@project), class: "text-[13px]", style: "color: #8B8780;" %>
+        <span style="color: #C4C0B8;">/</span>
+      </div>
+      <h1 class="text-[24px] font-semibold" style="color: #1A1A1A;"><%= @alert.alert_rule&.name || 'Alert' %></h1>
+    </div>
+
+    <% unless @alert.acknowledged %>
+      <%= button_to "Acknowledge", acknowledge_dashboard_project_alert_path(@project, @alert), method: :post, class: "px-4 py-2 text-[13px] font-medium rounded-lg cursor-pointer transition-colors", style: "background: #1A1A1A; color: #FFFFFE;" %>
+    <% end %>
+  </div>
+
+  <!-- Status -->
+  <div class="flex items-center gap-4">
+    <!-- State badge -->
+    <% case @alert.state %>
+    <% when 'firing' %>
+      <span class="flex items-center gap-2 px-3 py-1.5 rounded-full" style="background: #FEE2E2; color: #991B1B;">
+        <span class="w-2 h-2 rounded-full animate-pulse" style="background: #DC2626;"></span>
+        <span class="text-[13px] font-medium">Firing</span>
+      </span>
+    <% when 'pending' %>
+      <span class="flex items-center gap-2 px-3 py-1.5 rounded-full" style="background: #FEF3C7; color: #92400E;">
+        <span class="w-2 h-2 rounded-full" style="background: #F97316;"></span>
+        <span class="text-[13px] font-medium">Pending</span>
+      </span>
+    <% else %>
+      <span class="flex items-center gap-2 px-3 py-1.5 rounded-full" style="background: #DCFCE7; color: #166534;">
+        <span class="w-2 h-2 rounded-full" style="background: #16A34A;"></span>
+        <span class="text-[13px] font-medium">Resolved</span>
+      </span>
+    <% end %>
+
+    <!-- Severity -->
+    <% case @alert.alert_rule&.severity %>
+    <% when 'critical' %>
+      <span class="px-3 py-1.5 text-[13px] font-medium rounded-full" style="background: #FEE2E2; color: #991B1B;">Critical</span>
+    <% when 'warning' %>
+      <span class="px-3 py-1.5 text-[13px] font-medium rounded-full" style="background: #FEF3C7; color: #92400E;">Warning</span>
+    <% else %>
+      <span class="px-3 py-1.5 text-[13px] font-medium rounded-full" style="background: #E0E7FF; color: #3730A3;">Info</span>
+    <% end %>
+
+    <% if @alert.acknowledged %>
+      <span class="px-3 py-1.5 text-[13px] font-medium rounded-full" style="background: #DCFCE7; color: #166534;">
+        Acknowledged by <%= @alert.acknowledged_by %>
+      </span>
+    <% end %>
+  </div>
+
+  <!-- Details -->
+  <div class="grid grid-cols-2 gap-6">
+    <div class="rounded-xl px-5 py-4" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
+      <h3 class="text-[13px] font-medium mb-3" style="color: #8B8780;">Alert Details</h3>
+      <dl class="space-y-2">
+        <div class="flex justify-between">
+          <dt class="text-[13px]" style="color: #6B6760;">Current Value</dt>
+          <dd class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @alert.current_value %></dd>
+        </div>
+        <div class="flex justify-between">
+          <dt class="text-[13px]" style="color: #6B6760;">Threshold</dt>
+          <dd class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @alert.threshold_value %></dd>
+        </div>
+        <div class="flex justify-between">
+          <dt class="text-[13px]" style="color: #6B6760;">Started</dt>
+          <dd class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @alert.started_at&.strftime('%Y-%m-%d %H:%M:%S') %></dd>
+        </div>
+        <% if @alert.resolved_at %>
+          <div class="flex justify-between">
+            <dt class="text-[13px]" style="color: #6B6760;">Resolved</dt>
+            <dd class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @alert.resolved_at.strftime('%Y-%m-%d %H:%M:%S') %></dd>
+          </div>
+        <% end %>
+        <div class="flex justify-between">
+          <dt class="text-[13px]" style="color: #6B6760;">Notifications Sent</dt>
+          <dd class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @alert.notification_count %></dd>
+        </div>
+      </dl>
+    </div>
+
+    <div class="rounded-xl px-5 py-4" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
+      <h3 class="text-[13px] font-medium mb-3" style="color: #8B8780;">Rule Info</h3>
+      <% if @alert.alert_rule %>
+        <dl class="space-y-2">
+          <div class="flex justify-between">
+            <dt class="text-[13px]" style="color: #6B6760;">Source</dt>
+            <dd class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @alert.alert_rule.source %></dd>
+          </div>
+          <div class="flex justify-between">
+            <dt class="text-[13px]" style="color: #6B6760;">Type</dt>
+            <dd class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @alert.alert_rule.rule_type %></dd>
+          </div>
+          <div class="flex justify-between">
+            <dt class="text-[13px]" style="color: #6B6760;">Condition</dt>
+            <dd class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @alert.alert_rule.operator %> <%= @alert.alert_rule.threshold %></dd>
+          </div>
+          <div class="flex justify-between">
+            <dt class="text-[13px]" style="color: #6B6760;">Window</dt>
+            <dd class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @alert.alert_rule.window %></dd>
+          </div>
+        </dl>
+        <div class="mt-4 pt-3" style="border-top: 1px solid #F0EFED;">
+          <%= link_to "View Rule", dashboard_project_rule_path(@project, @alert.alert_rule), class: "text-[13px] font-medium", style: "color: #F97316;" %>
+        </div>
+      <% else %>
+        <p class="text-[13px]" style="color: #8B8780;">Rule not found</p>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Labels -->
+  <% if @alert.labels.present? %>
+    <div class="rounded-xl px-5 py-4" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
+      <h3 class="text-[13px] font-medium mb-3" style="color: #8B8780;">Labels</h3>
+      <div class="flex flex-wrap gap-2">
+        <% @alert.labels.each do |key, value| %>
+          <span class="px-2 py-1 text-[12px] rounded" style="background: #F0EFED; color: #6B6760;">
+            <%= key %>: <%= value %>
+          </span>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Incident link -->
+  <% if @alert.incident %>
+    <div class="rounded-xl px-5 py-4" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
+      <h3 class="text-[13px] font-medium mb-2" style="color: #8B8780;">Related Incident</h3>
+      <%= link_to dashboard_project_incident_path(@project, @alert.incident), class: "text-[14px] font-medium hover:underline", style: "color: #F97316;" do %>
+        <%= @alert.incident.title %> (<%= @alert.incident.status %>)
+      <% end %>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,53 @@
+<div class="max-w-2xl space-y-6">
+  <div class="flex items-center gap-2 mb-1">
+    <%= link_to "Channels", dashboard_project_channels_path(@project), class: "text-[13px]", style: "color: #8B8780;" %>
+    <span style="color: #C4C0B8;">/</span>
+    <span class="text-[13px]" style="color: #1A1A1A;">New Channel</span>
+  </div>
+
+  <h1 class="text-[24px] font-semibold" style="color: #1A1A1A;">Create Notification Channel</h1>
+
+  <div class="rounded-xl px-6 py-6" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
+    <%= form_with model: @channel, url: dashboard_project_channels_path(@project), method: :post, class: "space-y-6" do |f| %>
+      <!-- Basic Info -->
+      <div class="space-y-4">
+        <div>
+          <%= f.label :name, class: "block text-[13px] font-medium mb-1.5", style: "color: #1A1A1A;" %>
+          <%= f.text_field :name, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-orange-500", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;", placeholder: "Engineering Slack" %>
+        </div>
+
+        <div>
+          <%= f.label :channel_type, "Type", class: "block text-[13px] font-medium mb-1.5", style: "color: #1A1A1A;" %>
+          <%= f.select :channel_type, [
+            ['Slack', 'slack'],
+            ['PagerDuty', 'pagerduty'],
+            ['Email', 'email'],
+            ['Webhook', 'webhook'],
+            ['Discord', 'discord'],
+            ['Microsoft Teams', 'teams'],
+            ['Opsgenie', 'opsgenie']
+          ], {}, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-orange-500", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
+        </div>
+      </div>
+
+      <!-- Configuration -->
+      <div class="space-y-4 pt-4" style="border-top: 1px solid #F0EFED;">
+        <h2 class="text-[15px] font-medium" style="color: #1A1A1A;">Configuration</h2>
+        <p class="text-[13px]" style="color: #8B8780;">
+          Configuration depends on the channel type. After creating, you can edit to add the specific settings.
+        </p>
+
+        <div>
+          <%= f.label "config[webhook_url]", "Webhook URL", class: "block text-[13px] font-medium mb-1.5", style: "color: #1A1A1A;" %>
+          <%= f.text_field "config[webhook_url]", class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-orange-500", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;", placeholder: "https://hooks.slack.com/services/..." %>
+          <p class="text-[12px] mt-1" style="color: #8B8780;">For Slack, Discord, Teams, and Webhook types</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3 pt-4">
+        <%= f.submit "Create Channel", class: "px-4 py-2 text-[13px] font-medium rounded-lg cursor-pointer transition-colors", style: "background: #1A1A1A; color: #FFFFFE;" %>
+        <%= link_to "Cancel", dashboard_project_channels_path(@project), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-colors", style: "background: #F0EFED; color: #6B6760;" %>
+      </div>
+    <% end %>
+  </div>
+</div>

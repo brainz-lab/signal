@@ -1,0 +1,122 @@
+<div class="space-y-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <div>
+      <div class="flex items-center gap-2 mb-1">
+        <%= link_to "Channels", dashboard_project_channels_path(@project), class: "text-[13px]", style: "color: #8B8780;" %>
+        <span style="color: #C4C0B8;">/</span>
+      </div>
+      <h1 class="text-[24px] font-semibold" style="color: #1A1A1A;"><%= @channel.name %></h1>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <%= button_to "Test", test_dashboard_project_channel_path(@project, @channel), method: :post, class: "px-4 py-2 text-[13px] font-medium rounded-lg cursor-pointer transition-colors", style: "background: #F0EFED; color: #6B6760;" %>
+      <%= link_to "Edit", edit_dashboard_project_channel_path(@project, @channel), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-colors", style: "background: #1A1A1A; color: #FFFFFE;" %>
+    </div>
+  </div>
+
+  <!-- Status -->
+  <div class="flex items-center gap-4">
+    <% if @channel.enabled %>
+      <span class="flex items-center gap-2 px-3 py-1.5 rounded-full" style="background: #DCFCE7; color: #166534;">
+        <span class="w-2 h-2 rounded-full" style="background: #16A34A;"></span>
+        <span class="text-[13px] font-medium">Enabled</span>
+      </span>
+    <% else %>
+      <span class="flex items-center gap-2 px-3 py-1.5 rounded-full" style="background: #F0EFED; color: #6B6760;">
+        <span class="w-2 h-2 rounded-full" style="background: #C4C0B8;"></span>
+        <span class="text-[13px] font-medium">Disabled</span>
+      </span>
+    <% end %>
+
+    <span class="px-3 py-1.5 text-[13px] font-medium rounded-full capitalize" style="background: #F0EFED; color: #6B6760;"><%= @channel.channel_type %></span>
+
+    <% if @channel.verified %>
+      <span class="px-3 py-1.5 text-[13px] font-medium rounded-full" style="background: #DCFCE7; color: #166534;">Verified</span>
+    <% else %>
+      <span class="px-3 py-1.5 text-[13px] font-medium rounded-full" style="background: #FEF3C7; color: #92400E;">Not Verified</span>
+    <% end %>
+  </div>
+
+  <!-- Details -->
+  <div class="grid grid-cols-2 gap-6">
+    <div class="rounded-xl px-5 py-4" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
+      <h3 class="text-[13px] font-medium mb-3" style="color: #8B8780;">Channel Details</h3>
+      <dl class="space-y-2">
+        <div class="flex justify-between">
+          <dt class="text-[13px]" style="color: #6B6760;">Type</dt>
+          <dd class="text-[13px] font-medium capitalize" style="color: #1A1A1A;"><%= @channel.channel_type %></dd>
+        </div>
+        <div class="flex justify-between">
+          <dt class="text-[13px]" style="color: #6B6760;">Created</dt>
+          <dd class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @channel.created_at.strftime('%Y-%m-%d') %></dd>
+        </div>
+        <div class="flex justify-between">
+          <dt class="text-[13px]" style="color: #6B6760;">Last Used</dt>
+          <dd class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @channel.last_used_at&.strftime('%Y-%m-%d %H:%M') || 'Never' %></dd>
+        </div>
+        <div class="flex justify-between">
+          <dt class="text-[13px]" style="color: #6B6760;">Last Tested</dt>
+          <dd class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @channel.last_tested_at&.strftime('%Y-%m-%d %H:%M') || 'Never' %></dd>
+        </div>
+      </dl>
+    </div>
+
+    <div class="rounded-xl px-5 py-4" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
+      <h3 class="text-[13px] font-medium mb-3" style="color: #8B8780;">Statistics</h3>
+      <dl class="space-y-2">
+        <div class="flex justify-between">
+          <dt class="text-[13px]" style="color: #6B6760;">Notifications Sent</dt>
+          <dd class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @channel.success_count %></dd>
+        </div>
+        <div class="flex justify-between">
+          <dt class="text-[13px]" style="color: #6B6760;">Failed</dt>
+          <dd class="text-[13px] font-medium" style="color: #DC2626;"><%= @channel.failure_count %></dd>
+        </div>
+        <div class="flex justify-between">
+          <dt class="text-[13px]" style="color: #6B6760;">Success Rate</dt>
+          <dd class="text-[13px] font-medium" style="color: #1A1A1A;">
+            <% total = @channel.success_count + @channel.failure_count %>
+            <% if total > 0 %>
+              <%= ((@channel.success_count.to_f / total) * 100).round(1) %>%
+            <% else %>
+              N/A
+            <% end %>
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+
+  <!-- Recent Notifications -->
+  <div class="rounded-xl overflow-hidden" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
+    <div class="px-5 py-3" style="border-bottom: 1px solid #F0EFED;">
+      <h3 class="text-[13px] font-medium" style="color: #8B8780;">Recent Notifications</h3>
+    </div>
+    <% if @recent_notifications.any? %>
+      <% @recent_notifications.each_with_index do |notification, index| %>
+        <div class="px-5 py-3" style="<%= index > 0 ? 'border-top: 1px solid #F0EFED;' : '' %>">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <% case notification.status %>
+              <% when 'sent' %>
+                <span class="w-2 h-2 rounded-full" style="background: #16A34A;"></span>
+              <% when 'failed' %>
+                <span class="w-2 h-2 rounded-full" style="background: #DC2626;"></span>
+              <% else %>
+                <span class="w-2 h-2 rounded-full" style="background: #F97316;"></span>
+              <% end %>
+              <span class="text-[13px]" style="color: #1A1A1A;"><%= notification.notification_type %></span>
+              <span class="text-[12px]" style="color: #8B8780;"><%= time_ago_in_words(notification.created_at) %> ago</span>
+            </div>
+            <span class="text-[12px] capitalize" style="color: #8B8780;"><%= notification.status %></span>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="px-5 py-8 text-center">
+        <p class="text-[13px]" style="color: #8B8780;">No notifications sent yet</p>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,119 @@
+<div class="space-y-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <div>
+      <div class="flex items-center gap-2 mb-1">
+        <%= link_to "On-Call Schedules", dashboard_project_on_call_schedules_path(@project), class: "text-[13px]", style: "color: #8B8780;" %>
+        <span style="color: #C4C0B8;">/</span>
+      </div>
+      <h1 class="text-[24px] font-semibold" style="color: #1A1A1A;"><%= @schedule.name %></h1>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <%= link_to "Edit", edit_dashboard_project_on_call_schedule_path(@project, @schedule), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-colors", style: "background: #1A1A1A; color: #FFFFFE;" %>
+    </div>
+  </div>
+
+  <!-- Status -->
+  <div class="flex items-center gap-4">
+    <% if @schedule.enabled %>
+      <span class="flex items-center gap-2 px-3 py-1.5 rounded-full" style="background: #DCFCE7; color: #166534;">
+        <span class="w-2 h-2 rounded-full" style="background: #16A34A;"></span>
+        <span class="text-[13px] font-medium">Enabled</span>
+      </span>
+    <% else %>
+      <span class="flex items-center gap-2 px-3 py-1.5 rounded-full" style="background: #F0EFED; color: #6B6760;">
+        <span class="w-2 h-2 rounded-full" style="background: #C4C0B8;"></span>
+        <span class="text-[13px] font-medium">Disabled</span>
+      </span>
+    <% end %>
+
+    <span class="px-3 py-1.5 text-[13px] font-medium rounded-full capitalize" style="background: #F0EFED; color: #6B6760;"><%= @schedule.schedule_type %></span>
+    <span class="px-3 py-1.5 text-[13px] font-medium rounded-full" style="background: #F0EFED; color: #6B6760;"><%= @schedule.timezone %></span>
+  </div>
+
+  <!-- Current On-Call -->
+  <div class="rounded-xl px-5 py-4" style="border: 2px solid #F97316; background: #FFF7ED;">
+    <h3 class="text-[13px] font-medium mb-2" style="color: #9A3412;">Currently On-Call</h3>
+    <% if @schedule.current_on_call.present? %>
+      <p class="text-[20px] font-semibold" style="color: #1A1A1A;"><%= @schedule.current_on_call %></p>
+      <% if @schedule.current_shift_start && @schedule.current_shift_end %>
+        <p class="text-[13px] mt-1" style="color: #9A3412;">
+          <%= @schedule.current_shift_start.strftime('%b %d, %H:%M') %> - <%= @schedule.current_shift_end.strftime('%b %d, %H:%M') %>
+        </p>
+      <% end %>
+    <% else %>
+      <p class="text-[16px] font-medium" style="color: #6B6760;">No one currently on call</p>
+    <% end %>
+  </div>
+
+  <!-- Schedule Details -->
+  <div class="grid grid-cols-2 gap-6">
+    <div class="rounded-xl px-5 py-4" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
+      <h3 class="text-[13px] font-medium mb-3" style="color: #8B8780;">Schedule Details</h3>
+      <dl class="space-y-2">
+        <div class="flex justify-between">
+          <dt class="text-[13px]" style="color: #6B6760;">Type</dt>
+          <dd class="text-[13px] font-medium capitalize" style="color: #1A1A1A;"><%= @schedule.schedule_type %></dd>
+        </div>
+        <div class="flex justify-between">
+          <dt class="text-[13px]" style="color: #6B6760;">Timezone</dt>
+          <dd class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @schedule.timezone %></dd>
+        </div>
+        <% if @schedule.schedule_type == 'custom' && @schedule.rotation_type %>
+          <div class="flex justify-between">
+            <dt class="text-[13px]" style="color: #6B6760;">Rotation</dt>
+            <dd class="text-[13px] font-medium capitalize" style="color: #1A1A1A;"><%= @schedule.rotation_type %></dd>
+          </div>
+          <% if @schedule.rotation_start %>
+            <div class="flex justify-between">
+              <dt class="text-[13px]" style="color: #6B6760;">Started</dt>
+              <dd class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @schedule.rotation_start.strftime('%Y-%m-%d') %></dd>
+            </div>
+          <% end %>
+        <% end %>
+        <div class="flex justify-between">
+          <dt class="text-[13px]" style="color: #6B6760;">Created</dt>
+          <dd class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @schedule.created_at.strftime('%Y-%m-%d') %></dd>
+        </div>
+      </dl>
+    </div>
+
+    <div class="rounded-xl px-5 py-4" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
+      <h3 class="text-[13px] font-medium mb-3" style="color: #8B8780;">Team Members</h3>
+      <% if @schedule.members.present? && @schedule.members.any? %>
+        <ul class="space-y-2">
+          <% @schedule.members.each do |member| %>
+            <li class="flex items-center gap-2">
+              <span class="w-6 h-6 flex items-center justify-center rounded-full text-[11px] font-medium" style="background: #F97316; color: #FFFFFE;">
+                <%= member.to_s.chars.first.upcase %>
+              </span>
+              <span class="text-[13px]" style="color: #1A1A1A;"><%= member %></span>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="text-[13px]" style="color: #8B8780;">No members configured</p>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Weekly Schedule -->
+  <% if @schedule.schedule_type == 'weekly' && @schedule.weekly_schedule.present? %>
+    <div class="rounded-xl px-5 py-4" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
+      <h3 class="text-[13px] font-medium mb-3" style="color: #8B8780;">Weekly Schedule</h3>
+      <div class="grid grid-cols-7 gap-2">
+        <% %w[monday tuesday wednesday thursday friday saturday sunday].each do |day| %>
+          <div class="text-center">
+            <p class="text-[11px] font-medium uppercase mb-1" style="color: #8B8780;"><%= day[0..2] %></p>
+            <div class="rounded-lg px-2 py-2" style="background: #F9FAFB; border: 1px solid #E8E5E0;">
+              <p class="text-[12px] font-medium" style="color: #1A1A1A;">
+                <%= @schedule.weekly_schedule.dig(day, 'user') || '-' %>
+              </p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

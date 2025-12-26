@@ -40,5 +40,10 @@ module SignalApp
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    # Add middleware needed for dashboard (HTML views with sessions and flash)
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use ActionDispatch::Session::CookieStore, key: '_signal_session'
+    config.middleware.use ActionDispatch::Flash
   end
 end

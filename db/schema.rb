@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2023_12_23_000010) do
+ActiveRecord::Schema[8.1].define(version: 2023_12_24_000001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -221,6 +221,15 @@ ActiveRecord::Schema[8.1].define(version: 2023_12_23_000010) do
     t.jsonb "weekly_schedule", default: {}
     t.index ["project_id", "slug"], name: "index_on_call_schedules_on_project_id_and_slug", unique: true
     t.index ["project_id"], name: "index_on_call_schedules_on_project_id"
+  end
+
+  create_table "projects", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "environment", default: "live"
+    t.string "name"
+    t.uuid "platform_project_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["platform_project_id"], name: "index_projects_on_platform_project_id", unique: true
   end
 
   add_foreign_key "alert_histories", "alert_rules"

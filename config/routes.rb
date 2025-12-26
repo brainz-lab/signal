@@ -1,6 +1,60 @@
 Rails.application.routes.draw do
+  # Root redirects to dashboard
+  root to: redirect('/dashboard')
+
   # Health check
   get "up" => "rails/health#show", as: :rails_health_check
+
+  # Dashboard - new/edit routes defined explicitly to get standard Rails naming
+  # These must be outside namespace to get new_dashboard_* naming instead of dashboard_new_*
+  get 'dashboard/projects/new', to: 'dashboard/projects#new', as: :new_dashboard_project
+  get 'dashboard/projects/:id/edit', to: 'dashboard/projects#edit', as: :edit_dashboard_project
+  get 'dashboard/projects/:project_id/rules/new', to: 'dashboard/rules#new', as: :new_dashboard_project_rule
+  get 'dashboard/projects/:project_id/rules/:id/edit', to: 'dashboard/rules#edit', as: :edit_dashboard_project_rule
+  get 'dashboard/projects/:project_id/channels/new', to: 'dashboard/channels#new', as: :new_dashboard_project_channel
+  get 'dashboard/projects/:project_id/channels/:id/edit', to: 'dashboard/channels#edit', as: :edit_dashboard_project_channel
+  get 'dashboard/projects/:project_id/escalation_policies/new', to: 'dashboard/escalation_policies#new', as: :new_dashboard_project_escalation_policy
+  get 'dashboard/projects/:project_id/escalation_policies/:id/edit', to: 'dashboard/escalation_policies#edit', as: :edit_dashboard_project_escalation_policy
+  get 'dashboard/projects/:project_id/on_call_schedules/new', to: 'dashboard/on_call_schedules#new', as: :new_dashboard_project_on_call_schedule
+  get 'dashboard/projects/:project_id/on_call_schedules/:id/edit', to: 'dashboard/on_call_schedules#edit', as: :edit_dashboard_project_on_call_schedule
+  get 'dashboard/projects/:project_id/maintenance_windows/new', to: 'dashboard/maintenance_windows#new', as: :new_dashboard_project_maintenance_window
+  get 'dashboard/projects/:project_id/maintenance_windows/:id/edit', to: 'dashboard/maintenance_windows#edit', as: :edit_dashboard_project_maintenance_window
+
+  namespace :dashboard do
+    root to: 'projects#index'
+
+    resources :projects, except: [:new, :edit] do
+      resources :alerts, only: [:index, :show] do
+        member do
+          post :acknowledge
+        end
+      end
+      resources :incidents, only: [:index, :show] do
+        member do
+          post :acknowledge
+          post :resolve
+        end
+      end
+      resources :rules, except: [:new, :edit] do
+        member do
+          post :mute
+          post :unmute
+        end
+      end
+      resources :channels, except: [:new, :edit] do
+        member do
+          post :test
+        end
+      end
+      resources :escalation_policies, except: [:new, :edit]
+      resources :on_call_schedules, except: [:new, :edit] do
+        member do
+          get :current
+        end
+      end
+      resources :maintenance_windows, except: [:new, :edit]
+    end
+  end
 
   namespace :api do
     namespace :v1 do

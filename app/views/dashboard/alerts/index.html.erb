@@ -1,0 +1,82 @@
+<div class="space-y-6">
+  <!-- Stats -->
+  <div class="grid grid-cols-3 gap-4">
+    <div class="rounded-xl px-5 py-4" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
+      <p class="text-[12px] font-medium uppercase tracking-wide" style="color: #8B8780;">Firing</p>
+      <p class="text-[28px] font-semibold mt-1" style="color: #DC2626;"><%= @firing_count %></p>
+    </div>
+    <div class="rounded-xl px-5 py-4" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
+      <p class="text-[12px] font-medium uppercase tracking-wide" style="color: #8B8780;">Pending</p>
+      <p class="text-[28px] font-semibold mt-1" style="color: #F97316;"><%= @pending_count %></p>
+    </div>
+    <div class="rounded-xl px-5 py-4" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
+      <p class="text-[12px] font-medium uppercase tracking-wide" style="color: #8B8780;">Resolved Today</p>
+      <p class="text-[28px] font-semibold mt-1" style="color: #16A34A;"><%= @resolved_today %></p>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="flex items-center gap-3">
+    <%= link_to "All", dashboard_project_alerts_path(@project), class: "px-3 py-1.5 text-[13px] font-medium rounded-lg", style: params[:state].blank? ? "background: #1A1A1A; color: #FFFFFE;" : "background: #F0EFED; color: #6B6760;" %>
+    <%= link_to "Firing", dashboard_project_alerts_path(@project, state: 'firing'), class: "px-3 py-1.5 text-[13px] font-medium rounded-lg", style: params[:state] == 'firing' ? "background: #1A1A1A; color: #FFFFFE;" : "background: #F0EFED; color: #6B6760;" %>
+    <%= link_to "Pending", dashboard_project_alerts_path(@project, state: 'pending'), class: "px-3 py-1.5 text-[13px] font-medium rounded-lg", style: params[:state] == 'pending' ? "background: #1A1A1A; color: #FFFFFE;" : "background: #F0EFED; color: #6B6760;" %>
+    <%= link_to "Resolved", dashboard_project_alerts_path(@project, state: 'resolved'), class: "px-3 py-1.5 text-[13px] font-medium rounded-lg", style: params[:state] == 'resolved' ? "background: #1A1A1A; color: #FFFFFE;" : "background: #F0EFED; color: #6B6760;" %>
+  </div>
+
+  <!-- Alerts List -->
+  <% if @alerts.any? %>
+    <div class="rounded-xl overflow-hidden" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
+      <% @alerts.each_with_index do |alert, index| %>
+        <%= link_to dashboard_project_alert_path(@project, alert), class: "block px-5 py-4 transition-colors hover:bg-gray-50", style: index > 0 ? "border-top: 1px solid #F0EFED;" : "" do %>
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <!-- State indicator -->
+              <% case alert.state %>
+              <% when 'firing' %>
+                <span class="w-2 h-2 rounded-full animate-pulse" style="background: #DC2626;"></span>
+              <% when 'pending' %>
+                <span class="w-2 h-2 rounded-full" style="background: #F97316;"></span>
+              <% else %>
+                <span class="w-2 h-2 rounded-full" style="background: #16A34A;"></span>
+              <% end %>
+
+              <div>
+                <div class="flex items-center gap-2">
+                  <h3 class="text-[14px] font-medium" style="color: #1A1A1A;"><%= alert.alert_rule&.name || 'Unknown Rule' %></h3>
+                  <!-- Severity badge -->
+                  <% case alert.alert_rule&.severity %>
+                  <% when 'critical' %>
+                    <span class="px-2 py-0.5 text-[11px] font-medium uppercase rounded-full" style="background: #FEE2E2; color: #991B1B;">Critical</span>
+                  <% when 'warning' %>
+                    <span class="px-2 py-0.5 text-[11px] font-medium uppercase rounded-full" style="background: #FEF3C7; color: #92400E;">Warning</span>
+                  <% else %>
+                    <span class="px-2 py-0.5 text-[11px] font-medium uppercase rounded-full" style="background: #E0E7FF; color: #3730A3;">Info</span>
+                  <% end %>
+                </div>
+                <p class="text-[13px] mt-0.5" style="color: #8B8780;">
+                  Value: <%= alert.current_value %> &middot;
+                  Started <%= time_ago_in_words(alert.started_at) %> ago
+                  <% if alert.acknowledged %>
+                    &middot; <span style="color: #16A34A;">Acknowledged</span>
+                  <% end %>
+                </p>
+              </div>
+            </div>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="color: #C4C0B8;">
+              <path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="rounded-xl px-8 py-16 text-center" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
+      <svg class="mx-auto mb-4" width="48" height="48" viewBox="0 0 48 48" fill="none">
+        <circle cx="24" cy="24" r="16" stroke="#16A34A" stroke-width="2"/>
+        <path d="M18 24L22 28L30 20" stroke="#16A34A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <h3 class="text-[16px] font-medium mb-2" style="color: #1A1A1A;">All clear</h3>
+      <p class="text-[14px]" style="color: #8B8780;">No alerts matching your filters.</p>
+    </div>
+  <% end %>
+</div>

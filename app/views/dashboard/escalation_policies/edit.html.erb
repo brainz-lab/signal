@@ -1,0 +1,118 @@
+<div class="max-w-2xl space-y-6">
+  <div class="flex items-center gap-2 mb-1">
+    <%= link_to "Escalation Policies", dashboard_project_escalation_policies_path(@project), class: "text-[13px]", style: "color: #8B8780;" %>
+    <span style="color: #C4C0B8;">/</span>
+    <%= link_to @escalation_policy.name, dashboard_project_escalation_policy_path(@project, @escalation_policy), class: "text-[13px]", style: "color: #8B8780;" %>
+    <span style="color: #C4C0B8;">/</span>
+    <span class="text-[13px]" style="color: #1A1A1A;">Edit</span>
+  </div>
+
+  <h1 class="text-[24px] font-semibold" style="color: #1A1A1A;">Edit Escalation Policy</h1>
+
+  <div class="rounded-xl px-6 py-6" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
+    <%= form_with model: @escalation_policy, url: dashboard_project_escalation_policy_path(@project, @escalation_policy), method: :patch, class: "space-y-6" do |f| %>
+      <!-- Basic Info -->
+      <div class="space-y-4">
+        <div>
+          <%= f.label :name, class: "block text-[13px] font-medium mb-1.5", style: "color: #1A1A1A;" %>
+          <%= f.text_field :name, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-orange-500", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
+        </div>
+
+        <div>
+          <%= f.label :description, class: "block text-[13px] font-medium mb-1.5", style: "color: #1A1A1A;" %>
+          <%= f.text_area :description, rows: 2, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-orange-500", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <%= f.check_box :enabled, class: "rounded" %>
+          <%= f.label :enabled, "Enabled", class: "text-[13px]", style: "color: #1A1A1A;" %>
+        </div>
+      </div>
+
+      <!-- Steps -->
+      <div class="space-y-4 pt-4" style="border-top: 1px solid #F0EFED;">
+        <h2 class="text-[15px] font-medium" style="color: #1A1A1A;">Escalation Steps</h2>
+
+        <div id="escalation-steps" class="space-y-3">
+          <% (@escalation_policy.steps || []).each_with_index do |step, index| %>
+            <div class="flex items-center gap-3 rounded-lg px-4 py-3" style="background: #F9FAFB; border: 1px solid #E8E5E0;">
+              <span class="flex items-center justify-center w-6 h-6 rounded-full text-[12px] font-semibold" style="background: #F97316; color: #FFFFFE;">
+                <%= index + 1 %>
+              </span>
+              <div class="flex-1 grid grid-cols-2 gap-3">
+                <select name="escalation_policy[steps][][channel_id]" class="px-3 py-2 rounded-lg text-[13px] outline-none" style="background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;">
+                  <option value="">Select channel...</option>
+                  <% @channels.each do |channel| %>
+                    <option value="<%= channel.id %>" <%= 'selected' if step['channel_id'] == channel.id.to_s %>>
+                      <%= channel.name %> (<%= channel.channel_type %>)
+                    </option>
+                  <% end %>
+                </select>
+                <div class="flex items-center gap-2">
+                  <input type="number" name="escalation_policy[steps][][delay_minutes]" value="<%= step['delay_minutes'] %>" placeholder="0" class="flex-1 px-3 py-2 rounded-lg text-[13px] outline-none" style="background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;">
+                  <span class="text-[13px]" style="color: #8B8780;">min delay</span>
+                </div>
+              </div>
+            </div>
+          <% end %>
+
+          <% if @escalation_policy.steps.blank? || @escalation_policy.steps.empty? %>
+            <div class="flex items-center gap-3 rounded-lg px-4 py-3" style="background: #F9FAFB; border: 1px solid #E8E5E0;">
+              <span class="flex items-center justify-center w-6 h-6 rounded-full text-[12px] font-semibold" style="background: #F97316; color: #FFFFFE;">1</span>
+              <div class="flex-1 grid grid-cols-2 gap-3">
+                <select name="escalation_policy[steps][][channel_id]" class="px-3 py-2 rounded-lg text-[13px] outline-none" style="background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;">
+                  <option value="">Select channel...</option>
+                  <% @channels.each do |channel| %>
+                    <option value="<%= channel.id %>"><%= channel.name %> (<%= channel.channel_type %>)</option>
+                  <% end %>
+                </select>
+                <div class="flex items-center gap-2">
+                  <input type="number" name="escalation_policy[steps][][delay_minutes]" value="0" placeholder="0" class="flex-1 px-3 py-2 rounded-lg text-[13px] outline-none" style="background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;">
+                  <span class="text-[13px]" style="color: #8B8780;">min delay</span>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+
+        <p class="text-[12px]" style="color: #8B8780;">
+          First step is notified immediately. Subsequent steps are notified after the specified delay if the alert is not acknowledged.
+        </p>
+      </div>
+
+      <!-- Repeat Settings -->
+      <div class="space-y-4 pt-4" style="border-top: 1px solid #F0EFED;">
+        <h2 class="text-[15px] font-medium" style="color: #1A1A1A;">Repeat Settings</h2>
+
+        <div class="flex items-center gap-2">
+          <%= f.check_box :repeat, class: "rounded" %>
+          <%= f.label :repeat, "Repeat escalation if not acknowledged", class: "text-[13px]", style: "color: #1A1A1A;" %>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <%= f.label :repeat_after_minutes, "Repeat After (minutes)", class: "block text-[13px] font-medium mb-1.5", style: "color: #1A1A1A;" %>
+            <%= f.number_field :repeat_after_minutes, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-orange-500", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
+          </div>
+          <div>
+            <%= f.label :max_repeats, "Max Repeats", class: "block text-[13px] font-medium mb-1.5", style: "color: #1A1A1A;" %>
+            <%= f.number_field :max_repeats, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-orange-500", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
+            <p class="text-[12px] mt-1" style="color: #8B8780;">Leave blank for unlimited</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3 pt-4">
+        <%= f.submit "Save Changes", class: "px-4 py-2 text-[13px] font-medium rounded-lg cursor-pointer transition-colors", style: "background: #1A1A1A; color: #FFFFFE;" %>
+        <%= link_to "Cancel", dashboard_project_escalation_policy_path(@project, @escalation_policy), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-colors", style: "background: #F0EFED; color: #6B6760;" %>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Danger Zone -->
+  <div class="rounded-xl px-6 py-6" style="border: 1px solid #FECACA; background: #FEF2F2;">
+    <h2 class="text-[16px] font-medium mb-2" style="color: #991B1B;">Danger Zone</h2>
+    <p class="text-[13px] mb-4" style="color: #991B1B;">Deleting this policy will remove it from all associated rules.</p>
+    <%= button_to "Delete Policy", dashboard_project_escalation_policy_path(@project, @escalation_policy), method: :delete, data: { confirm: "Are you sure? This cannot be undone." }, class: "px-4 py-2 text-[13px] font-medium rounded-lg cursor-pointer transition-colors", style: "background: #DC2626; color: #FFFFFE;" %>
+  </div>
+</div>

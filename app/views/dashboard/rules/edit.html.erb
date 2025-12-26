@@ -1,0 +1,90 @@
+<div class="max-w-2xl space-y-6">
+  <div class="flex items-center gap-2 mb-1">
+    <%= link_to "Rules", dashboard_project_rules_path(@project), class: "text-[13px]", style: "color: #8B8780;" %>
+    <span style="color: #C4C0B8;">/</span>
+    <%= link_to @rule.name, dashboard_project_rule_path(@project, @rule), class: "text-[13px]", style: "color: #8B8780;" %>
+    <span style="color: #C4C0B8;">/</span>
+    <span class="text-[13px]" style="color: #1A1A1A;">Edit</span>
+  </div>
+
+  <h1 class="text-[24px] font-semibold" style="color: #1A1A1A;">Edit Rule</h1>
+
+  <div class="rounded-xl px-6 py-6" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
+    <%= form_with model: @rule, url: dashboard_project_rule_path(@project, @rule), method: :patch, class: "space-y-6" do |f| %>
+      <!-- Basic Info -->
+      <div class="space-y-4">
+        <h2 class="text-[15px] font-medium" style="color: #1A1A1A;">Basic Info</h2>
+        <div>
+          <%= f.label :name, class: "block text-[13px] font-medium mb-1.5", style: "color: #1A1A1A;" %>
+          <%= f.text_field :name, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-orange-500", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
+        </div>
+        <div>
+          <%= f.label :description, class: "block text-[13px] font-medium mb-1.5", style: "color: #1A1A1A;" %>
+          <%= f.text_area :description, rows: 2, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-orange-500", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
+        </div>
+        <div class="flex items-center gap-2">
+          <%= f.check_box :enabled, class: "rounded" %>
+          <%= f.label :enabled, "Enabled", class: "text-[13px]", style: "color: #1A1A1A;" %>
+        </div>
+      </div>
+
+      <!-- Source -->
+      <div class="space-y-4 pt-4" style="border-top: 1px solid #F0EFED;">
+        <h2 class="text-[15px] font-medium" style="color: #1A1A1A;">Data Source</h2>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <%= f.label :source, class: "block text-[13px] font-medium mb-1.5", style: "color: #1A1A1A;" %>
+            <%= f.select :source, [['Flux (Metrics)', 'flux'], ['Pulse (APM)', 'pulse'], ['Reflex (Errors)', 'reflex'], ['Recall (Logs)', 'recall']], {}, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-orange-500", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
+          </div>
+          <div>
+            <%= f.label :source_name, "Metric/Event Name", class: "block text-[13px] font-medium mb-1.5", style: "color: #1A1A1A;" %>
+            <%= f.text_field :source_name, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-orange-500", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Condition -->
+      <div class="space-y-4 pt-4" style="border-top: 1px solid #F0EFED;">
+        <h2 class="text-[15px] font-medium" style="color: #1A1A1A;">Condition</h2>
+        <div class="grid grid-cols-4 gap-4">
+          <div>
+            <%= f.label :rule_type, "Type", class: "block text-[13px] font-medium mb-1.5", style: "color: #1A1A1A;" %>
+            <%= f.select :rule_type, [['Threshold', 'threshold'], ['Anomaly', 'anomaly'], ['Absence', 'absence']], {}, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-orange-500", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
+          </div>
+          <div>
+            <%= f.label :operator, class: "block text-[13px] font-medium mb-1.5", style: "color: #1A1A1A;" %>
+            <%= f.select :operator, [['>', 'gt'], ['>=', 'gte'], ['<', 'lt'], ['<=', 'lte'], ['=', 'eq'], ['!=', 'neq']], {}, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-orange-500", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
+          </div>
+          <div>
+            <%= f.label :threshold, class: "block text-[13px] font-medium mb-1.5", style: "color: #1A1A1A;" %>
+            <%= f.number_field :threshold, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-orange-500", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
+          </div>
+          <div>
+            <%= f.label :window, class: "block text-[13px] font-medium mb-1.5", style: "color: #1A1A1A;" %>
+            <%= f.select :window, [['1 minute', '1m'], ['5 minutes', '5m'], ['15 minutes', '15m'], ['1 hour', '1h']], {}, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-orange-500", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Severity -->
+      <div class="space-y-4 pt-4" style="border-top: 1px solid #F0EFED;">
+        <h2 class="text-[15px] font-medium" style="color: #1A1A1A;">Severity</h2>
+        <div>
+          <%= f.select :severity, [['Info', 'info'], ['Warning', 'warning'], ['Critical', 'critical']], {}, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-orange-500", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3 pt-4">
+        <%= f.submit "Save Changes", class: "px-4 py-2 text-[13px] font-medium rounded-lg cursor-pointer transition-colors", style: "background: #1A1A1A; color: #FFFFFE;" %>
+        <%= link_to "Cancel", dashboard_project_rule_path(@project, @rule), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-colors", style: "background: #F0EFED; color: #6B6760;" %>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Danger Zone -->
+  <div class="rounded-xl px-6 py-6" style="border: 1px solid #FECACA; background: #FEF2F2;">
+    <h2 class="text-[16px] font-medium mb-2" style="color: #991B1B;">Danger Zone</h2>
+    <p class="text-[13px] mb-4" style="color: #991B1B;">Deleting this rule will stop all associated alerts.</p>
+    <%= button_to "Delete Rule", dashboard_project_rule_path(@project, @rule), method: :delete, data: { confirm: "Are you sure? This cannot be undone." }, class: "px-4 py-2 text-[13px] font-medium rounded-lg cursor-pointer transition-colors", style: "background: #DC2626; color: #FFFFFE;" %>
+  </div>
+</div>
