@@ -15,7 +15,7 @@
   <div class="min-h-full">
     <!-- Header -->
     <header class="border-b" style="border-color: #E8E5E0; background: #FFFFFE;">
-      <div class="max-w-6xl mx-auto px-6">
+      <div class="mx-auto max-w-5xl px-6">
         <div class="flex h-16 items-center justify-between">
           <%= link_to dashboard_root_path, class: "flex items-center gap-2.5" do %>
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -76,7 +76,7 @@
     </header>
 
     <!-- Main -->
-    <main class="max-w-6xl mx-auto px-6 py-10">
+    <main class="mx-auto max-w-5xl px-6 py-10">
       <% if flash[:notice] %>
         <div class="mb-6 px-4 py-3 rounded-lg text-[14px]" style="background: #E8F5E8; color: #2D5A2D;">
           <%= flash[:notice] %>
