@@ -31,3 +31,30 @@
 # Ignore key files for decrypting credentials and more.
 /config/*.key
 
+
+# macOS
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Test coverage
+/coverage/
+
+# Vendor bundle
+/vendor/bundle
+
+# Database dumps
+*.sql
+*.dump
+
+# Local development
+.byebug_history
+.irb_history
+
+# Node modules (if not already present)
+/node_modules
+
