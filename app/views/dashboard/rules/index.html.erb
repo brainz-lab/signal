@@ -2,83 +2,128 @@
   <!-- Header -->
   <div class="flex items-center justify-between">
     <div>
-      <h1 class="text-[20px] font-semibold" style="color: #1A1A1A;">Alert Rules</h1>
+      <h1 class="text-[24px] font-semibold tracking-tight" style="color: #1A1A1A;">Alert Rules</h1>
+      <p class="text-[14px] mt-1" style="color: #8B8780;">Configure conditions that trigger alerts</p>
     </div>
-    <%= link_to new_dashboard_project_rule_path(@project), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-colors", style: "background: #1A1A1A; color: #FFFFFE;" do %>
+    <%= link_to new_dashboard_project_rule_path(@project), class: "inline-flex items-center gap-2 px-4 py-2.5 text-[13px] font-medium rounded-xl transition-all btn-primary text-white" do %>
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+      </svg>
       New Rule
     <% end %>
   </div>
 
   <!-- Stats -->
   <div class="grid grid-cols-3 gap-4">
-    <div class="rounded-xl px-5 py-4" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
-      <p class="text-[12px] font-medium uppercase tracking-wide" style="color: #8B8780;">Total Rules</p>
-      <p class="text-[28px] font-semibold mt-1" style="color: #1A1A1A;"><%= @total_count %></p>
+    <div class="rounded-2xl px-5 py-5 shadow-card transition-all hover:shadow-medium" style="border: 1px solid #E8E5E0; background: linear-gradient(135deg, #FFFFFF 0%, #FDFCFB 100%);">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background: rgba(26, 26, 26, 0.05);">
+          <svg class="w-5 h-5" style="color: #1A1A1A;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+          </svg>
+        </div>
+        <div>
+          <p class="text-[11px] font-semibold uppercase tracking-wider" style="color: #8B8780;">Total Rules</p>
+          <p class="text-[28px] font-bold leading-none mt-1" style="color: #1A1A1A;"><%= @total_count %></p>
+        </div>
+      </div>
     </div>
-    <div class="rounded-xl px-5 py-4" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
-      <p class="text-[12px] font-medium uppercase tracking-wide" style="color: #8B8780;">Enabled</p>
-      <p class="text-[28px] font-semibold mt-1" style="color: #16A34A;"><%= @enabled_count %></p>
+    <div class="rounded-2xl px-5 py-5 shadow-card transition-all hover:shadow-medium" style="border: 1px solid #E8E5E0; background: linear-gradient(135deg, #FFFFFF 0%, #F0FDF4 100%);">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background: rgba(22, 163, 74, 0.1);">
+          <svg class="w-5 h-5" style="color: #16A34A;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        </div>
+        <div>
+          <p class="text-[11px] font-semibold uppercase tracking-wider" style="color: #8B8780;">Enabled</p>
+          <p class="text-[28px] font-bold leading-none mt-1" style="color: #16A34A;"><%= @enabled_count %></p>
+        </div>
+      </div>
     </div>
-    <div class="rounded-xl px-5 py-4" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
-      <p class="text-[12px] font-medium uppercase tracking-wide" style="color: #8B8780;">Muted</p>
-      <p class="text-[28px] font-semibold mt-1" style="color: #F97316;"><%= @muted_count %></p>
+    <div class="rounded-2xl px-5 py-5 shadow-card transition-all hover:shadow-medium" style="border: 1px solid #E8E5E0; background: linear-gradient(135deg, #FFFFFF 0%, #FEF7ED 100%);">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background: rgba(217, 119, 6, 0.1);">
+          <svg class="w-5 h-5" style="color: #D97706;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" clip-rule="evenodd"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/>
+          </svg>
+        </div>
+        <div>
+          <p class="text-[11px] font-semibold uppercase tracking-wider" style="color: #8B8780;">Muted</p>
+          <p class="text-[28px] font-bold leading-none mt-1" style="color: #D97706;"><%= @muted_count %></p>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- Rules List -->
   <% if @rules.any? %>
-    <div class="rounded-xl overflow-hidden" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
+    <div class="rounded-2xl overflow-hidden shadow-card" style="border: 1px solid #E8E5E0; background: #FFFFFF;">
       <% @rules.each_with_index do |rule, index| %>
-        <%= link_to dashboard_project_rule_path(@project, rule), class: "block px-5 py-4 transition-colors hover:bg-gray-50", style: index > 0 ? "border-top: 1px solid #F0EFED;" : "" do %>
+        <%= link_to dashboard_project_rule_path(@project, rule), class: "block px-5 py-4 transition-all card-hover group", style: index > 0 ? "border-top: 1px solid #F0EFED;" : "" do %>
           <div class="flex items-center justify-between">
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-4">
               <!-- Status indicator -->
               <% if !rule.enabled %>
-                <span class="w-2 h-2 rounded-full" style="background: #C4C0B8;"></span>
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background: rgba(196, 192, 184, 0.2);">
+                  <span class="w-3 h-3 rounded-full" style="background: #C4C0B8;"></span>
+                </div>
               <% elsif rule.muted %>
-                <span class="w-2 h-2 rounded-full" style="background: #F97316;"></span>
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background: rgba(217, 119, 6, 0.1);">
+                  <span class="w-3 h-3 rounded-full" style="background: #D97706;"></span>
+                </div>
               <% else %>
-                <span class="w-2 h-2 rounded-full" style="background: #16A34A;"></span>
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background: rgba(22, 163, 74, 0.1);">
+                  <span class="w-3 h-3 rounded-full" style="background: #16A34A;"></span>
+                </div>
               <% end %>
 
               <div>
                 <div class="flex items-center gap-2">
-                  <h3 class="text-[14px] font-medium" style="color: #1A1A1A;"><%= rule.name %></h3>
+                  <h3 class="text-[14px] font-medium group-hover:text-signal transition-colors" style="color: #1A1A1A;"><%= rule.name %></h3>
                   <!-- Severity badge -->
                   <% case rule.severity %>
                   <% when 'critical' %>
-                    <span class="px-2 py-0.5 text-[11px] font-medium uppercase rounded-full" style="background: #FEE2E2; color: #991B1B;">Critical</span>
+                    <span class="px-2 py-0.5 text-[10px] font-semibold uppercase rounded-full" style="background: #FEE2E2; color: #991B1B;">Critical</span>
                   <% when 'warning' %>
-                    <span class="px-2 py-0.5 text-[11px] font-medium uppercase rounded-full" style="background: #FEF3C7; color: #92400E;">Warning</span>
+                    <span class="px-2 py-0.5 text-[10px] font-semibold uppercase rounded-full" style="background: #FEF3C7; color: #92400E;">Warning</span>
                   <% else %>
-                    <span class="px-2 py-0.5 text-[11px] font-medium uppercase rounded-full" style="background: #E0E7FF; color: #3730A3;">Info</span>
+                    <span class="px-2 py-0.5 text-[10px] font-semibold uppercase rounded-full" style="background: #EDE9FE; color: #5B21B6;">Info</span>
                   <% end %>
                   <% if rule.muted %>
-                    <span class="px-2 py-0.5 text-[11px] font-medium uppercase rounded-full" style="background: #F0EFED; color: #6B6760;">Muted</span>
+                    <span class="px-2 py-0.5 text-[10px] font-semibold uppercase rounded-full" style="background: #F5F3EF; color: #6B6760;">Muted</span>
                   <% end %>
                 </div>
-                <p class="text-[13px] mt-0.5" style="color: #8B8780;">
-                  <%= rule.source %> &middot; <%= rule.rule_type %> &middot;
-                  <%= rule.operator %> <%= rule.threshold %> over <%= rule.window %>
+                <p class="text-[13px] mt-1 flex items-center gap-2" style="color: #8B8780;">
+                  <span class="inline-flex items-center gap-1">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/></svg>
+                    <%= rule.source %>
+                  </span>
+                  <span><%= rule.rule_type %></span>
+                  <span><%= rule.operator %> <%= rule.threshold %> over <%= rule.window %></span>
                 </p>
               </div>
             </div>
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="color: #C4C0B8;">
-              <path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" style="color: #C4C0B8;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"/>
             </svg>
           </div>
         <% end %>
       <% end %>
     </div>
   <% else %>
-    <div class="rounded-xl px-8 py-16 text-center" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
-      <svg class="mx-auto mb-4" width="48" height="48" viewBox="0 0 48 48" fill="none">
-        <rect x="8" y="8" width="32" height="32" rx="4" stroke="#C4C0B8" stroke-width="2"/>
-        <path d="M24 18V30M18 24H30" stroke="#C4C0B8" stroke-width="2" stroke-linecap="round"/>
-      </svg>
-      <h3 class="text-[16px] font-medium mb-2" style="color: #1A1A1A;">No rules yet</h3>
-      <p class="text-[14px] mb-6" style="color: #8B8780;">Create your first alert rule to start monitoring.</p>
-      <%= link_to new_dashboard_project_rule_path(@project), class: "inline-block px-4 py-2 text-[13px] font-medium rounded-lg transition-colors", style: "background: #1A1A1A; color: #FFFFFE;" do %>
+    <div class="rounded-2xl px-8 py-16 text-center shadow-card" style="border: 1px solid #E8E5E0; background: #FFFFFF;">
+      <div class="w-16 h-16 mx-auto mb-5 rounded-2xl flex items-center justify-center" style="background: linear-gradient(135deg, #FEF7ED 0%, #FED7AA 100%);">
+        <svg class="w-8 h-8" style="color: #D97706;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+        </svg>
+      </div>
+      <h3 class="text-[18px] font-semibold mb-2" style="color: #1A1A1A;">No rules yet</h3>
+      <p class="text-[14px] mb-6 max-w-sm mx-auto" style="color: #8B8780;">Create your first alert rule to start monitoring your metrics and events.</p>
+      <%= link_to new_dashboard_project_rule_path(@project), class: "inline-flex items-center gap-2 px-5 py-2.5 text-[14px] font-medium rounded-xl transition-all btn-primary text-white" do %>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+        </svg>
         Create Rule
       <% end %>
     </div>

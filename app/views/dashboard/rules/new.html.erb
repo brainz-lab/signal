@@ -1,76 +1,103 @@
 <div class="max-w-2xl space-y-6">
-  <div class="flex items-center gap-2 mb-1">
-    <%= link_to "Rules", dashboard_project_rules_path(@project), class: "text-[13px]", style: "color: #8B8780;" %>
+  <!-- Breadcrumb -->
+  <div class="flex items-center gap-2">
+    <%= link_to dashboard_project_rules_path(@project), class: "flex items-center gap-1 text-[13px] font-medium transition-colors hover:text-signal", style: "color: #8B8780;" do %>
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+      Rules
+    <% end %>
     <span style="color: #C4C0B8;">/</span>
-    <span class="text-[13px]" style="color: #1A1A1A;">New Rule</span>
+    <span class="text-[13px] font-medium" style="color: #1A1A1A;">New Rule</span>
   </div>
 
-  <h1 class="text-[24px] font-semibold" style="color: #1A1A1A;">Create Alert Rule</h1>
+  <div>
+    <h1 class="text-[24px] font-semibold tracking-tight" style="color: #1A1A1A;">Create Alert Rule</h1>
+    <p class="text-[14px] mt-1" style="color: #8B8780;">Define conditions to trigger alerts when metrics cross thresholds</p>
+  </div>
 
-  <div class="rounded-xl px-6 py-6" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
+  <div class="rounded-2xl px-6 py-6 shadow-card" style="border: 1px solid #E8E5E0; background: #FFFFFF;">
     <%= form_with model: @rule, url: dashboard_project_rules_path(@project), method: :post, class: "space-y-6" do |f| %>
       <!-- Basic Info -->
       <div class="space-y-4">
-        <h2 class="text-[15px] font-medium" style="color: #1A1A1A;">Basic Info</h2>
-        <div>
-          <%= f.label :name, class: "block text-[13px] font-medium mb-1.5", style: "color: #1A1A1A;" %>
-          <%= f.text_field :name, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-orange-500", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;", placeholder: "High Error Rate" %>
+        <div class="flex items-center gap-2">
+          <div class="w-6 h-6 rounded-lg flex items-center justify-center" style="background: linear-gradient(135deg, #FEF7ED 0%, #FED7AA 100%);">
+            <svg class="w-3.5 h-3.5" style="color: #D97706;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <h2 class="text-[15px] font-semibold" style="color: #1A1A1A;">Basic Info</h2>
         </div>
         <div>
-          <%= f.label :description, class: "block text-[13px] font-medium mb-1.5", style: "color: #1A1A1A;" %>
-          <%= f.text_area :description, rows: 2, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-orange-500", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;", placeholder: "Alert when error count exceeds threshold" %>
+          <%= f.label :name, class: "block text-[13px] font-medium mb-1.5", style: "color: #525252;" %>
+          <%= f.text_field :name, class: "w-full px-4 py-2.5 rounded-xl text-[14px] outline-none transition-all focus:ring-2 focus:ring-signal focus:border-signal", style: "background: #FDFCFB; border: 1px solid #E8E5E0; color: #1A1A1A;", placeholder: "High Error Rate" %>
+        </div>
+        <div>
+          <%= f.label :description, class: "block text-[13px] font-medium mb-1.5", style: "color: #525252;" %>
+          <%= f.text_area :description, rows: 2, class: "w-full px-4 py-2.5 rounded-xl text-[14px] outline-none transition-all focus:ring-2 focus:ring-signal focus:border-signal resize-none", style: "background: #FDFCFB; border: 1px solid #E8E5E0; color: #1A1A1A;", placeholder: "Alert when error count exceeds threshold" %>
         </div>
       </div>
 
       <!-- Source -->
-      <div class="space-y-4 pt-4" style="border-top: 1px solid #F0EFED;">
-        <h2 class="text-[15px] font-medium" style="color: #1A1A1A;">Data Source</h2>
+      <div class="space-y-4 pt-5" style="border-top: 1px solid #F0EFED;">
+        <div class="flex items-center gap-2">
+          <div class="w-6 h-6 rounded-lg flex items-center justify-center" style="background: linear-gradient(135deg, #EDE9FE 0%, #DDD6FE 100%);">
+            <svg class="w-3.5 h-3.5" style="color: #7C3AED;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/></svg>
+          </div>
+          <h2 class="text-[15px] font-semibold" style="color: #1A1A1A;">Data Source</h2>
+        </div>
         <div class="grid grid-cols-2 gap-4">
           <div>
-            <%= f.label :source, class: "block text-[13px] font-medium mb-1.5", style: "color: #1A1A1A;" %>
-            <%= f.select :source, [['Flux (Metrics)', 'flux'], ['Pulse (APM)', 'pulse'], ['Reflex (Errors)', 'reflex'], ['Recall (Logs)', 'recall']], {}, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-orange-500", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
+            <%= f.label :source, class: "block text-[13px] font-medium mb-1.5", style: "color: #525252;" %>
+            <%= f.select :source, [['Flux (Metrics)', 'flux'], ['Pulse (APM)', 'pulse'], ['Reflex (Errors)', 'reflex'], ['Recall (Logs)', 'recall']], {}, class: "w-full px-4 py-2.5 rounded-xl text-[14px] outline-none transition-all focus:ring-2 focus:ring-signal", style: "background: #FDFCFB; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
           </div>
           <div>
-            <%= f.label :source_name, "Metric/Event Name", class: "block text-[13px] font-medium mb-1.5", style: "color: #1A1A1A;" %>
-            <%= f.text_field :source_name, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-orange-500", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;", placeholder: "error_count" %>
+            <%= f.label :source_name, "Metric/Event Name", class: "block text-[13px] font-medium mb-1.5", style: "color: #525252;" %>
+            <%= f.text_field :source_name, class: "w-full px-4 py-2.5 rounded-xl text-[14px] outline-none transition-all focus:ring-2 focus:ring-signal", style: "background: #FDFCFB; border: 1px solid #E8E5E0; color: #1A1A1A;", placeholder: "error_count" %>
           </div>
         </div>
       </div>
 
       <!-- Condition -->
-      <div class="space-y-4 pt-4" style="border-top: 1px solid #F0EFED;">
-        <h2 class="text-[15px] font-medium" style="color: #1A1A1A;">Condition</h2>
+      <div class="space-y-4 pt-5" style="border-top: 1px solid #F0EFED;">
+        <div class="flex items-center gap-2">
+          <div class="w-6 h-6 rounded-lg flex items-center justify-center" style="background: linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%);">
+            <svg class="w-3.5 h-3.5" style="color: #2563EB;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+          </div>
+          <h2 class="text-[15px] font-semibold" style="color: #1A1A1A;">Condition</h2>
+        </div>
         <div class="grid grid-cols-4 gap-4">
           <div>
-            <%= f.label :rule_type, "Type", class: "block text-[13px] font-medium mb-1.5", style: "color: #1A1A1A;" %>
-            <%= f.select :rule_type, [['Threshold', 'threshold'], ['Anomaly', 'anomaly'], ['Absence', 'absence']], {}, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-orange-500", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
+            <%= f.label :rule_type, "Type", class: "block text-[13px] font-medium mb-1.5", style: "color: #525252;" %>
+            <%= f.select :rule_type, [['Threshold', 'threshold'], ['Anomaly', 'anomaly'], ['Absence', 'absence']], {}, class: "w-full px-4 py-2.5 rounded-xl text-[14px] outline-none transition-all focus:ring-2 focus:ring-signal", style: "background: #FDFCFB; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
           </div>
           <div>
-            <%= f.label :operator, class: "block text-[13px] font-medium mb-1.5", style: "color: #1A1A1A;" %>
-            <%= f.select :operator, [['>', 'gt'], ['>=', 'gte'], ['<', 'lt'], ['<=', 'lte'], ['=', 'eq'], ['!=', 'neq']], {}, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-orange-500", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
+            <%= f.label :operator, class: "block text-[13px] font-medium mb-1.5", style: "color: #525252;" %>
+            <%= f.select :operator, [['>', 'gt'], ['>=', 'gte'], ['<', 'lt'], ['<=', 'lte'], ['=', 'eq'], ['!=', 'neq']], {}, class: "w-full px-4 py-2.5 rounded-xl text-[14px] outline-none transition-all focus:ring-2 focus:ring-signal", style: "background: #FDFCFB; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
           </div>
           <div>
-            <%= f.label :threshold, class: "block text-[13px] font-medium mb-1.5", style: "color: #1A1A1A;" %>
-            <%= f.number_field :threshold, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-orange-500", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;", placeholder: "100" %>
+            <%= f.label :threshold, class: "block text-[13px] font-medium mb-1.5", style: "color: #525252;" %>
+            <%= f.number_field :threshold, class: "w-full px-4 py-2.5 rounded-xl text-[14px] outline-none transition-all focus:ring-2 focus:ring-signal", style: "background: #FDFCFB; border: 1px solid #E8E5E0; color: #1A1A1A;", placeholder: "100" %>
           </div>
           <div>
-            <%= f.label :window, class: "block text-[13px] font-medium mb-1.5", style: "color: #1A1A1A;" %>
-            <%= f.select :window, [['1 minute', '1m'], ['5 minutes', '5m'], ['15 minutes', '15m'], ['1 hour', '1h']], {}, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-orange-500", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
+            <%= f.label :window, class: "block text-[13px] font-medium mb-1.5", style: "color: #525252;" %>
+            <%= f.select :window, [['1 minute', '1m'], ['5 minutes', '5m'], ['15 minutes', '15m'], ['1 hour', '1h']], {}, class: "w-full px-4 py-2.5 rounded-xl text-[14px] outline-none transition-all focus:ring-2 focus:ring-signal", style: "background: #FDFCFB; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
           </div>
         </div>
       </div>
 
       <!-- Severity -->
-      <div class="space-y-4 pt-4" style="border-top: 1px solid #F0EFED;">
-        <h2 class="text-[15px] font-medium" style="color: #1A1A1A;">Severity</h2>
+      <div class="space-y-4 pt-5" style="border-top: 1px solid #F0EFED;">
+        <div class="flex items-center gap-2">
+          <div class="w-6 h-6 rounded-lg flex items-center justify-center" style="background: linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%);">
+            <svg class="w-3.5 h-3.5" style="color: #DC2626;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+          </div>
+          <h2 class="text-[15px] font-semibold" style="color: #1A1A1A;">Severity</h2>
+        </div>
         <div>
-          <%= f.select :severity, [['Info', 'info'], ['Warning', 'warning'], ['Critical', 'critical']], {}, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-orange-500", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
+          <%= f.select :severity, [['Info', 'info'], ['Warning', 'warning'], ['Critical', 'critical']], {}, class: "w-full px-4 py-2.5 rounded-xl text-[14px] outline-none transition-all focus:ring-2 focus:ring-signal", style: "background: #FDFCFB; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
         </div>
       </div>
 
-      <div class="flex items-center gap-3 pt-4">
-        <%= f.submit "Create Rule", class: "px-4 py-2 text-[13px] font-medium rounded-lg cursor-pointer transition-colors", style: "background: #1A1A1A; color: #FFFFFE;" %>
-        <%= link_to "Cancel", dashboard_project_rules_path(@project), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-colors", style: "background: #F0EFED; color: #6B6760;" %>
+      <div class="flex items-center gap-3 pt-5">
+        <%= f.submit "Create Rule", class: "px-5 py-2.5 text-[13px] font-medium rounded-xl cursor-pointer transition-all btn-primary text-white" %>
+        <%= link_to "Cancel", dashboard_project_rules_path(@project), class: "px-5 py-2.5 text-[13px] font-medium rounded-xl transition-all hover:bg-cream-200", style: "background: #F5F3EF; color: #525252;" %>
       </div>
     <% end %>
   </div>

@@ -1,39 +1,67 @@
 <div class="space-y-6">
   <div class="flex items-center justify-between">
-    <h1 class="text-[24px] font-semibold" style="color: #1A1A1A;">Projects</h1>
-    <%= link_to new_dashboard_project_path, class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-colors", style: "background: #1A1A1A; color: #FFFFFE;" do %>
+    <div>
+      <h1 class="text-[24px] font-semibold tracking-tight" style="color: #1A1A1A;">Projects</h1>
+      <p class="text-[14px] mt-1" style="color: #8B8780;">Manage your monitoring projects and configurations</p>
+    </div>
+    <%= link_to new_dashboard_project_path, class: "inline-flex items-center gap-2 px-4 py-2.5 text-[13px] font-medium rounded-xl transition-all btn-primary text-white" do %>
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+      </svg>
       New Project
     <% end %>
   </div>
 
   <% if @projects.any? %>
-    <div class="rounded-xl overflow-hidden" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
+    <div class="rounded-2xl overflow-hidden shadow-card" style="border: 1px solid #E8E5E0; background: #FFFFFF;">
       <% @projects.each_with_index do |project, index| %>
-        <%= link_to dashboard_project_alerts_path(project), class: "block px-5 py-4 transition-colors hover:bg-gray-50", style: index > 0 ? "border-top: 1px solid #F0EFED;" : "" do %>
+        <%= link_to dashboard_project_alerts_path(project), class: "block px-5 py-4 transition-all card-hover group", style: index > 0 ? "border-top: 1px solid #F0EFED;" : "" do %>
           <div class="flex items-center justify-between">
-            <div>
-              <h3 class="text-[15px] font-medium" style="color: #1A1A1A;"><%= project.name %></h3>
-              <p class="text-[13px] mt-0.5" style="color: #8B8780;">
-                <%= project.alert_rules.count %> rules &middot;
-                <%= project.alerts.where(state: 'firing').count %> firing
-              </p>
+            <div class="flex items-center gap-4">
+              <div class="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-semibold shadow-sm" style="background: linear-gradient(135deg, #FEF7ED 0%, #FED7AA 100%); color: #D97706;">
+                <%= project.name.first.upcase %>
+              </div>
+              <div>
+                <h3 class="text-[15px] font-medium group-hover:text-signal transition-colors" style="color: #1A1A1A;"><%= project.name %></h3>
+                <p class="text-[13px] mt-0.5" style="color: #8B8780;">
+                  <span class="inline-flex items-center gap-1">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                    <%= project.alert_rules.count %> rules
+                  </span>
+                  <% firing_count = project.alerts.where(state: 'firing').count %>
+                  <% if firing_count > 0 %>
+                    <span class="inline-flex items-center gap-1 ml-2 px-2 py-0.5 rounded-full text-[11px] font-medium" style="background: #FEE2E2; color: #DC2626;">
+                      <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background: #DC2626;"></span>
+                      <%= firing_count %> firing
+                    </span>
+                  <% else %>
+                    <span class="inline-flex items-center gap-1 ml-2 px-2 py-0.5 rounded-full text-[11px] font-medium" style="background: #DCFCE7; color: #16A34A;">
+                      All clear
+                    </span>
+                  <% end %>
+                </p>
+              </div>
             </div>
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="color: #C4C0B8;">
-              <path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" style="color: #C4C0B8;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"/>
             </svg>
           </div>
         <% end %>
       <% end %>
     </div>
   <% else %>
-    <div class="rounded-xl px-8 py-16 text-center" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
-      <svg class="mx-auto mb-4" width="48" height="48" viewBox="0 0 48 48" fill="none">
-        <rect x="8" y="8" width="32" height="32" rx="4" stroke="#C4C0B8" stroke-width="2"/>
-        <path d="M24 18V30M18 24H30" stroke="#C4C0B8" stroke-width="2" stroke-linecap="round"/>
-      </svg>
-      <h3 class="text-[16px] font-medium mb-2" style="color: #1A1A1A;">No projects yet</h3>
-      <p class="text-[14px] mb-6" style="color: #8B8780;">Create your first project to start monitoring alerts.</p>
-      <%= link_to new_dashboard_project_path, class: "inline-block px-4 py-2 text-[13px] font-medium rounded-lg transition-colors", style: "background: #1A1A1A; color: #FFFFFE;" do %>
+    <div class="rounded-2xl px-8 py-16 text-center shadow-card" style="border: 1px solid #E8E5E0; background: #FFFFFF;">
+      <div class="w-16 h-16 mx-auto mb-5 rounded-2xl flex items-center justify-center" style="background: linear-gradient(135deg, #FEF7ED 0%, #FED7AA 100%);">
+        <svg class="w-8 h-8" style="color: #D97706;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+        </svg>
+      </div>
+      <h3 class="text-[18px] font-semibold mb-2" style="color: #1A1A1A;">No projects yet</h3>
+      <p class="text-[14px] mb-6 max-w-sm mx-auto" style="color: #8B8780;">Create your first project to start monitoring alerts and incidents.</p>
+      <%= link_to new_dashboard_project_path, class: "inline-flex items-center gap-2 px-5 py-2.5 text-[14px] font-medium rounded-xl transition-all btn-primary text-white" do %>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+        </svg>
         Create Project
       <% end %>
     </div>
