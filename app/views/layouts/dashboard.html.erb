@@ -5,204 +5,94 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
+  <%# Fonts %>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            cream: {
-              50: '#FDFCFB',
-              100: '#FAF8F5',
-              200: '#F5F3EF',
-              300: '#E8E5E0',
-              400: '#D4D0C8',
-            },
-            ink: {
-              900: '#1A1A1A',
-              800: '#2D2D2D',
-              700: '#3D3D3D',
-              600: '#525252',
-              500: '#6B6B6B',
-              400: '#8B8780',
-              300: '#A8A29E',
-              200: '#C4C0B8',
-            },
-            signal: {
-              DEFAULT: '#D97706',
-              light: '#F59E0B',
-              dark: '#B45309',
-              50: '#FEF7ED',
-              100: '#FEF0DC',
-              200: '#FED7AA',
-            },
-          },
-          boxShadow: {
-            'soft': '0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.04)',
-            'medium': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05)',
-            'card': '0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06)',
-            'hover': '0 4px 12px rgba(0, 0, 0, 0.08)',
-          },
-        }
-      }
-    }
-  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+
+  <%# BrainzLab UI Design System %>
+  <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+
   <style>
     :root {
-      --color-cream-50: #FDFCFB;
-      --color-cream-100: #FAF8F5;
-      --color-cream-200: #F5F3EF;
-      --color-cream-300: #E8E5E0;
-      --color-ink-900: #1A1A1A;
-      --color-ink-700: #3D3D3D;
-      --color-ink-600: #525252;
-      --color-ink-500: #6B6B6B;
-      --color-ink-400: #8B8780;
-      --color-ink-300: #A8A29E;
+      /* Signal-specific brand colors */
       --color-signal: #D97706;
-      --color-signal-light: #F59E0B;
       --color-signal-dark: #B45309;
-      --color-success: #16A34A;
-      --color-warning: #D97706;
-      --color-error: #DC2626;
+      --color-signal-light: #F59E0B;
+      --color-signal-bg: #FEF3C7;
+      --color-signal-bg-subtle: #FFFBEB;
     }
-    body {
-      font-family: 'Inter', system-ui, sans-serif;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-    /* Custom scrollbar */
-    ::-webkit-scrollbar { width: 8px; height: 8px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #D4D0C8; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #A8A29E; }
-    /* Smooth transitions */
-    .transition-all { transition-property: all; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
-    /* Button hover effect */
-    .btn-primary { background: linear-gradient(180deg, #D97706 0%, #B45309 100%); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1); }
-    .btn-primary:hover { background: linear-gradient(180deg, #F59E0B 0%, #D97706 100%); transform: translateY(-1px); box-shadow: 0 4px 8px rgba(217, 119, 6, 0.25); }
-    .btn-secondary { background: #1A1A1A; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); }
-    .btn-secondary:hover { background: #2D2D2D; transform: translateY(-1px); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); }
-    /* Card hover */
-    .card-hover { transition: all 0.2s ease; }
-    .card-hover:hover { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); transform: translateY(-1px); }
-    /* Nav item active state */
-    .nav-active { background: linear-gradient(135deg, rgba(217, 119, 6, 0.12) 0%, rgba(217, 119, 6, 0.08) 100%); }
   </style>
 </head>
 <body class="h-full antialiased" style="background: var(--color-cream-50);">
   <div class="flex h-full">
     <!-- Sidebar -->
-    <aside class="w-64 border-r flex flex-col shadow-soft" style="border-color: var(--color-cream-300); background: linear-gradient(180deg, #FFFFFF 0%, #FDFCFB 100%);">
-      <div class="p-5 border-b" style="border-color: var(--color-cream-200);">
-        <%= link_to dashboard_root_path, class: "flex items-center gap-2.5 group" do %>
-          <div class="w-9 h-9 rounded-xl flex items-center justify-center shadow-sm transition-all group-hover:shadow-md group-hover:scale-105" style="background: linear-gradient(135deg, #D97706 0%, #B45309 100%);">
+    <aside class="w-64 flex flex-col bg-white" style="border-right: 1px solid var(--color-cream-200);">
+      <div class="p-5" style="border-bottom: 1px solid var(--color-cream-200);">
+        <%= link_to dashboard_root_path, class: "flex items-center gap-2.5" do %>
+          <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background: var(--color-signal);">
             <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 2L4 12L12 22L20 12L12 2Z"/>
               <circle cx="12" cy="12" r="3" fill="white"/>
             </svg>
           </div>
-          <span class="font-semibold text-[15px] tracking-tight" style="color: var(--color-ink-900);">Signal</span>
+          <span class="font-semibold" style="color: var(--color-ink-950);">Signal</span>
         <% end %>
       </div>
 
       <% if @project&.persisted? %>
         <!-- Project Selector -->
-        <div class="px-4 py-3 border-b" style="border-color: var(--color-cream-200);">
-          <%= link_to dashboard_projects_path, class: "flex items-center gap-2.5 px-2.5 py-2 rounded-xl hover:bg-cream-100 transition-all group" do %>
-            <div class="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-semibold shadow-sm" style="background: linear-gradient(135deg, #F5F3EF 0%, #E8E5E0 100%); color: var(--color-ink-700);">
+        <div class="px-4 py-3" style="border-bottom: 1px solid var(--color-cream-200);">
+          <%= link_to dashboard_projects_path, class: "flex items-center gap-2 px-2 py-1.5 rounded-lg transition", style: "color: var(--color-ink-700);" do %>
+            <div class="w-6 h-6 rounded flex items-center justify-center text-xs font-semibold" style="background: rgba(217, 119, 6, 0.15); color: var(--color-signal);">
               <%= @project.name.first.upcase %>
             </div>
-            <span class="flex-1 text-[13px] font-medium truncate group-hover:text-signal transition-colors" style="color: var(--color-ink-700);"><%= @project.name %></span>
-            <svg class="w-4 h-4 transition-colors group-hover:text-signal" style="color: var(--color-ink-400);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <span class="flex-1 text-sm font-medium truncate"><%= @project.name %></span>
+            <svg class="w-4 h-4" style="color: var(--color-ink-400);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 9l4-4 4 4m0 6l-4 4-4-4"/>
             </svg>
           <% end %>
         </div>
 
         <!-- Navigation -->
-        <nav class="p-3 space-y-0.5 flex-1">
-          <% alerts_active = controller_name == 'alerts' %>
-          <%= link_to dashboard_project_alerts_path(@project),
-              class: "flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium transition-all hover:bg-cream-100 #{alerts_active ? 'nav-active' : ''}",
-              style: "#{alerts_active ? 'color: var(--color-signal);' : 'color: var(--color-ink-600);'}" do %>
-            <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
-            </svg>
+        <nav class="p-4 space-y-1 flex-1">
+          <%= link_to dashboard_project_alerts_path(@project), class: nav_link_class('/alerts') do %>
+            <%= icon(:alerts) %>
             Alerts
           <% end %>
 
-          <% incidents_active = controller_name == 'incidents' %>
-          <%= link_to dashboard_project_incidents_path(@project),
-              class: "flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium transition-all hover:bg-cream-100 #{incidents_active ? 'nav-active' : ''}",
-              style: "#{incidents_active ? 'color: var(--color-signal);' : 'color: var(--color-ink-600);'}" do %>
-            <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-            </svg>
+          <%= link_to dashboard_project_incidents_path(@project), class: nav_link_class('/incidents') do %>
+            <%= icon(:incidents) %>
             Incidents
           <% end %>
 
-          <% rules_active = controller_name == 'rules' %>
-          <%= link_to dashboard_project_rules_path(@project),
-              class: "flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium transition-all hover:bg-cream-100 #{rules_active ? 'nav-active' : ''}",
-              style: "#{rules_active ? 'color: var(--color-signal);' : 'color: var(--color-ink-600);'}" do %>
-            <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
-            </svg>
+          <%= link_to dashboard_project_rules_path(@project), class: nav_link_class('/rules') do %>
+            <%= icon(:rules) %>
             Rules
           <% end %>
 
-          <% channels_active = controller_name == 'channels' %>
-          <%= link_to dashboard_project_channels_path(@project),
-              class: "flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium transition-all hover:bg-cream-100 #{channels_active ? 'nav-active' : ''}",
-              style: "#{channels_active ? 'color: var(--color-signal);' : 'color: var(--color-ink-600);'}" do %>
-            <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-            </svg>
+          <%= link_to dashboard_project_channels_path(@project), class: nav_link_class('/channels') do %>
+            <%= icon(:channels) %>
             Channels
           <% end %>
 
-          <% escalation_active = controller_name == 'escalation_policies' %>
-          <%= link_to dashboard_project_escalation_policies_path(@project),
-              class: "flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium transition-all hover:bg-cream-100 #{escalation_active ? 'nav-active' : ''}",
-              style: "#{escalation_active ? 'color: var(--color-signal);' : 'color: var(--color-ink-600);'}" do %>
-            <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
-            </svg>
+          <%= link_to dashboard_project_escalation_policies_path(@project), class: nav_link_class('/escalation') do %>
+            <%= icon(:escalation) %>
             Escalation
           <% end %>
 
-          <% schedules_active = controller_name == 'on_call_schedules' %>
-          <%= link_to dashboard_project_on_call_schedules_path(@project),
-              class: "flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium transition-all hover:bg-cream-100 #{schedules_active ? 'nav-active' : ''}",
-              style: "#{schedules_active ? 'color: var(--color-signal);' : 'color: var(--color-ink-600);'}" do %>
-            <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-            </svg>
+          <%= link_to dashboard_project_on_call_schedules_path(@project), class: nav_link_class('/on_call') do %>
+            <%= icon(:on_call) %>
             On-Call
           <% end %>
 
-          <% maintenance_active = controller_name == 'maintenance_windows' %>
-          <%= link_to dashboard_project_maintenance_windows_path(@project),
-              class: "flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium transition-all hover:bg-cream-100 #{maintenance_active ? 'nav-active' : ''}",
-              style: "#{maintenance_active ? 'color: var(--color-signal);' : 'color: var(--color-ink-600);'}" do %>
-            <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-            </svg>
+          <%= link_to dashboard_project_maintenance_windows_path(@project), class: nav_link_class('/maintenance') do %>
+            <%= icon(:maintenance) %>
             Maintenance
           <% end %>
 
-          <% settings_active = action_name == 'edit' && controller_name == 'projects' %>
-          <%= link_to edit_dashboard_project_path(@project),
-              class: "flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium transition-all hover:bg-cream-100 #{settings_active ? 'nav-active' : ''}",
-              style: "#{settings_active ? 'color: var(--color-signal);' : 'color: var(--color-ink-600);'}" do %>
-            <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
-            </svg>
+          <%= link_to edit_dashboard_project_path(@project), class: nav_link_class('/settings') do %>
+            <%= icon(:settings) %>
             Settings
           <% end %>
         </nav>
@@ -214,14 +104,14 @@
 
       <!-- User Menu -->
       <% if defined?(current_user) && current_user %>
-        <div class="p-4 border-t" style="border-color: var(--color-cream-200);">
-          <div class="flex items-center gap-3 px-2 py-2 rounded-xl hover:bg-cream-100 transition-all cursor-pointer">
-            <div class="w-9 h-9 rounded-xl flex items-center justify-center text-[13px] font-semibold shadow-sm" style="background: linear-gradient(135deg, #FEF7ED 0%, #FED7AA 100%); color: var(--color-signal);">
+        <div class="p-4" style="border-top: 1px solid var(--color-cream-200);">
+          <div class="flex items-center gap-3">
+            <div class="avatar avatar-md avatar-primary">
               <%= current_user.name&.first&.upcase || current_user.email.first.upcase %>
             </div>
             <div class="flex-1 min-w-0">
-              <p class="text-[13px] font-medium truncate" style="color: var(--color-ink-900);"><%= current_user.name || current_user.email.split('@').first %></p>
-              <p class="text-[11px] truncate" style="color: var(--color-ink-500);"><%= current_user.email %></p>
+              <p class="text-sm font-medium truncate" style="color: var(--color-ink-900);"><%= current_user.name || current_user.email.split('@').first %></p>
+              <p class="text-xs truncate" style="color: var(--color-ink-500);"><%= current_user.email %></p>
             </div>
           </div>
         </div>
@@ -229,21 +119,21 @@
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 overflow-auto" style="background: linear-gradient(180deg, #FDFCFB 0%, #FAF8F5 100%);">
-      <% if flash[:notice] %>
-        <div class="m-8 mb-0 px-4 py-3 rounded-xl text-[13px] font-medium shadow-sm" style="background: linear-gradient(135deg, #DCFCE7 0%, #D1FAE5 100%); border: 1px solid rgba(34, 197, 94, 0.2); color: #166534;">
-          <div class="flex items-center gap-2">
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-            <%= flash[:notice] %>
-          </div>
+    <main class="flex-1 overflow-auto">
+      <% if notice %>
+        <div class="m-8 mb-0 alert alert-success">
+          <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span><%= notice %></span>
         </div>
       <% end %>
-      <% if flash[:alert] %>
-        <div class="m-8 mb-0 px-4 py-3 rounded-xl text-[13px] font-medium shadow-sm" style="background: linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%); border: 1px solid rgba(239, 68, 68, 0.2); color: #991B1B;">
-          <div class="flex items-center gap-2">
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
-            <%= flash[:alert] %>
-          </div>
+      <% if alert %>
+        <div class="m-8 mb-0 alert alert-error">
+          <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+          </svg>
+          <span><%= alert %></span>
         </div>
       <% end %>
 

@@ -1,0 +1,23 @@
+/* ============================================
+   BRAINZLAB UI - BASE
+   ============================================
+   Anthropic/Claude-inspired design system
+
+   Usage:
+   @import "tailwindcss";
+   @import "brainzlab_ui/base";
+
+   Note: Import tailwindcss BEFORE this file
+*/
+
+/* Design Tokens */
+@import "./tokens.css";
+
+/* Component Styles */
+@import "./components.css";
+
+/* Animations */
+@import "./animations.css";
+
+/* Utilities */
+@import "./utilities.css";
