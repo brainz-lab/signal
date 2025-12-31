@@ -151,3 +151,14 @@ Signal
 | `REFLEX_URL` | Reflex service URL | `http://reflex:3000` |
 | `RECALL_URL` | Recall service URL | `http://recall:3000` |
 | `SIGNAL_URL` | Public URL for links | `https://signal.brainzlab.ai` |
+
+## Contributors
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+Thanks to all our contributors! See [all-contributors](https://allcontributors.org) for how to add yourself.
