@@ -1,5 +1,10 @@
 # Signal - Unified Alerting & Notifications
 
+[![CI](https://github.com/brainz-lab/signal/actions/workflows/ci.yml/badge.svg)](https://github.com/brainz-lab/signal/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/brainz-lab/signal/actions/workflows/codeql.yml/badge.svg)](https://github.com/brainz-lab/signal/actions/workflows/codeql.yml)
+[![License: OSAaSy](https://img.shields.io/badge/License-OSAaSy-blue.svg)](LICENSE)
+[![Ruby](https://img.shields.io/badge/Ruby-3.2+-red.svg)](https://www.ruby-lang.org)
+
 Signal is the unified alerting system for Brainz Lab. It monitors all your data sources (Flux, Pulse, Reflex, Recall), detects issues using configurable rules, and notifies your team through multiple channels.
 
 ## Features
