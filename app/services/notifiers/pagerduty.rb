@@ -1,6 +1,6 @@
 module Notifiers
   class Pagerduty < Base
-    EVENTS_API = 'https://events.pagerduty.com/v2/enqueue'.freeze
+    EVENTS_API = "https://events.pagerduty.com/v2/enqueue".freeze
 
     protected
 
@@ -13,7 +13,7 @@ module Notifiers
     def build_payload(alert, notification_type)
       rule = alert.alert_rule
 
-      event_action = notification_type == :alert_fired ? 'trigger' : 'resolve'
+      event_action = notification_type == :alert_fired ? "trigger" : "resolve"
       severity = @config.dig(:severity_map, rule.severity) || rule.severity
 
       {
@@ -22,7 +22,7 @@ module Notifiers
         dedup_key: alert.fingerprint,
         payload: {
           summary: "[#{rule.severity.upcase}] #{rule.name}: #{rule.condition_description}",
-          source: 'Brainz Lab Signal',
+          source: "Brainz Lab Signal",
           severity: severity,
           timestamp: Time.current.iso8601,
           custom_details: {
@@ -37,7 +37,7 @@ module Notifiers
         links: [
           {
             href: alert_url(alert),
-            text: 'View in Brainz Lab'
+            text: "View in Brainz Lab"
           }
         ]
       }
@@ -46,12 +46,12 @@ module Notifiers
     def build_test_payload
       {
         routing_key: @config[:routing_key],
-        event_action: 'trigger',
+        event_action: "trigger",
         dedup_key: "test-#{SecureRandom.hex(8)}",
         payload: {
-          summary: 'Test alert from Brainz Lab Signal',
-          source: 'Brainz Lab Signal',
-          severity: 'info',
+          summary: "Test alert from Brainz Lab Signal",
+          source: "Brainz Lab Signal",
+          severity: "info",
           timestamp: Time.current.iso8601
         }
       }
@@ -60,7 +60,7 @@ module Notifiers
     private
 
     def alert_url(alert)
-      base_url = ENV.fetch('SIGNAL_URL', 'https://signal.brainzlab.ai')
+      base_url = ENV.fetch("SIGNAL_URL", "https://signal.brainzlab.ai")
       "#{base_url}/alerts/#{alert.id}"
     end
   end

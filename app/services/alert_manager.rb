@@ -9,9 +9,9 @@ class AlertManager
     alert = find_or_initialize_alert(fingerprint)
 
     case result[:state]
-    when 'firing'
+    when "firing"
       handle_firing(alert, result)
-    when 'ok'
+    when "ok"
       handle_ok(alert, result)
     end
   end
@@ -21,7 +21,7 @@ class AlertManager
   def find_or_initialize_alert(fingerprint)
     @rule.alerts.find_or_initialize_by(fingerprint: fingerprint) do |a|
       a.project_id = @project_id
-      a.state = 'pending'
+      a.state = "pending"
       a.started_at = Time.current
     end
   end
@@ -32,17 +32,17 @@ class AlertManager
     alert.labels = result[:labels]
 
     case alert.state
-    when 'pending'
+    when "pending"
       if pending_long_enough?(alert)
         alert.fire!
       else
         alert.save!
       end
-    when 'firing'
+    when "firing"
       alert.update!(last_fired_at: Time.current)
-    when 'resolved', nil
+    when "resolved", nil
       # New alert
-      alert.state = 'pending'
+      alert.state = "pending"
       alert.started_at = Time.current
       alert.resolved_at = nil
       alert.acknowledged = false
@@ -54,11 +54,11 @@ class AlertManager
     return unless alert.persisted?
 
     case alert.state
-    when 'firing'
+    when "firing"
       if ok_long_enough?(alert)
         alert.resolve!
       end
-    when 'pending'
+    when "pending"
       alert.destroy!
     end
   end
@@ -72,9 +72,9 @@ class AlertManager
     # Check if the alert has been OK for the resolve period
     recent_history = AlertHistory
       .where(alert_rule: @rule, fingerprint: alert.fingerprint)
-      .where('timestamp > ?', @rule.resolve_period.seconds.ago)
+      .where("timestamp > ?", @rule.resolve_period.seconds.ago)
       .pluck(:state)
 
-    recent_history.all? { |s| s == 'ok' }
+    recent_history.all? { |s| s == "ok" }
   end
 end

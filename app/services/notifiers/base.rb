@@ -54,7 +54,7 @@ module Notifiers
         alert: alert,
         notification_channel: @channel,
         notification_type: notification_type.to_s,
-        status: 'sent',
+        status: "sent",
         payload: payload,
         response: response,
         sent_at: Time.current
@@ -69,7 +69,7 @@ module Notifiers
         alert: alert,
         notification_channel: @channel,
         notification_type: notification_type.to_s,
-        status: 'failed',
+        status: "failed",
         payload: payload,
         error_message: error.message
       )

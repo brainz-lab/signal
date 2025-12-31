@@ -8,16 +8,16 @@ class Alert < ApplicationRecord
   validates :project_id, presence: true
 
   scope :active, -> { where(state: %w[pending firing]) }
-  scope :firing, -> { where(state: 'firing') }
-  scope :pending, -> { where(state: 'pending') }
-  scope :resolved, -> { where(state: 'resolved') }
+  scope :firing, -> { where(state: "firing") }
+  scope :pending, -> { where(state: "pending") }
+  scope :resolved, -> { where(state: "resolved") }
   scope :unacknowledged, -> { where(acknowledged: false) }
   scope :recent, -> { order(started_at: :desc) }
   scope :for_project, ->(project_id) { where(project_id: project_id) }
 
   def fire!
     update!(
-      state: 'firing',
+      state: "firing",
       last_fired_at: Time.current
     )
 
@@ -30,7 +30,7 @@ class Alert < ApplicationRecord
 
   def resolve!
     update!(
-      state: 'resolved',
+      state: "resolved",
       resolved_at: Time.current
     )
 

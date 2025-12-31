@@ -14,16 +14,16 @@ module Dashboard
       end
 
       # Filter by acknowledged
-      if params[:unacknowledged] == 'true'
+      if params[:unacknowledged] == "true"
         @alerts = @alerts.where(acknowledged: false)
       end
 
       @alerts = @alerts.limit(100)
 
       # Stats
-      @firing_count = @project.alerts.where(state: 'firing').count
-      @pending_count = @project.alerts.where(state: 'pending').count
-      @resolved_today = @project.alerts.where(state: 'resolved').where('resolved_at > ?', Time.current.beginning_of_day).count
+      @firing_count = @project.alerts.where(state: "firing").count
+      @pending_count = @project.alerts.where(state: "pending").count
+      @resolved_today = @project.alerts.where(state: "resolved").where("resolved_at > ?", Time.current.beginning_of_day).count
     end
 
     def show
@@ -32,8 +32,8 @@ module Dashboard
 
     def acknowledge
       @alert = @project.alerts.find(params[:id])
-      @alert.acknowledge!(by: 'Dashboard User')
-      redirect_to dashboard_project_alert_path(@project, @alert), notice: 'Alert acknowledged'
+      @alert.acknowledge!(by: "Dashboard User")
+      redirect_to dashboard_project_alert_path(@project, @alert), notice: "Alert acknowledged"
     end
   end
 end

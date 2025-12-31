@@ -9,11 +9,11 @@ module DataSources
         aggregation: aggregation,
         window: window,
         query: query.to_json,
-        group_by: group_by.join(',')
+        group_by: group_by.join(",")
       }
 
       result = make_request(url, params)
-      result['value']
+      result["value"]
     rescue => e
       Rails.logger.error("Pulse query error: #{e.message}")
       nil
@@ -30,8 +30,8 @@ module DataSources
 
       result = make_request(url, params)
       {
-        mean: result['mean'],
-        stddev: result['stddev']
+        mean: result["mean"],
+        stddev: result["stddev"]
       }
     rescue => e
       Rails.logger.error("Pulse baseline error: #{e.message}")
@@ -49,8 +49,8 @@ module DataSources
 
       result = make_request(url, params)
       {
-        timestamp: Time.parse(result['timestamp']),
-        value: result['value']
+        timestamp: Time.parse(result["timestamp"]),
+        value: result["value"]
       }
     rescue => e
       Rails.logger.error("Pulse last_data_point error: #{e.message}")
@@ -60,7 +60,7 @@ module DataSources
     private
 
     def base_url
-      ENV.fetch('PULSE_URL', 'http://pulse:3000')
+      ENV.fetch("PULSE_URL", "http://pulse:3000")
     end
   end
 end

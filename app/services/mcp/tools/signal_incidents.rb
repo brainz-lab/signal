@@ -5,7 +5,7 @@ module Mcp
       SCHEMA = {
         type: "object",
         properties: {
-          status: { type: "string", enum: ["triggered", "acknowledged", "resolved"] },
+          status: { type: "string", enum: [ "triggered", "acknowledged", "resolved" ] },
           limit: { type: "integer", default: 10 }
         }
       }

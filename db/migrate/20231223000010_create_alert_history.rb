@@ -11,8 +11,8 @@ class CreateAlertHistory < ActiveRecord::Migration[8.0]
 
       t.string :fingerprint
 
-      t.index [:project_id, :timestamp]
-      t.index [:alert_rule_id, :timestamp]
+      t.index [ :project_id, :timestamp ]
+      t.index [ :alert_rule_id, :timestamp ]
       t.index :project_id
     end
   end

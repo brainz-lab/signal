@@ -4,7 +4,7 @@ module DashboardHelper
   include Rails.application.routes.url_helpers
 
   def default_url_options
-    { host: 'localhost', port: 4005 }
+    { host: "localhost", port: 4005 }
   end
 
   # Icon helpers - inline SVG to avoid partial render overhead
@@ -25,7 +25,7 @@ module DashboardHelper
 
   # Navigation helpers for sidebar
   def nav_active?(path_pattern)
-    if path_pattern == '/settings'
+    if path_pattern == "/settings"
       request.path.match?(%r{/projects/[^/]+/edit$})
     else
       request.path.include?(path_pattern)

@@ -1,6 +1,6 @@
 module Dashboard
   class EscalationPoliciesController < BaseController
-    before_action :set_escalation_policy, only: [:show, :edit, :update, :destroy]
+    before_action :set_escalation_policy, only: [ :show, :edit, :update, :destroy ]
 
     def index
       @escalation_policies = EscalationPolicy.for_project(@project.id).order(created_at: :desc)
@@ -54,7 +54,7 @@ module Dashboard
     end
 
     def escalation_policy_params
-      params.require(:escalation_policy).permit(:name, :description, :enabled, :repeat, :repeat_after_minutes, :max_repeats, steps: [:channel_id, :delay_minutes])
+      params.require(:escalation_policy).permit(:name, :description, :enabled, :repeat, :repeat_after_minutes, :max_repeats, steps: [ :channel_id, :delay_minutes ])
     end
   end
 end

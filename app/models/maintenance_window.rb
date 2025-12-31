@@ -6,7 +6,7 @@ class MaintenanceWindow < ApplicationRecord
   validate :ends_after_starts
 
   scope :active, -> { where(active: true) }
-  scope :current, -> { where('starts_at <= ? AND ends_at >= ?', Time.current, Time.current) }
+  scope :current, -> { where("starts_at <= ? AND ends_at >= ?", Time.current, Time.current) }
   scope :for_project, ->(project_id) { where(project_id: project_id) }
 
   def currently_active?
@@ -22,6 +22,6 @@ class MaintenanceWindow < ApplicationRecord
 
   def ends_after_starts
     return unless starts_at && ends_at
-    errors.add(:ends_at, 'must be after starts_at') if ends_at <= starts_at
+    errors.add(:ends_at, "must be after starts_at") if ends_at <= starts_at
   end
 end

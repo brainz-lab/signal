@@ -8,7 +8,7 @@ module Mcp
           alert_id: { type: "string", description: "Alert ID to acknowledge" },
           note: { type: "string", description: "Optional acknowledgment note" }
         },
-        required: ["alert_id"]
+        required: [ "alert_id" ]
       }
 
       def call(args)

@@ -60,9 +60,9 @@ class CreateAlertRules < ActiveRecord::Migration[8.0]
 
       t.timestamps
 
-      t.index [:project_id, :slug], unique: true
-      t.index [:project_id, :source, :enabled]
-      t.index [:project_id, :severity]
+      t.index [ :project_id, :slug ], unique: true
+      t.index [ :project_id, :source, :enabled ]
+      t.index [ :project_id, :severity ]
       t.index :project_id
     end
   end

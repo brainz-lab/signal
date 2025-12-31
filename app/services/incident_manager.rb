@@ -10,7 +10,7 @@ class IncidentManager
     @alert.update!(incident: incident)
 
     incident.add_timeline_event(
-      type: 'alert_fired',
+      type: "alert_fired",
       message: "Alert fired: #{@rule.name}",
       data: { alert_id: @alert.id, value: @alert.current_value }
     )
@@ -22,7 +22,7 @@ class IncidentManager
     return unless @alert.incident
 
     @alert.incident.add_timeline_event(
-      type: 'alert_resolved',
+      type: "alert_resolved",
       message: "Alert resolved: #{@rule.name}",
       data: { alert_id: @alert.id }
     )
@@ -46,13 +46,13 @@ class IncidentManager
       title: @rule.name,
       summary: @rule.condition_description,
       severity: @rule.severity,
-      status: 'triggered',
+      status: "triggered",
       triggered_at: Time.current,
-      timeline: [{
+      timeline: [ {
         at: Time.current.iso8601,
-        type: 'triggered',
+        type: "triggered",
         message: "Incident triggered by #{@rule.name}"
-      }]
+      } ]
     )
   end
 end

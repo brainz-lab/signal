@@ -8,32 +8,32 @@ class Incident < ApplicationRecord
   validates :project_id, presence: true
 
   scope :open, -> { where(status: %w[triggered acknowledged]) }
-  scope :resolved, -> { where(status: 'resolved') }
+  scope :resolved, -> { where(status: "resolved") }
   scope :by_severity, ->(sev) { where(severity: sev) }
   scope :recent, -> { order(triggered_at: :desc) }
   scope :for_project, ->(project_id) { where(project_id: project_id) }
 
   def acknowledge!(by:)
-    return if status == 'resolved'
+    return if status == "resolved"
 
     update!(
-      status: 'acknowledged',
+      status: "acknowledged",
       acknowledged_at: Time.current,
       acknowledged_by: by
     )
 
-    add_timeline_event(type: 'acknowledged', by: by)
+    add_timeline_event(type: "acknowledged", by: by)
   end
 
   def resolve!(by: nil, note: nil)
     update!(
-      status: 'resolved',
+      status: "resolved",
       resolved_at: Time.current,
       resolved_by: by,
       resolution_note: note
     )
 
-    add_timeline_event(type: 'resolved', by: by, message: note)
+    add_timeline_event(type: "resolved", by: by, message: note)
   end
 
   def add_timeline_event(type:, message: nil, by: nil, data: {})
@@ -44,7 +44,7 @@ class Incident < ApplicationRecord
       by: by
     }.merge(data).compact
 
-    update!(timeline: timeline + [event])
+    update!(timeline: timeline + [ event ])
   end
 
   def duration

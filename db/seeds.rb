@@ -41,7 +41,7 @@ email_channel = NotificationChannel.find_or_create_by!(
   c.enabled = true
   c.verified = true
   c.config = {
-    recipients: ["oncall@example.com", "alerts@example.com"]
+    recipients: [ "oncall@example.com", "alerts@example.com" ]
   }
 end
 
@@ -99,7 +99,7 @@ AlertRule.find_or_create_by!(project_id: project.id, slug: "high-cpu-usage") do 
   r.evaluation_interval = 60
   r.pending_period = 60
   r.resolve_period = 300
-  r.notify_channels = [slack_channel.id]
+  r.notify_channels = [ slack_channel.id ]
   r.labels = { service: "infrastructure" }
   r.annotations = {
     runbook_url: "https://wiki.example.com/runbooks/high-cpu",
@@ -124,7 +124,7 @@ AlertRule.find_or_create_by!(project_id: project.id, slug: "critical-cpu-usage")
   r.evaluation_interval = 30
   r.pending_period = 0
   r.resolve_period = 120
-  r.notify_channels = [slack_channel.id, email_channel.id]
+  r.notify_channels = [ slack_channel.id, email_channel.id ]
   r.labels = { service: "infrastructure", priority: "p1" }
 end
 
@@ -142,7 +142,7 @@ AlertRule.find_or_create_by!(project_id: project.id, slug: "high-memory-usage") 
   r.window = "5m"
   r.severity = "warning"
   r.enabled = true
-  r.notify_channels = [slack_channel.id]
+  r.notify_channels = [ slack_channel.id ]
   r.labels = { service: "infrastructure" }
 end
 
@@ -160,7 +160,7 @@ AlertRule.find_or_create_by!(project_id: project.id, slug: "high-disk-usage") do
   r.window = "15m"
   r.severity = "warning"
   r.enabled = true
-  r.notify_channels = [email_channel.id]
+  r.notify_channels = [ email_channel.id ]
   r.labels = { service: "infrastructure" }
 end
 
@@ -182,7 +182,7 @@ AlertRule.find_or_create_by!(project_id: project.id, slug: "slow-response-time")
   r.window = "5m"
   r.severity = "warning"
   r.enabled = true
-  r.notify_channels = [slack_channel.id]
+  r.notify_channels = [ slack_channel.id ]
   r.labels = { service: "api" }
   r.query = { endpoint: "/api/*" }
 end
@@ -201,7 +201,7 @@ AlertRule.find_or_create_by!(project_id: project.id, slug: "critical-response-ti
   r.window = "5m"
   r.severity = "critical"
   r.enabled = true
-  r.notify_channels = [slack_channel.id, email_channel.id]
+  r.notify_channels = [ slack_channel.id, email_channel.id ]
   r.labels = { service: "api", priority: "p1" }
 end
 
@@ -219,7 +219,7 @@ AlertRule.find_or_create_by!(project_id: project.id, slug: "low-apdex-score") do
   r.window = "15m"
   r.severity = "warning"
   r.enabled = true
-  r.notify_channels = [slack_channel.id]
+  r.notify_channels = [ slack_channel.id ]
   r.labels = { service: "api" }
 end
 
@@ -259,7 +259,7 @@ AlertRule.find_or_create_by!(project_id: project.id, slug: "high-error-rate") do
   r.window = "5m"
   r.severity = "warning"
   r.enabled = true
-  r.notify_channels = [slack_channel.id]
+  r.notify_channels = [ slack_channel.id ]
   r.labels = { service: "application" }
 end
 
@@ -277,7 +277,7 @@ AlertRule.find_or_create_by!(project_id: project.id, slug: "critical-error-spike
   r.window = "5m"
   r.severity = "critical"
   r.enabled = true
-  r.notify_channels = [slack_channel.id, email_channel.id]
+  r.notify_channels = [ slack_channel.id, email_channel.id ]
   r.labels = { service: "application", priority: "p1" }
 end
 
@@ -295,7 +295,7 @@ AlertRule.find_or_create_by!(project_id: project.id, slug: "new-unresolved-error
   r.window = "15m"
   r.severity = "info"
   r.enabled = true
-  r.notify_channels = [slack_channel.id]
+  r.notify_channels = [ slack_channel.id ]
   r.labels = { service: "application" }
 end
 
@@ -317,7 +317,7 @@ AlertRule.find_or_create_by!(project_id: project.id, slug: "error-log-spike") do
   r.window = "1m"
   r.severity = "warning"
   r.enabled = true
-  r.notify_channels = [slack_channel.id]
+  r.notify_channels = [ slack_channel.id ]
   r.labels = { service: "logs" }
   r.query = { level: "error" }
 end
@@ -336,7 +336,7 @@ AlertRule.find_or_create_by!(project_id: project.id, slug: "security-alert-patte
   r.window = "5m"
   r.severity = "critical"
   r.enabled = true
-  r.notify_channels = [slack_channel.id, email_channel.id]
+  r.notify_channels = [ slack_channel.id, email_channel.id ]
   r.labels = { service: "security", priority: "p1" }
   r.query = { pattern: "failed_auth|unauthorized|suspicious" }
 end
@@ -358,7 +358,7 @@ AlertRule.find_or_create_by!(project_id: project.id, slug: "traffic-anomaly") do
   r.window = "15m"
   r.severity = "warning"
   r.enabled = true
-  r.notify_channels = [slack_channel.id]
+  r.notify_channels = [ slack_channel.id ]
   r.labels = { service: "api", type: "anomaly" }
 end
 
@@ -375,7 +375,7 @@ AlertRule.find_or_create_by!(project_id: project.id, slug: "response-time-anomal
   r.window = "5m"
   r.severity = "warning"
   r.enabled = true
-  r.notify_channels = [slack_channel.id]
+  r.notify_channels = [ slack_channel.id ]
   r.labels = { service: "api", type: "anomaly" }
 end
 
@@ -394,7 +394,7 @@ AlertRule.find_or_create_by!(project_id: project.id, slug: "missing-heartbeat") 
   r.expected_interval = "5m"
   r.severity = "critical"
   r.enabled = true
-  r.notify_channels = [slack_channel.id, email_channel.id]
+  r.notify_channels = [ slack_channel.id, email_channel.id ]
   r.labels = { service: "application", priority: "p1" }
 end
 
@@ -409,7 +409,7 @@ AlertRule.find_or_create_by!(project_id: project.id, slug: "missing-metrics") do
   r.expected_interval = "10m"
   r.severity = "warning"
   r.enabled = true
-  r.notify_channels = [slack_channel.id]
+  r.notify_channels = [ slack_channel.id ]
   r.labels = { service: "infrastructure" }
 end
 
@@ -434,7 +434,7 @@ muted_rule = AlertRule.find_or_create_by!(project_id: project.id, slug: "schedul
   r.muted = true
   r.muted_until = 24.hours.from_now
   r.muted_reason = "Scheduled maintenance window"
-  r.notify_channels = [slack_channel.id]
+  r.notify_channels = [ slack_channel.id ]
   r.labels = { service: "jobs" }
 end
 
@@ -813,7 +813,7 @@ MaintenanceWindow.find_or_create_by!(
   m.recurring = true
   m.recurrence_rule = "daily"
   m.created_by = "admin@example.com"
-  m.services = ["database", "backup"]
+  m.services = [ "database", "backup" ]
   m.rule_ids = []  # All rules
 end
 
@@ -828,7 +828,7 @@ MaintenanceWindow.find_or_create_by!(
   m.active = true
   m.recurring = false
   m.created_by = "devops@example.com"
-  m.services = ["api", "web", "workers"]
+  m.services = [ "api", "web", "workers" ]
   m.rule_ids = AlertRule.where(project_id: project.id, slug: %w[
     high-cpu-usage high-memory-usage slow-response-time
   ]).pluck(:id)
@@ -845,7 +845,7 @@ MaintenanceWindow.find_or_create_by!(
   m.active = false
   m.recurring = false
   m.created_by = "dba@example.com"
-  m.services = ["database"]
+  m.services = [ "database" ]
 end
 
 # Weekly maintenance window
@@ -860,7 +860,7 @@ MaintenanceWindow.find_or_create_by!(
   m.recurring = true
   m.recurrence_rule = "weekly"
   m.created_by = "ops@example.com"
-  m.services = ["infrastructure"]
+  m.services = [ "infrastructure" ]
 end
 
 puts "  Created #{MaintenanceWindow.for_project(project.id).count} maintenance windows"
@@ -882,7 +882,7 @@ cpu_incident = Incident.find_or_create_by!(
   i.triggered_at = 2.hours.ago
   i.acknowledged_at = 1.hour.ago
   i.acknowledged_by = "sre@example.com"
-  i.affected_services = ["database", "api", "web"]
+  i.affected_services = [ "database", "api", "web" ]
   i.external_id = "INC-2024-0125"
   i.external_url = "https://status.example.com/incidents/INC-2024-0125"
   i.timeline = [
@@ -903,7 +903,7 @@ error_incident = Incident.find_or_create_by!(
   i.status = "triggered"
   i.severity = "warning"
   i.triggered_at = 20.minutes.ago
-  i.affected_services = ["checkout", "payments"]
+  i.affected_services = [ "checkout", "payments" ]
   i.external_id = "INC-2024-0126"
   i.timeline = [
     { timestamp: 20.minutes.ago.iso8601, event: "triggered", message: "Incident triggered by High Error Rate alert" },
@@ -926,7 +926,7 @@ resolved_incident = Incident.find_or_create_by!(
   i.resolved_at = 4.hours.ago
   i.resolved_by = "security@example.com"
   i.resolution_note = "Blocked malicious IP range at firewall level. No user accounts were compromised. Implemented additional rate limiting."
-  i.affected_services = ["authentication", "api"]
+  i.affected_services = [ "authentication", "api" ]
   i.external_id = "INC-2024-0124"
   i.timeline = [
     { timestamp: 6.hours.ago.iso8601, event: "triggered", message: "Incident triggered by Security Alert Pattern" },
@@ -952,7 +952,7 @@ old_incident = Incident.find_or_create_by!(
   i.resolved_at = 1.day.ago + 45.minutes
   i.resolved_by = "system"
   i.resolution_note = "Auto-scaling kicked in after 15 minutes. Added 3 additional API pods."
-  i.affected_services = ["api"]
+  i.affected_services = [ "api" ]
   i.external_id = "INC-2024-0123"
   i.timeline = [
     { timestamp: 1.day.ago.iso8601, event: "triggered", message: "Slow Response Time alert triggered" },
@@ -1018,7 +1018,7 @@ if critical_alert
     n.sent_at = 30.minutes.ago
     n.payload = {
       subject: "[CRITICAL] #{critical_alert.alert_rule.name}",
-      recipients: ["oncall@example.com"],
+      recipients: [ "oncall@example.com" ],
       body: "Alert triggered: #{critical_alert.alert_rule.description}"
     }
     n.response = { message_id: "abc123@example.com" }

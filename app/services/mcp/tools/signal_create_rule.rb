@@ -6,14 +6,14 @@ module Mcp
         type: "object",
         properties: {
           name: { type: "string", description: "Rule name" },
-          source: { type: "string", enum: ["flux", "pulse", "reflex", "recall"] },
+          source: { type: "string", enum: [ "flux", "pulse", "reflex", "recall" ] },
           source_name: { type: "string", description: "Metric or event name to monitor" },
-          operator: { type: "string", enum: ["gt", "gte", "lt", "lte", "eq", "neq"] },
+          operator: { type: "string", enum: [ "gt", "gte", "lt", "lte", "eq", "neq" ] },
           threshold: { type: "number" },
           window: { type: "string", default: "5m", description: "Time window (1m, 5m, 15m, 1h)" },
-          severity: { type: "string", enum: ["info", "warning", "critical"], default: "warning" }
+          severity: { type: "string", enum: [ "info", "warning", "critical" ], default: "warning" }
         },
-        required: ["name", "source", "source_name", "operator", "threshold"]
+        required: [ "name", "source", "source_name", "operator", "threshold" ]
       }
 
       def call(args)
@@ -22,12 +22,12 @@ module Mcp
           name: args[:name],
           source: args[:source],
           source_name: args[:source_name],
-          rule_type: 'threshold',
+          rule_type: "threshold",
           operator: args[:operator],
           threshold: args[:threshold],
-          aggregation: 'avg',
-          window: args[:window] || '5m',
-          severity: args[:severity] || 'warning',
+          aggregation: "avg",
+          window: args[:window] || "5m",
+          severity: args[:severity] || "warning",
           enabled: true
         )
 

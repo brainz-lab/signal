@@ -1,6 +1,6 @@
 module Dashboard
   class OnCallSchedulesController < BaseController
-    before_action :set_schedule, only: [:show, :edit, :update, :destroy, :current]
+    before_action :set_schedule, only: [ :show, :edit, :update, :destroy, :current ]
 
     def index
       @schedules = OnCallSchedule.for_project(@project.id).order(created_at: :desc)
@@ -12,7 +12,7 @@ module Dashboard
     end
 
     def new
-      @schedule = OnCallSchedule.new(schedule_type: 'weekly')
+      @schedule = OnCallSchedule.new(schedule_type: "weekly")
     end
 
     def create

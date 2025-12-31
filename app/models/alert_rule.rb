@@ -13,18 +13,18 @@ class AlertRule < ApplicationRecord
   before_validation :generate_slug, on: :create
 
   scope :enabled, -> { where(enabled: true) }
-  scope :active, -> { enabled.where(muted: false).where('muted_until IS NULL OR muted_until < ?', Time.current) }
+  scope :active, -> { enabled.where(muted: false).where("muted_until IS NULL OR muted_until < ?", Time.current) }
   scope :by_source, ->(source) { where(source: source) }
-  scope :firing, -> { joins(:alerts).where(alerts: { state: 'firing' }).distinct }
+  scope :firing, -> { joins(:alerts).where(alerts: { state: "firing" }).distinct }
   scope :for_project, ->(project_id) { where(project_id: project_id) }
 
   OPERATORS = {
-    'gt' => '>',
-    'gte' => '>=',
-    'lt' => '<',
-    'lte' => '<=',
-    'eq' => '==',
-    'neq' => '!='
+    "gt" => ">",
+    "gte" => ">=",
+    "lt" => "<",
+    "lte" => "<=",
+    "eq" => "==",
+    "neq" => "!="
   }.freeze
 
   def evaluate!
@@ -77,13 +77,13 @@ class AlertRule < ApplicationRecord
 
   def condition_description
     case rule_type
-    when 'threshold'
+    when "threshold"
       "#{aggregation}(#{source_name}) #{OPERATORS[operator]} #{threshold} over #{window}"
-    when 'anomaly'
+    when "anomaly"
       "Anomaly detected in #{source_name} (sensitivity: #{sensitivity})"
-    when 'absence'
+    when "absence"
       "No data for #{source_name} in #{expected_interval}"
-    when 'composite'
+    when "composite"
       "Composite rule: #{composite_rules.count} sub-rules"
     end
   end

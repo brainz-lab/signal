@@ -16,9 +16,9 @@ module Dashboard
       @incidents = @incidents.limit(100)
 
       # Stats
-      @triggered_count = @project.incidents.where(status: 'triggered').count
-      @acknowledged_count = @project.incidents.where(status: 'acknowledged').count
-      @resolved_today = @project.incidents.where(status: 'resolved').where('resolved_at > ?', Time.current.beginning_of_day).count
+      @triggered_count = @project.incidents.where(status: "triggered").count
+      @acknowledged_count = @project.incidents.where(status: "acknowledged").count
+      @resolved_today = @project.incidents.where(status: "resolved").where("resolved_at > ?", Time.current.beginning_of_day).count
     end
 
     def show
@@ -27,14 +27,14 @@ module Dashboard
 
     def acknowledge
       @incident = @project.incidents.find(params[:id])
-      @incident.acknowledge!(by: 'Dashboard User')
-      redirect_to dashboard_project_incident_path(@project, @incident), notice: 'Incident acknowledged'
+      @incident.acknowledge!(by: "Dashboard User")
+      redirect_to dashboard_project_incident_path(@project, @incident), notice: "Incident acknowledged"
     end
 
     def resolve
       @incident = @project.incidents.find(params[:id])
-      @incident.resolve!(by: 'Dashboard User', note: params[:note])
-      redirect_to dashboard_project_incident_path(@project, @incident), notice: 'Incident resolved'
+      @incident.resolve!(by: "Dashboard User", note: params[:note])
+      redirect_to dashboard_project_incident_path(@project, @incident), notice: "Incident resolved"
     end
   end
 end

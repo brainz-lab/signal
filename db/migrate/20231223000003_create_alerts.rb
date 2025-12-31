@@ -33,9 +33,9 @@ class CreateAlerts < ActiveRecord::Migration[8.0]
 
       t.timestamps
 
-      t.index [:project_id, :state]
-      t.index [:alert_rule_id, :fingerprint], unique: true, where: "state != 'resolved'"
-      t.index [:project_id, :started_at]
+      t.index [ :project_id, :state ]
+      t.index [ :alert_rule_id, :fingerprint ], unique: true, where: "state != 'resolved'"
+      t.index [ :project_id, :started_at ]
       t.index :fingerprint
       t.index :project_id
     end

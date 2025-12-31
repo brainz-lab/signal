@@ -3,8 +3,8 @@ module Notifiers
     protected
 
     def deliver!(payload)
-      method = (@config[:method] || 'POST').upcase
-      headers = (@config[:headers] || {}).merge('Content-Type' => 'application/json')
+      method = (@config[:method] || "POST").upcase
+      headers = (@config[:headers] || {}).merge("Content-Type" => "application/json")
 
       response = HTTP.headers(headers).send(method.downcase, @config[:url], json: payload)
       raise "Webhook error: #{response.status}" unless response.status.success?
@@ -50,9 +50,9 @@ module Notifiers
 
     def build_test_payload
       {
-        event_type: 'test',
+        event_type: "test",
         timestamp: Time.current.iso8601,
-        message: 'Test webhook from Brainz Lab Signal'
+        message: "Test webhook from Brainz Lab Signal"
       }
     end
 
@@ -62,12 +62,12 @@ module Notifiers
       rule = alert.alert_rule
 
       result = template.dup
-      result.gsub!('{{alert.id}}', alert.id.to_s)
-      result.gsub!('{{alert.state}}', alert.state)
-      result.gsub!('{{alert.value}}', alert.current_value.to_s)
-      result.gsub!('{{rule.name}}', rule.name)
-      result.gsub!('{{rule.severity}}', rule.severity)
-      result.gsub!('{{notification_type}}', notification_type.to_s)
+      result.gsub!("{{alert.id}}", alert.id.to_s)
+      result.gsub!("{{alert.state}}", alert.state)
+      result.gsub!("{{alert.value}}", alert.current_value.to_s)
+      result.gsub!("{{rule.name}}", rule.name)
+      result.gsub!("{{rule.severity}}", rule.severity)
+      result.gsub!("{{notification_type}}", notification_type.to_s)
 
       JSON.parse(result)
     end

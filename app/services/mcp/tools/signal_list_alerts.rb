@@ -5,8 +5,8 @@ module Mcp
       SCHEMA = {
         type: "object",
         properties: {
-          state: { type: "string", enum: ["firing", "pending", "resolved"], description: "Filter by state" },
-          severity: { type: "string", enum: ["info", "warning", "critical"], description: "Filter by severity" },
+          state: { type: "string", enum: [ "firing", "pending", "resolved" ], description: "Filter by state" },
+          severity: { type: "string", enum: [ "info", "warning", "critical" ], description: "Filter by severity" },
           limit: { type: "integer", default: 20 }
         }
       }
@@ -36,7 +36,7 @@ module Mcp
           summary: {
             firing: Alert.for_project(@project_id).firing.count,
             pending: Alert.for_project(@project_id).pending.count,
-            critical: Alert.for_project(@project_id).joins(:alert_rule).where(alert_rules: { severity: 'critical' }).firing.count
+            critical: Alert.for_project(@project_id).joins(:alert_rule).where(alert_rules: { severity: "critical" }).firing.count
           }
         }
       end

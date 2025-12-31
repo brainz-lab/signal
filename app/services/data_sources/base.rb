@@ -19,7 +19,7 @@ module DataSources
     protected
 
     def api_key
-      ENV['BRAINZLAB_API_KEY']
+      ENV["BRAINZLAB_API_KEY"]
     end
 
     def parse_window(window)
@@ -28,9 +28,9 @@ module DataSources
 
       value = match[1].to_i
       case match[2]
-      when 'm' then value.minutes
-      when 'h' then value.hours
-      when 'd' then value.days
+      when "m" then value.minutes
+      when "h" then value.hours
+      when "d" then value.days
       end
     end
 

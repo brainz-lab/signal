@@ -18,9 +18,9 @@ class OnCallSchedule < ApplicationRecord
 
   def update_current_on_call!
     case schedule_type
-    when 'weekly'
+    when "weekly"
       update_weekly_on_call!
-    when 'custom'
+    when "custom"
       update_rotation_on_call!
     end
   end
@@ -32,12 +32,12 @@ class OnCallSchedule < ApplicationRecord
   end
 
   def update_weekly_on_call!
-    day = Time.current.strftime('%A').downcase
+    day = Time.current.strftime("%A").downcase
     schedule = weekly_schedule[day]
     return unless schedule
 
     update!(
-      current_on_call: schedule['user'],
+      current_on_call: schedule["user"],
       current_shift_start: Time.current.beginning_of_day,
       current_shift_end: Time.current.end_of_day
     )
@@ -47,7 +47,7 @@ class OnCallSchedule < ApplicationRecord
     return if members.empty?
 
     days_since_start = (Time.current.to_date - rotation_start.to_date).to_i
-    rotation_days = rotation_type == 'daily' ? 1 : 7
+    rotation_days = rotation_type == "daily" ? 1 : 7
     current_index = (days_since_start / rotation_days) % members.length
 
     update!(

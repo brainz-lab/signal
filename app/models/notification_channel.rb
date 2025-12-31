@@ -16,13 +16,13 @@ class NotificationChannel < ApplicationRecord
 
   def notifier
     case channel_type
-    when 'slack' then Notifiers::Slack.new(self)
-    when 'pagerduty' then Notifiers::Pagerduty.new(self)
-    when 'email' then Notifiers::Email.new(self)
-    when 'webhook' then Notifiers::Webhook.new(self)
-    when 'discord' then Notifiers::Discord.new(self)
-    when 'teams' then Notifiers::Teams.new(self)
-    when 'opsgenie' then Notifiers::Opsgenie.new(self)
+    when "slack" then Notifiers::Slack.new(self)
+    when "pagerduty" then Notifiers::Pagerduty.new(self)
+    when "email" then Notifiers::Email.new(self)
+    when "webhook" then Notifiers::Webhook.new(self)
+    when "discord" then Notifiers::Discord.new(self)
+    when "teams" then Notifiers::Teams.new(self)
+    when "opsgenie" then Notifiers::Opsgenie.new(self)
     end
   end
 
@@ -34,7 +34,7 @@ class NotificationChannel < ApplicationRecord
     result = notifier.test!
     update!(
       last_tested_at: Time.current,
-      last_test_status: result[:success] ? 'success' : 'failed',
+      last_test_status: result[:success] ? "success" : "failed",
       verified: result[:success]
     )
     result

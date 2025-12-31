@@ -8,13 +8,13 @@ class RuleEvaluator
     data_source = get_data_source
 
     case @rule.rule_type
-    when 'threshold'
+    when "threshold"
       evaluate_threshold(data_source)
-    when 'anomaly'
+    when "anomaly"
       evaluate_anomaly(data_source)
-    when 'absence'
+    when "absence"
       evaluate_absence(data_source)
-    when 'composite'
+    when "composite"
       evaluate_composite
     end
   end
@@ -23,10 +23,10 @@ class RuleEvaluator
 
   def get_data_source
     case @rule.source
-    when 'flux' then DataSources::Flux.new(@project_id)
-    when 'pulse' then DataSources::Pulse.new(@project_id)
-    when 'reflex' then DataSources::Reflex.new(@project_id)
-    when 'recall' then DataSources::Recall.new(@project_id)
+    when "flux" then DataSources::Flux.new(@project_id)
+    when "pulse" then DataSources::Pulse.new(@project_id)
+    when "reflex" then DataSources::Reflex.new(@project_id)
+    when "recall" then DataSources::Recall.new(@project_id)
     end
   end
 
@@ -42,7 +42,7 @@ class RuleEvaluator
     triggered = compare(value, @rule.operator, @rule.threshold)
 
     {
-      state: triggered ? 'firing' : 'ok',
+      state: triggered ? "firing" : "ok",
       value: value,
       threshold: @rule.threshold,
       fingerprint: generate_fingerprint(value),
@@ -53,7 +53,7 @@ class RuleEvaluator
   def evaluate_anomaly(data_source)
     current = data_source.query(
       name: @rule.source_name,
-      aggregation: 'avg',
+      aggregation: "avg",
       window: @rule.window,
       query: @rule.query
     )
@@ -69,7 +69,7 @@ class RuleEvaluator
     triggered = deviation.abs > threshold
 
     {
-      state: triggered ? 'firing' : 'ok',
+      state: triggered ? "firing" : "ok",
       value: current,
       expected: baseline[:mean],
       deviation: deviation,
@@ -88,7 +88,7 @@ class RuleEvaluator
     triggered = last_data.nil? || last_data[:timestamp] < interval.ago
 
     {
-      state: triggered ? 'firing' : 'ok',
+      state: triggered ? "firing" : "ok",
       value: nil,
       last_seen: last_data&.dig(:timestamp),
       fingerprint: generate_fingerprint(nil),
@@ -104,13 +104,13 @@ class RuleEvaluator
       sub_evaluator.evaluate
     end
 
-    all_firing = results.all? { |r| r[:state] == 'firing' }
-    any_firing = results.any? { |r| r[:state] == 'firing' }
+    all_firing = results.all? { |r| r[:state] == "firing" }
+    any_firing = results.any? { |r| r[:state] == "firing" }
 
-    triggered = @rule.composite_operator == 'and' ? all_firing : any_firing
+    triggered = @rule.composite_operator == "and" ? all_firing : any_firing
 
     {
-      state: triggered ? 'firing' : 'ok',
+      state: triggered ? "firing" : "ok",
       sub_results: results,
       fingerprint: generate_fingerprint(results),
       labels: {}
@@ -121,12 +121,12 @@ class RuleEvaluator
     return false if value.nil?
 
     case operator
-    when 'gt' then value > threshold
-    when 'gte' then value >= threshold
-    when 'lt' then value < threshold
-    when 'lte' then value <= threshold
-    when 'eq' then value == threshold
-    when 'neq' then value != threshold
+    when "gt" then value > threshold
+    when "gte" then value >= threshold
+    when "lt" then value < threshold
+    when "lte" then value <= threshold
+    when "eq" then value == threshold
+    when "neq" then value != threshold
     else false
     end
   end
@@ -146,9 +146,9 @@ class RuleEvaluator
 
     value = match[1].to_i
     case match[2]
-    when 'm' then value.minutes
-    when 'h' then value.hours
-    when 'd' then value.days
+    when "m" then value.minutes
+    when "h" then value.hours
+    when "d" then value.days
     end
   end
 end

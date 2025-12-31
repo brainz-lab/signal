@@ -15,9 +15,9 @@ module Notifiers
 
     def build_payload(alert, notification_type)
       rule = alert.alert_rule
-      status = notification_type == :alert_fired ? 'FIRING' : 'RESOLVED'
+      status = notification_type == :alert_fired ? "FIRING" : "RESOLVED"
 
-      subject_prefix = @config[:subject_prefix] || '[Brainz Lab Signal]'
+      subject_prefix = @config[:subject_prefix] || "[Brainz Lab Signal]"
 
       {
         subject: "#{subject_prefix} [#{status}] #{rule.name}",
@@ -28,8 +28,8 @@ module Notifiers
 
     def build_test_payload
       {
-        subject: '[Brainz Lab Signal] Test Notification',
-        body: 'This is a test notification from Brainz Lab Signal. Your email integration is working!',
+        subject: "[Brainz Lab Signal] Test Notification",
+        body: "This is a test notification from Brainz Lab Signal. Your email integration is working!",
         alert_id: nil
       }
     end
@@ -38,8 +38,8 @@ module Notifiers
 
     def build_email_body(alert, notification_type)
       rule = alert.alert_rule
-      status = notification_type == :alert_fired ? 'FIRING' : 'RESOLVED'
-      base_url = ENV.fetch('SIGNAL_URL', 'https://signal.brainzlab.ai')
+      status = notification_type == :alert_fired ? "FIRING" : "RESOLVED"
+      base_url = ENV.fetch("SIGNAL_URL", "https://signal.brainzlab.ai")
 
       <<~BODY
         Alert Status: #{status}

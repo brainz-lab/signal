@@ -1,7 +1,7 @@
 module Dashboard
   class ProjectsController < BaseController
-    skip_before_action :set_project, only: [:index, :new, :create]
-    skip_before_action :authenticate!, only: [:index, :new, :create], if: -> { Rails.env.development? }
+    skip_before_action :set_project, only: [ :index, :new, :create ]
+    skip_before_action :authenticate!, only: [ :index, :new, :create ], if: -> { Rails.env.development? }
 
     def index
       if Rails.env.development?
@@ -12,9 +12,9 @@ module Dashboard
         project = Project.find_or_create_for_platform!(
           platform_project_id: @api_key_info[:project_id],
           name: @api_key_info[:project_name],
-          environment: @api_key_info[:environment] || 'live'
+          environment: @api_key_info[:environment] || "live"
         )
-        @projects = [project]
+        @projects = [ project ]
       else
         redirect_to dashboard_new_project_path
       end
@@ -29,12 +29,12 @@ module Dashboard
         # In dev, create project directly
         @project = Project.new(
           name: params[:project]&.[](:name) || params[:name],
-          environment: params[:project]&.[](:environment) || 'development',
+          environment: params[:project]&.[](:environment) || "development",
           platform_project_id: SecureRandom.uuid
         )
 
         if @project.name.blank?
-          flash.now[:alert] = 'Please enter a project name'
+          flash.now[:alert] = "Please enter a project name"
           return render :new, status: :unprocessable_entity
         end
 
@@ -42,7 +42,7 @@ module Dashboard
           session[:api_key] = "dev_#{@project.id}"
           redirect_to dashboard_project_alerts_path(@project), notice: "Created #{@project.name}"
         else
-          flash.now[:alert] = @project.errors.full_messages.join(', ')
+          flash.now[:alert] = @project.errors.full_messages.join(", ")
           render :new, status: :unprocessable_entity
         end
       else
@@ -50,7 +50,7 @@ module Dashboard
         api_key = params[:api_key]&.strip
 
         if api_key.blank?
-          flash.now[:alert] = 'Please enter an API key'
+          flash.now[:alert] = "Please enter an API key"
           @project = Project.new
           return render :new, status: :unprocessable_entity
         end
@@ -58,7 +58,7 @@ module Dashboard
         key_info = PlatformClient.validate_key(api_key)
 
         unless key_info[:valid]
-          flash.now[:alert] = 'Invalid API key. Please check and try again.'
+          flash.now[:alert] = "Invalid API key. Please check and try again."
           @project = Project.new
           return render :new, status: :unprocessable_entity
         end
@@ -66,7 +66,7 @@ module Dashboard
         project = Project.find_or_create_for_platform!(
           platform_project_id: key_info[:project_id],
           name: key_info[:project_name],
-          environment: key_info[:environment] || 'live'
+          environment: key_info[:environment] || "live"
         )
 
         session[:api_key] = api_key
@@ -79,7 +79,7 @@ module Dashboard
 
     def update
       if @project.update(project_params)
-        redirect_to edit_dashboard_project_path(@project), notice: 'Project updated successfully'
+        redirect_to edit_dashboard_project_path(@project), notice: "Project updated successfully"
       else
         render :edit
       end
@@ -88,7 +88,7 @@ module Dashboard
     def destroy
       @project.destroy
       session.delete(:api_key)
-      redirect_to dashboard_projects_path, notice: 'Project deleted'
+      redirect_to dashboard_projects_path, notice: "Project deleted"
     end
 
     private

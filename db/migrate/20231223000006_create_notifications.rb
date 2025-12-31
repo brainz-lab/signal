@@ -19,9 +19,9 @@ class CreateNotifications < ActiveRecord::Migration[8.0]
 
       t.timestamps
 
-      t.index [:project_id, :created_at]
-      t.index [:notification_channel_id, :status]
-      t.index [:status, :next_retry_at], where: "status = 'failed'"
+      t.index [ :project_id, :created_at ]
+      t.index [ :notification_channel_id, :status ]
+      t.index [ :status, :next_retry_at ], where: "status = 'failed'"
       t.index :project_id
     end
   end

@@ -8,7 +8,7 @@ module Api
 
         alerts = alerts.where(state: params[:state]) if params[:state].present?
         alerts = alerts.joins(:alert_rule).where(alert_rules: { severity: params[:severity] }) if params[:severity].present?
-        alerts = alerts.unacknowledged if params[:unacknowledged] == 'true'
+        alerts = alerts.unacknowledged if params[:unacknowledged] == "true"
 
         alerts = alerts.limit(params[:limit] || 50)
 
@@ -28,7 +28,7 @@ module Api
       def acknowledge
         alert = Alert.for_project(@project_id).find(params[:id])
         alert.acknowledge!(
-          by: params[:by] || 'API',
+          by: params[:by] || "API",
           note: params[:note]
         )
 
@@ -44,7 +44,7 @@ module Api
         alert = rule.alerts.create!(
           project_id: @project_id,
           fingerprint: Digest::SHA256.hexdigest("manual:#{rule.id}:#{Time.current}"),
-          state: 'firing',
+          state: "firing",
           started_at: Time.current,
           last_fired_at: Time.current,
           current_value: params[:value],
@@ -90,9 +90,9 @@ module Api
         }
 
         if full
-          data[:incident] = alert.incident&.as_json(only: [:id, :title, :status])
+          data[:incident] = alert.incident&.as_json(only: [ :id, :title, :status ])
           data[:notifications] = alert.notifications.order(created_at: :desc).limit(10).as_json
-          data[:rule_full] = alert.alert_rule.as_json(except: [:project_id])
+          data[:rule_full] = alert.alert_rule.as_json(except: [ :project_id ])
         end
 
         data

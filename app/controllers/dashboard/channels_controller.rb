@@ -28,7 +28,7 @@ module Dashboard
     def create
       @channel = @project.notification_channels.new(channel_params)
       if @channel.save
-        redirect_to dashboard_project_channel_path(@project, @channel), notice: 'Channel created successfully'
+        redirect_to dashboard_project_channel_path(@project, @channel), notice: "Channel created successfully"
       else
         render :new
       end
@@ -41,7 +41,7 @@ module Dashboard
     def update
       @channel = @project.notification_channels.find(params[:id])
       if @channel.update(channel_params)
-        redirect_to dashboard_project_channel_path(@project, @channel), notice: 'Channel updated successfully'
+        redirect_to dashboard_project_channel_path(@project, @channel), notice: "Channel updated successfully"
       else
         render :edit
       end
@@ -50,14 +50,14 @@ module Dashboard
     def destroy
       @channel = @project.notification_channels.find(params[:id])
       @channel.destroy
-      redirect_to dashboard_project_channels_path(@project), notice: 'Channel deleted'
+      redirect_to dashboard_project_channels_path(@project), notice: "Channel deleted"
     end
 
     def test
       @channel = @project.notification_channels.find(params[:id])
       result = @channel.test!
       if result[:success]
-        redirect_to dashboard_project_channel_path(@project, @channel), notice: 'Test notification sent successfully'
+        redirect_to dashboard_project_channel_path(@project, @channel), notice: "Test notification sent successfully"
       else
         redirect_to dashboard_project_channel_path(@project, @channel), alert: "Test failed: #{result[:error]}"
       end

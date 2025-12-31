@@ -1,7 +1,7 @@
 module Api
   module V1
     class EscalationPoliciesController < BaseController
-      before_action :set_policy, only: [:show, :update, :destroy]
+      before_action :set_policy, only: [ :show, :update, :destroy ]
 
       def index
         policies = EscalationPolicy.for_project(@project_id).order(:name)

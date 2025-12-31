@@ -6,7 +6,7 @@ namespace :test do
 
   desc "Run tests with coverage (requires simplecov)"
   task :coverage do
-    ENV['COVERAGE'] = 'true'
+    ENV["COVERAGE"] = "true"
     sh "bundle exec rspec"
   end
 

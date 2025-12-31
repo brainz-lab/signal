@@ -7,7 +7,7 @@ module Api
       private
 
       def authenticate!
-        token = request.headers['Authorization']&.split(' ')&.last
+        token = request.headers["Authorization"]&.split(" ")&.last
         return render_unauthorized unless token
 
         @current_api_key = validate_api_key(token)
@@ -23,7 +23,7 @@ module Api
 
       def extract_project_id(token)
         # Extract project_id from token or header
-        request.headers['X-Project-ID'] || params[:project_id]
+        request.headers["X-Project-ID"] || params[:project_id]
       end
 
       def set_project
@@ -37,11 +37,11 @@ module Api
       end
 
       def render_unauthorized
-        render json: { error: 'Unauthorized' }, status: :unauthorized
+        render json: { error: "Unauthorized" }, status: :unauthorized
       end
 
       def render_not_found
-        render json: { error: 'Not found' }, status: :not_found
+        render json: { error: "Not found" }, status: :not_found
       end
     end
   end

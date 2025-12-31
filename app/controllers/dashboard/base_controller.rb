@@ -1,6 +1,6 @@
 module Dashboard
   class BaseController < ActionController::Base
-    layout 'dashboard'
+    layout "dashboard"
 
     # Include necessary modules for full controller functionality
     include ActionController::Flash
@@ -48,7 +48,7 @@ module Dashboard
     def set_project
       # For nested routes, use :project_id
       # For member routes on projects, use :id
-      project_id = params[:project_id] || (controller_name == 'projects' ? params[:id] : nil)
+      project_id = params[:project_id] || (controller_name == "projects" ? params[:id] : nil)
       return unless project_id.present?
 
       @project = Project.find_by(id: project_id)
@@ -59,7 +59,7 @@ module Dashboard
 
       # Verify the project matches the API key's project
       if @api_key_info && @api_key_info[:project_id] != @project.platform_project_id
-        redirect_to dashboard_root_path, alert: 'Project access denied'
+        redirect_to dashboard_root_path, alert: "Project access denied"
       end
     end
 
@@ -79,7 +79,7 @@ module Dashboard
         redirect_to request.path
       else
         # Show auth required page or redirect to projects
-        redirect_to dashboard_root_path, alert: 'Authentication required'
+        redirect_to dashboard_root_path, alert: "Authentication required"
       end
     end
   end

@@ -1,7 +1,7 @@
 module Api
   module V1
     class IncidentsController < BaseController
-      before_action :set_incident, only: [:show, :acknowledge, :resolve]
+      before_action :set_incident, only: [ :show, :acknowledge, :resolve ]
 
       def index
         incidents = Incident.for_project(@project_id).order(triggered_at: :desc)
@@ -20,13 +20,13 @@ module Api
       end
 
       def acknowledge
-        @incident.acknowledge!(by: params[:by] || 'API')
+        @incident.acknowledge!(by: params[:by] || "API")
         render json: serialize_incident(@incident)
       end
 
       def resolve
         @incident.resolve!(
-          by: params[:by] || 'API',
+          by: params[:by] || "API",
           note: params[:note]
         )
         render json: serialize_incident(@incident)

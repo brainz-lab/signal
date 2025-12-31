@@ -1,7 +1,7 @@
 module Api
   module V1
     class OnCallSchedulesController < BaseController
-      before_action :set_schedule, only: [:show, :update, :destroy, :current]
+      before_action :set_schedule, only: [ :show, :update, :destroy, :current ]
 
       def index
         schedules = OnCallSchedule.for_project(@project_id).order(:name)

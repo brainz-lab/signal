@@ -1,7 +1,7 @@
 module Api
   module V1
     class ChannelsController < BaseController
-      before_action :set_channel, only: [:show, :update, :destroy, :test]
+      before_action :set_channel, only: [ :show, :update, :destroy, :test ]
 
       def index
         channels = NotificationChannel.for_project(@project_id).order(:name)

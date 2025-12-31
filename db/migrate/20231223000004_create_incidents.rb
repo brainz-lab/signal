@@ -28,9 +28,9 @@ class CreateIncidents < ActiveRecord::Migration[8.0]
 
       t.timestamps
 
-      t.index [:project_id, :status]
-      t.index [:project_id, :triggered_at]
-      t.index [:project_id, :severity]
+      t.index [ :project_id, :status ]
+      t.index [ :project_id, :triggered_at ]
+      t.index [ :project_id, :severity ]
       t.index :project_id
     end
 

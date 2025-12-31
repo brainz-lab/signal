@@ -1,12 +1,12 @@
 module Api
   module V1
     class RulesController < BaseController
-      before_action :set_rule, only: [:show, :update, :destroy, :mute, :unmute, :test]
+      before_action :set_rule, only: [ :show, :update, :destroy, :mute, :unmute, :test ]
 
       def index
         rules = AlertRule.for_project(@project_id).order(created_at: :desc)
         rules = rules.by_source(params[:source]) if params[:source].present?
-        rules = rules.enabled if params[:enabled] == 'true'
+        rules = rules.enabled if params[:enabled] == "true"
 
         render json: {
           rules: rules.map { |r| serialize_rule(r) }
