@@ -1,0 +1,68 @@
+# frozen_string_literal: true
+
+active_incident:
+  project: acme
+  title: High CPU Usage Incident
+  summary: Multiple hosts experiencing high CPU usage
+  severity: warning
+  status: triggered
+  triggered_at: <%= 1.hour.ago %>
+  affected_services:
+    - api
+    - web
+  timeline:
+    - at: <%= 1.hour.ago.iso8601 %>
+      type: triggered
+      message: Incident created
+  created_at: <%= 1.hour.ago %>
+  updated_at: <%= 1.hour.ago %>
+
+acknowledged_incident:
+  project: acme
+  title: High Error Rate Incident
+  summary: API returning 500 errors
+  severity: critical
+  status: acknowledged
+  triggered_at: <%= 2.hours.ago %>
+  acknowledged_at: <%= 1.hour.ago %>
+  acknowledged_by: oncall@example.com
+  affected_services:
+    - api
+  timeline:
+    - at: <%= 2.hours.ago.iso8601 %>
+      type: triggered
+      message: Incident created
+    - at: <%= 1.hour.ago.iso8601 %>
+      type: acknowledged
+      by: oncall@example.com
+  created_at: <%= 2.hours.ago %>
+  updated_at: <%= 1.hour.ago %>
+
+resolved_incident:
+  project: acme
+  title: Database Connection Incident
+  summary: Database connection pool exhausted
+  severity: critical
+  status: resolved
+  triggered_at: <%= 1.day.ago %>
+  acknowledged_at: <%= 23.hours.ago %>
+  acknowledged_by: admin@example.com
+  resolved_at: <%= 22.hours.ago %>
+  resolved_by: admin@example.com
+  resolution_note: Increased connection pool size
+  affected_services:
+    - database
+    - api
+  timeline:
+    - at: <%= 1.day.ago.iso8601 %>
+      type: triggered
+      message: Incident created
+    - at: <%= 23.hours.ago.iso8601 %>
+      type: acknowledged
+      by: admin@example.com
+    - at: <%= 22.hours.ago.iso8601 %>
+      type: resolved
+      by: admin@example.com
+      message: Increased connection pool size
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 22.hours.ago %>

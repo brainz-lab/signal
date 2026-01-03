@@ -1,4 +1,6 @@
 class MaintenanceWindow < ApplicationRecord
+  belongs_to :project
+
   validates :name, presence: true
   validates :starts_at, presence: true
   validates :ends_at, presence: true

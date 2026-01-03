@@ -1,0 +1,75 @@
+# frozen_string_literal: true
+
+slack_channel:
+  project: acme
+  name: Slack Alerts
+  slug: slack-alerts
+  channel_type: slack
+  config: '{"webhook_url": "https://hooks.slack.com/services/test", "channel": "#alerts"}'
+  enabled: true
+  verified: true
+  success_count: 100
+  failure_count: 2
+  last_used_at: <%= 1.hour.ago %>
+  last_tested_at: <%= 1.day.ago %>
+  last_test_status: success
+  created_at: <%= 1.month.ago %>
+  updated_at: <%= 1.hour.ago %>
+
+pagerduty_channel:
+  project: acme
+  name: PagerDuty
+  slug: pagerduty
+  channel_type: pagerduty
+  config: '{"routing_key": "pd_routing_key_123", "severity_map": {"critical": "critical", "warning": "warning", "info": "info"}}'
+  enabled: true
+  verified: true
+  success_count: 50
+  failure_count: 0
+  last_used_at: <%= 2.hours.ago %>
+  last_tested_at: <%= 1.week.ago %>
+  last_test_status: success
+  created_at: <%= 1.month.ago %>
+  updated_at: <%= 2.hours.ago %>
+
+email_channel:
+  project: acme
+  name: Email Notifications
+  slug: email-notifications
+  channel_type: email
+  config: '{"recipients": ["oncall@example.com", "team@example.com"], "from": "alerts@example.com"}'
+  enabled: true
+  verified: true
+  success_count: 200
+  failure_count: 5
+  last_used_at: <%= 30.minutes.ago %>
+  last_tested_at: <%= 2.days.ago %>
+  last_test_status: success
+  created_at: <%= 2.months.ago %>
+  updated_at: <%= 30.minutes.ago %>
+
+webhook_channel:
+  project: acme
+  name: Custom Webhook
+  slug: custom-webhook
+  channel_type: webhook
+  config: '{"url": "https://api.example.com/webhooks/alerts", "method": "POST", "headers": {"Authorization": "Bearer token123"}}'
+  enabled: true
+  verified: false
+  success_count: 10
+  failure_count: 3
+  created_at: <%= 1.week.ago %>
+  updated_at: <%= 1.week.ago %>
+
+disabled_channel:
+  project: acme
+  name: Disabled Channel
+  slug: disabled-channel
+  channel_type: discord
+  config: '{"webhook_url": "https://discord.com/api/webhooks/test"}'
+  enabled: false
+  verified: false
+  success_count: 0
+  failure_count: 0
+  created_at: <%= 1.month.ago %>
+  updated_at: <%= 1.month.ago %>

@@ -5,7 +5,7 @@ SimpleCov.start "rails" do
   add_filter "/test/"
   add_filter "/config/"
   add_filter "/vendor/"
-  
+
   add_group "Controllers", "app/controllers"
   add_group "Models", "app/models"
   add_group "Services", "app/services"
@@ -18,6 +18,11 @@ ENV["RAILS_ENV"] ||= "test"
 ENV["BRAINZLAB_SDK_ENABLED"] = "false"  # Disable SDK during tests to avoid database issues
 require_relative "../config/environment"
 require "rails/test_help"
+require "webmock/minitest"
+require "mocha/minitest"
+
+# Disable external network connections in tests
+WebMock.disable_net_connect!(allow_localhost: true)
 
 module ActiveSupport
   class TestCase
@@ -30,7 +35,7 @@ module ActiveSupport
     # Add more helper methods to be used by all tests here...
 
     # Helper to create a valid project
-    def create_project(platform_project_id: "prj_#{SecureRandom.hex(8)}", name: "Test Project", environment: "live")
+    def create_project(platform_project_id: SecureRandom.uuid, name: "Test Project", environment: "live")
       Project.create!(
         platform_project_id: platform_project_id,
         name: name,
@@ -41,13 +46,13 @@ module ActiveSupport
     # Helper to create a valid alert rule
     def create_alert_rule(project:, **attrs)
       defaults = {
-        name: "Test Rule",
+        name: "Test Rule #{SecureRandom.hex(4)}",
         description: "Test alert rule",
         rule_type: "threshold",
-        data_source: "flux",
-        query: "metric:cpu_usage",
-        condition_operator: "gt",
-        condition_value: 80,
+        source: "flux",
+        source_name: "cpu_usage",
+        operator: "gt",
+        threshold: 80,
         severity: "warning",
         enabled: true,
         evaluation_interval: 60

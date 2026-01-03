@@ -1,0 +1,34 @@
+# frozen_string_literal: true
+
+cpu_history_ok:
+  project: acme
+  alert_rule: cpu_threshold
+  fingerprint: cpu_threshold_host1
+  state: ok
+  value: 45.5
+  timestamp: <%= 2.hours.ago %>
+  labels:
+    host: host1
+    region: us-east-1
+
+cpu_history_pending:
+  project: acme
+  alert_rule: cpu_threshold
+  fingerprint: cpu_threshold_host1
+  state: pending
+  value: 82.3
+  timestamp: <%= 1.hour.ago %>
+  labels:
+    host: host1
+    region: us-east-1
+
+cpu_history_firing:
+  project: acme
+  alert_rule: cpu_threshold
+  fingerprint: cpu_threshold_host1
+  state: firing
+  value: 95.5
+  timestamp: <%= 30.minutes.ago %>
+  labels:
+    host: host1
+    region: us-east-1

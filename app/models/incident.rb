@@ -1,4 +1,5 @@
 class Incident < ApplicationRecord
+  belongs_to :project
   has_many :alerts, dependent: :nullify
   has_many :notifications, dependent: :destroy
 

@@ -1,0 +1,142 @@
+# frozen_string_literal: true
+
+cpu_threshold:
+  project: acme
+  name: High CPU Usage
+  slug: high-cpu-usage
+  description: Alert when CPU usage exceeds 80%
+  source: flux
+  rule_type: threshold
+  severity: warning
+  enabled: true
+  muted: false
+  evaluation_interval: 60
+  operator: gt
+  threshold: 80
+  aggregation: avg
+  window: 5m
+  source_name: cpu_usage
+  pending_period: 60
+  resolve_period: 300
+  notify_channels: []
+  labels: {}
+  annotations: {}
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+error_rate:
+  project: acme
+  name: High Error Rate
+  slug: high-error-rate
+  description: Alert when error rate exceeds 5%
+  source: reflex
+  rule_type: threshold
+  severity: critical
+  enabled: true
+  muted: false
+  evaluation_interval: 60
+  operator: gt
+  threshold: 5
+  aggregation: count
+  window: 1m
+  source_name: error_rate
+  pending_period: 0
+  resolve_period: 300
+  notify_channels: []
+  labels: {}
+  annotations: {}
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+anomaly_detection:
+  project: acme
+  name: Anomaly Detection
+  slug: anomaly-detection
+  description: Detect anomalies in response time
+  source: pulse
+  rule_type: anomaly
+  severity: warning
+  enabled: true
+  muted: false
+  evaluation_interval: 300
+  sensitivity: 0.8
+  baseline_window: 7d
+  source_name: response_time
+  pending_period: 0
+  resolve_period: 600
+  notify_channels: []
+  labels: {}
+  annotations: {}
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+log_absence:
+  project: acme
+  name: No Logs Received
+  slug: no-logs-received
+  description: Alert when no logs received for 5 minutes
+  source: recall
+  rule_type: absence
+  severity: critical
+  enabled: true
+  muted: false
+  evaluation_interval: 60
+  expected_interval: 5m
+  source_name: application_logs
+  pending_period: 0
+  resolve_period: 60
+  notify_channels: []
+  labels: {}
+  annotations: {}
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+muted_rule:
+  project: acme
+  name: Muted Rule
+  slug: muted-rule
+  description: A muted rule for testing
+  source: flux
+  rule_type: threshold
+  severity: info
+  enabled: true
+  muted: true
+  muted_until: <%= 1.hour.from_now %>
+  muted_reason: Scheduled maintenance
+  evaluation_interval: 60
+  operator: gt
+  threshold: 90
+  aggregation: avg
+  window: 5m
+  source_name: memory_usage
+  pending_period: 0
+  resolve_period: 300
+  notify_channels: []
+  labels: {}
+  annotations: {}
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+disabled_rule:
+  project: acme
+  name: Disabled Rule
+  slug: disabled-rule
+  description: A disabled rule
+  source: flux
+  rule_type: threshold
+  severity: warning
+  enabled: false
+  muted: false
+  evaluation_interval: 60
+  operator: lt
+  threshold: 10
+  aggregation: min
+  window: 5m
+  source_name: disk_space
+  pending_period: 0
+  resolve_period: 300
+  notify_channels: []
+  labels: {}
+  annotations: {}
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>

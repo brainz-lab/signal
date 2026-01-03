@@ -1,4 +1,5 @@
 class AlertHistory < ApplicationRecord
+  belongs_to :project
   belongs_to :alert_rule
 
   validates :timestamp, presence: true

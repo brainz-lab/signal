@@ -1,4 +1,5 @@
 class NotificationChannel < ApplicationRecord
+  belongs_to :project
   has_many :notifications, dependent: :destroy
 
   validates :name, presence: true

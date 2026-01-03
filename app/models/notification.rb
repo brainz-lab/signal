@@ -1,4 +1,5 @@
 class Notification < ApplicationRecord
+  belongs_to :project
   belongs_to :alert, optional: true
   belongs_to :incident, optional: true
   belongs_to :notification_channel

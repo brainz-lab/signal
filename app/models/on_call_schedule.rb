@@ -1,4 +1,6 @@
 class OnCallSchedule < ApplicationRecord
+  belongs_to :project
+
   validates :name, presence: true
   validates :slug, presence: true, uniqueness: { scope: :project_id }
   validates :schedule_type, presence: true, inclusion: { in: %w[weekly custom] }

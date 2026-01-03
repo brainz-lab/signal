@@ -1,0 +1,58 @@
+# frozen_string_literal: true
+
+active_window:
+  project: acme
+  name: Scheduled Maintenance
+  description: Regular weekly maintenance
+  active: true
+  starts_at: <%= 1.hour.ago %>
+  ends_at: <%= 2.hours.from_now %>
+  recurring: false
+  rule_ids: []
+  services: []
+  created_by: admin@example.com
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+future_window:
+  project: acme
+  name: Planned Upgrade
+  description: Database upgrade scheduled
+  active: true
+  starts_at: <%= 1.week.from_now %>
+  ends_at: <%= 1.week.from_now + 4.hours %>
+  recurring: false
+  rule_ids: []
+  services:
+    - database
+  created_by: admin@example.com
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+past_window:
+  project: acme
+  name: Completed Maintenance
+  description: Emergency maintenance
+  active: true
+  starts_at: <%= 2.days.ago %>
+  ends_at: <%= 2.days.ago + 2.hours %>
+  recurring: false
+  rule_ids: []
+  services: []
+  created_by: admin@example.com
+  created_at: <%= 3.days.ago %>
+  updated_at: <%= 3.days.ago %>
+
+inactive_window:
+  project: acme
+  name: Cancelled Maintenance
+  description: Cancelled maintenance window
+  active: false
+  starts_at: <%= 1.day.from_now %>
+  ends_at: <%= 1.day.from_now + 2.hours %>
+  recurring: false
+  rule_ids: []
+  services: []
+  created_by: admin@example.com
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>

@@ -1,0 +1,42 @@
+# frozen_string_literal: true
+
+sent_notification:
+  project: acme
+  alert: firing_alert
+  notification_channel: slack_channel
+  notification_type: alert_fired
+  status: sent
+  sent_at: <%= 1.hour.ago %>
+  payload:
+    message: High CPU Usage alert triggered
+  response:
+    ok: true
+  retry_count: 0
+  created_at: <%= 1.hour.ago %>
+  updated_at: <%= 1.hour.ago %>
+
+pending_notification:
+  project: acme
+  alert: pending_alert
+  notification_channel: pagerduty_channel
+  notification_type: alert_fired
+  status: pending
+  payload:
+    message: High Error Rate alert pending
+  retry_count: 0
+  created_at: <%= 5.minutes.ago %>
+  updated_at: <%= 5.minutes.ago %>
+
+failed_notification:
+  project: acme
+  alert: firing_alert
+  notification_channel: webhook_channel
+  notification_type: alert_fired
+  status: failed
+  error_message: Connection refused
+  next_retry_at: <%= 10.minutes.from_now %>
+  payload:
+    message: Alert notification
+  retry_count: 2
+  created_at: <%= 30.minutes.ago %>
+  updated_at: <%= 5.minutes.ago %>

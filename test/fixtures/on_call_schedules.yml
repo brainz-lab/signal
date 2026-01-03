@@ -1,0 +1,62 @@
+# frozen_string_literal: true
+
+weekly_schedule:
+  project: acme
+  name: Weekly On-Call
+  slug: weekly-on-call
+  schedule_type: weekly
+  enabled: true
+  timezone: America/New_York
+  weekly_schedule:
+    monday:
+      user: alice@example.com
+    tuesday:
+      user: alice@example.com
+    wednesday:
+      user: bob@example.com
+    thursday:
+      user: bob@example.com
+    friday:
+      user: charlie@example.com
+    saturday:
+      user: charlie@example.com
+    sunday:
+      user: charlie@example.com
+  members: []
+  current_on_call: alice@example.com
+  current_shift_start: <%= Time.current.beginning_of_day %>
+  current_shift_end: <%= Time.current.end_of_day %>
+  created_at: <%= 1.month.ago %>
+  updated_at: <%= Time.current %>
+
+rotation_schedule:
+  project: acme
+  name: Weekly Rotation
+  slug: weekly-rotation
+  schedule_type: custom
+  enabled: true
+  timezone: UTC
+  members:
+    - alice@example.com
+    - bob@example.com
+    - charlie@example.com
+  rotation_type: weekly
+  rotation_start: <%= 1.month.ago.beginning_of_week %>
+  current_on_call: bob@example.com
+  current_shift_start: <%= Time.current.beginning_of_week %>
+  current_shift_end: <%= 1.week.from_now.beginning_of_week %>
+  weekly_schedule: {}
+  created_at: <%= 1.month.ago %>
+  updated_at: <%= Time.current %>
+
+disabled_schedule:
+  project: acme
+  name: Disabled Schedule
+  slug: disabled-schedule
+  schedule_type: weekly
+  enabled: false
+  timezone: UTC
+  weekly_schedule: {}
+  members: []
+  created_at: <%= 1.month.ago %>
+  updated_at: <%= 1.month.ago %>

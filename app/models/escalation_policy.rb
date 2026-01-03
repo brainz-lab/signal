@@ -1,4 +1,5 @@
 class EscalationPolicy < ApplicationRecord
+  belongs_to :project
   has_many :alert_rules, dependent: :nullify
 
   validates :name, presence: true

@@ -99,6 +99,13 @@ group :development, :test do
   gem "rubocop-rails-omakase", require: false
 end
 
+group :test do
+  # HTTP stubbing for tests
+  gem "webmock", "~> 3.0"
+  # Mocking and stubbing
+  gem "mocha", "~> 2.0"
+end
+
 group :development do
   gem "lefthook", require: false
   # Use console on exceptions pages [https://github.com/rails/web-console]

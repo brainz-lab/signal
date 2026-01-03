@@ -1,4 +1,5 @@
 class AlertRule < ApplicationRecord
+  belongs_to :project
   belongs_to :escalation_policy, optional: true
   has_many :alerts, dependent: :destroy
   has_many :alert_histories, dependent: :destroy

@@ -1,4 +1,5 @@
 class Alert < ApplicationRecord
+  belongs_to :project
   belongs_to :alert_rule
   belongs_to :incident, optional: true
   has_many :notifications, dependent: :destroy
