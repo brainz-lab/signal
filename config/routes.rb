@@ -58,6 +58,14 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+      # Projects (provisioning)
+      post "projects/provision", to: "projects#provision"
+      get "projects/lookup", to: "projects#lookup"
+
+      # Browser events (from brainzlab-js SDK)
+      match "browser", to: "browser#preflight", via: :options
+      post "browser", to: "browser#create"
+
       # Alerts
       resources :alerts, only: [ :index, :show ] do
         member do
