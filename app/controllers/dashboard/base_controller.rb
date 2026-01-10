@@ -1,5 +1,5 @@
 module Dashboard
-  class BaseController < ActionController::Base
+  class BaseController < ApplicationController
     layout "dashboard"
 
     before_action :authenticate_via_sso!
