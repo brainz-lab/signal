@@ -5,6 +5,9 @@ Rails.application.routes.draw do
   # Health check
   get "up" => "rails/health#show", as: :rails_health_check
 
+  # SSO from Platform
+  get "sso/callback", to: "sso#callback"
+
   # Dashboard - new/edit routes defined explicitly to get standard Rails naming
   # These must be outside namespace to get new_dashboard_* naming instead of dashboard_new_*
   get "dashboard/projects/new", to: "dashboard/projects#new", as: :new_dashboard_project

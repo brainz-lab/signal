@@ -25,9 +25,6 @@ RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y build-essential git libpq-dev libyaml-dev pkg-config && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
-# Copy brainzlab-sdk dependency
-COPY brainzlab-sdk /brainzlab-sdk
-
 # Install gems
 COPY Gemfile Gemfile.lock ./
 RUN bundle install && \
@@ -51,5 +48,5 @@ COPY --chown=rails:rails --from=build /rails /rails
 
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
-EXPOSE 3000
-CMD ["./bin/rails", "server", "-b", "0.0.0.0"]
+EXPOSE 80
+CMD ["./bin/rails", "server", "-b", "0.0.0.0", "-p", "80"]

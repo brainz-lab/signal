@@ -1,65 +1,50 @@
 module Dashboard
-  class BaseController < ActionController::Base
+  class BaseController < ApplicationController
     layout "dashboard"
 
-    # Include necessary modules for full controller functionality
-    include ActionController::Flash
-    protect_from_forgery with: :exception
-
-    # Make URL helpers available in views
-    helper :all
-    include Rails.application.routes.url_helpers
-
-    def default_url_options
-      { host: request.host, port: request.port }
-    end
-
-    before_action :authenticate!
+    before_action :authenticate_via_sso!
     before_action :set_project
 
     helper_method :current_project
 
     private
 
-    def authenticate!
-      # In development, skip authentication entirely
-      return if Rails.env.development?
-
-      raw_key = extract_api_key
-      return redirect_to_auth if raw_key.blank?
-
-      # Validate with Platform service
-      if defined?(PlatformClient)
-        @api_key_info = PlatformClient.validate_key(raw_key)
-
-        unless @api_key_info[:valid]
-          session.delete(:api_key)
-          return redirect_to_auth
-        end
-      else
-        # If PlatformClient isn't available, accept any key
-        @api_key_info = { valid: true }
+    def authenticate_via_sso!
+      # In development, allow bypass
+      if Rails.env.development?
+        # Use first project for testing, or create one
+        project = Project.first
+        session[:platform_project_id] ||= project&.platform_project_id || "dev_project"
+        session[:platform_user_id] ||= "dev_user"
+        return
       end
 
-      # Store in session for subsequent requests
-      session[:api_key] = raw_key unless session[:api_key]
+      unless session[:platform_project_id]
+        redirect_to "#{platform_url}/auth/sso?product=signal&return_to=#{CGI.escape(request.url)}", allow_other_host: true
+      end
     end
 
     def set_project
-      # For nested routes, use :project_id
-      # For member routes on projects, use :id
+      # For nested routes (alerts, rules, etc.), use :project_id
+      # For member routes on projects (edit, setup), use :id
       project_id = params[:project_id] || (controller_name == "projects" ? params[:id] : nil)
-      return unless project_id.present?
 
-      @project = Project.find_by(id: project_id)
-      return unless @project
+      if project_id.present?
+        @project = Project.find(project_id)
 
-      # Skip authorization check in development
-      return if Rails.env.development?
+        # Skip authorization check in development
+        return if Rails.env.development?
 
-      # Verify the project matches the API key's project
-      if @api_key_info && @api_key_info[:project_id] != @project.platform_project_id
-        redirect_to dashboard_root_path, alert: "Project access denied"
+        # Verify the project matches the SSO session's project
+        if session[:platform_project_id] != @project.platform_project_id
+          redirect_to dashboard_root_path, alert: "Project access denied"
+        end
+      else
+        # Find or create project for the SSO session
+        @project = Project.find_or_create_for_platform!(
+          platform_project_id: session[:platform_project_id] || "dev_project",
+          name: session[:project_name] || "Development Project"
+        )
       end
     end
 
@@ -67,20 +52,8 @@ module Dashboard
       @project
     end
 
-    def extract_api_key
-      # Check session first, then params
-      session[:api_key] || params[:api_key]
-    end
-
-    def redirect_to_auth
-      if params[:api_key].present?
-        # Store in session and redirect without api_key in URL
-        session[:api_key] = params[:api_key]
-        redirect_to request.path
-      else
-        # Show auth required page or redirect to projects
-        redirect_to dashboard_root_path, alert: "Authentication required"
-      end
+    def platform_url
+      ENV["BRAINZLAB_PLATFORM_EXTERNAL_URL"] || ENV["BRAINZLAB_PLATFORM_URL"] || "https://platform.brainzlab.ai"
     end
   end
 end
