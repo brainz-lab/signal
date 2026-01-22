@@ -69,4 +69,10 @@ Rails.application.configure do
   config.active_record.encryption.primary_key = "yVcKx2TY8tKnY9yZPFwhGo0iO24joNEM"
   config.active_record.encryption.deterministic_key = "bzkVQav3QUp7RN8IXt2PDrN7YfLrbRdd"
   config.active_record.encryption.key_derivation_salt = "EMz5aOnuXWwbOtgJpVZBGCO0jA9pX30E"
+
+  # Allow Docker internal hostnames for service-to-service communication
+  config.hosts << "signal"
+  config.hosts << "signal:3000"
+  config.hosts << ".localhost"
+  config.hosts << "localhost"
 end
