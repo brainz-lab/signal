@@ -1,7 +1,7 @@
 module Dashboard
   class ProjectsController < BaseController
     skip_before_action :set_project, only: [ :index, :new, :create ]
-    skip_before_action :authenticate!, only: [ :index, :new, :create ], if: -> { Rails.env.development? }
+    skip_before_action :authenticate_via_sso!, only: [ :index, :new, :create ], if: -> { Rails.env.development? }
 
     def index
       if Rails.env.development?
