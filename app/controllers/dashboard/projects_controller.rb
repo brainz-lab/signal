@@ -2,11 +2,12 @@ module Dashboard
   class ProjectsController < BaseController
     skip_before_action :set_project, only: [ :index, :new, :create ], raise: false
     skip_before_action :authenticate_via_sso!, only: [ :index, :new, :create ], raise: false, if: -> { Rails.env.development? }
+    before_action :redirect_to_platform_in_production, only: [ :new, :create ]
 
     def index
       if Rails.env.development?
-        # In dev, show all projects
-        @projects = Project.order(created_at: :desc)
+        # In dev, show all projects (including archived for debugging)
+        @projects = Project.active.order(created_at: :desc)
       elsif @api_key_info && @api_key_info[:project_id]
         # In production, show only the project for this API key
         project = Project.find_or_create_for_platform!(
@@ -95,6 +96,13 @@ module Dashboard
 
     def project_params
       params.require(:project).permit(:name, :environment, :platform_project_id, settings: {})
+    end
+
+    def redirect_to_platform_in_production
+      return unless Rails.env.production?
+
+      platform_url = ENV.fetch("BRAINZLAB_PLATFORM_EXTERNAL_URL", "https://platform.brainzlab.ai")
+      redirect_to dashboard_projects_path, alert: "Projects are managed in Platform. Visit #{platform_url} to create new projects."
     end
   end
 end

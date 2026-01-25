@@ -4,11 +4,13 @@
       <h1 class="text-[24px] font-semibold tracking-tight" style="color: #1A1A1A;">Projects</h1>
       <p class="text-[14px] mt-1" style="color: #8B8780;">Manage your monitoring projects and configurations</p>
     </div>
-    <%= link_to new_dashboard_project_path, class: "inline-flex items-center gap-2 px-4 py-2.5 text-[13px] font-medium rounded-xl transition-all btn-primary text-white" do %>
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-      </svg>
-      New Project
+    <% unless Rails.env.production? %>
+      <%= link_to new_dashboard_project_path, class: "inline-flex items-center gap-2 px-4 py-2.5 text-[13px] font-medium rounded-xl transition-all btn-primary text-white" do %>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+        </svg>
+        New Project
+      <% end %>
     <% end %>
   </div>
 
@@ -57,12 +59,17 @@
         </svg>
       </div>
       <h3 class="text-[18px] font-semibold mb-2" style="color: #1A1A1A;">No projects yet</h3>
-      <p class="text-[14px] mb-6 max-w-sm mx-auto" style="color: #8B8780;">Create your first project to start monitoring alerts and incidents.</p>
-      <%= link_to new_dashboard_project_path, class: "inline-flex items-center gap-2 px-5 py-2.5 text-[14px] font-medium rounded-xl transition-all btn-primary text-white" do %>
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-        </svg>
-        Create Project
+      <% if Rails.env.production? %>
+        <p class="text-[14px] mb-6 max-w-sm mx-auto" style="color: #8B8780;">Create a project in Platform to get started.</p>
+        <%= link_to "Go to Platform", ENV.fetch("BRAINZLAB_PLATFORM_EXTERNAL_URL", "https://platform.brainzlab.ai"), class: "inline-flex items-center gap-2 px-5 py-2.5 text-[14px] font-medium rounded-xl transition-all btn-primary text-white", target: "_blank" %>
+      <% else %>
+        <p class="text-[14px] mb-6 max-w-sm mx-auto" style="color: #8B8780;">Create your first project to start monitoring alerts and incidents.</p>
+        <%= link_to new_dashboard_project_path, class: "inline-flex items-center gap-2 px-5 py-2.5 text-[14px] font-medium rounded-xl transition-all btn-primary text-white" do %>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+          </svg>
+          Create Project
+        <% end %>
       <% end %>
     </div>
   <% end %>

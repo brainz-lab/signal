@@ -9,6 +9,9 @@ class Project < ApplicationRecord
 
   validates :platform_project_id, presence: true, uniqueness: true
 
+  scope :active, -> { where(archived_at: nil) }
+  scope :archived, -> { where.not(archived_at: nil) }
+
   before_create :generate_keys
 
   def self.find_or_create_for_platform!(platform_project_id:, name: nil, environment: "live")
