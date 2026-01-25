@@ -11,7 +11,7 @@ require "action_mailer/railtie"
 # require "action_mailbox/engine"
 # require "action_text/engine"
 require "action_view/railtie"
-# require "action_cable/engine"
+require "action_cable/engine"
 # require "rails/test_unit/railtie"
 
 # Patch for phlex-rails 2.3.1 compatibility with Rails 8.1+
