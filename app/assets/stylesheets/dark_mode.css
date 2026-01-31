@@ -474,6 +474,330 @@ html.no-transitions * {
 }
 
 /* ============================================
+   SIGNAL-SPECIFIC UTILITY CLASSES
+   ============================================
+   These classes are used throughout Signal's view templates
+   and need dark mode support.
+*/
+
+/* ----------------------------------------
+   Theme-aware Background Classes
+   ---------------------------------------- */
+.bg-theme {
+  background-color: var(--dm-bg);
+}
+
+.bg-surface {
+  background-color: var(--dm-surface);
+}
+
+.bg-surface-alt {
+  background-color: var(--dm-surface-alt);
+}
+
+.bg-surface-hover {
+  background-color: var(--dm-surface-hover);
+}
+
+.hover\:bg-surface-hover:hover {
+  background-color: var(--dm-surface-hover);
+}
+
+/* ----------------------------------------
+   Theme-aware Text Classes
+   ---------------------------------------- */
+.text-primary {
+  color: var(--dm-text);
+}
+
+.text-secondary {
+  color: var(--dm-text-secondary);
+}
+
+.text-subtle {
+  color: var(--dm-text-secondary);
+}
+
+.text-muted {
+  color: var(--dm-text-muted);
+}
+
+.hover\:text-primary:hover {
+  color: var(--dm-text);
+}
+
+.hover\:text-signal:hover {
+  color: var(--dm-signal);
+}
+
+.group-hover\:text-signal:is(:where(.group):hover *) {
+  color: var(--dm-signal);
+}
+
+/* ----------------------------------------
+   Theme-aware Border Classes
+   ---------------------------------------- */
+.border-theme {
+  border-color: var(--dm-border);
+}
+
+.border-light {
+  border-color: var(--dm-border-light);
+}
+
+/* ----------------------------------------
+   Status Background Classes (for badges/indicators)
+   ---------------------------------------- */
+.bg-error {
+  background-color: var(--dm-error-bg);
+}
+
+.bg-warning {
+  background-color: var(--dm-warning-bg);
+}
+
+.bg-success {
+  background-color: var(--dm-success-bg);
+}
+
+.bg-info {
+  background-color: var(--dm-info-bg);
+}
+
+.bg-blue {
+  background-color: var(--dm-info-bg);
+}
+
+/* ----------------------------------------
+   Status Text Classes
+   ---------------------------------------- */
+.text-error {
+  color: var(--dm-error-text);
+}
+
+.text-warning {
+  color: var(--dm-warning-text);
+}
+
+.text-success {
+  color: var(--dm-success-text);
+}
+
+.text-info {
+  color: var(--dm-info-text);
+}
+
+.text-blue {
+  color: var(--dm-info-text);
+}
+
+/* ----------------------------------------
+   Shadow Classes
+   ---------------------------------------- */
+.shadow-card {
+  box-shadow: var(--dm-shadow-sm);
+}
+
+.shadow-medium {
+  box-shadow: var(--dm-shadow-md);
+}
+
+.hover\:shadow-medium:hover {
+  box-shadow: var(--dm-shadow-md);
+}
+
+/* ----------------------------------------
+   Card Hover Effect
+   ---------------------------------------- */
+.card-hover {
+  transition: background-color 0.15s ease;
+}
+
+.card-hover:hover {
+  background-color: var(--dm-hover-bg);
+}
+
+/* ----------------------------------------
+   Input Theme Classes
+   ---------------------------------------- */
+.input-theme {
+  background-color: var(--dm-input-bg);
+  border: 1px solid var(--dm-input-border);
+  color: var(--dm-text);
+}
+
+.input-theme:focus {
+  border-color: var(--dm-signal);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2);
+}
+
+.input-theme::placeholder {
+  color: var(--dm-text-placeholder);
+}
+
+/* ----------------------------------------
+   Button Theme Classes
+   ---------------------------------------- */
+.btn-theme-primary {
+  background-color: var(--dm-signal);
+  color: white;
+  transition: all 0.2s ease;
+}
+
+.btn-theme-primary:hover {
+  background-color: var(--dm-signal-dark);
+}
+
+.btn-theme-secondary {
+  background-color: var(--dm-surface-alt);
+  border: 1px solid var(--dm-border);
+  color: var(--dm-text-secondary);
+  transition: all 0.2s ease;
+}
+
+.btn-theme-secondary:hover {
+  background-color: var(--dm-surface-hover);
+  color: var(--dm-text);
+}
+
+/* ----------------------------------------
+   Focus Ring for Signal Brand
+   ---------------------------------------- */
+.focus\:ring-signal:focus {
+  --tw-ring-color: var(--dm-signal);
+  box-shadow: 0 0 0 2px var(--dm-signal);
+}
+
+/* ============================================
+   CSS VARIABLE DEFINITIONS FOR INLINE STYLES
+   ============================================
+   These variables are referenced via style="" attributes in templates
+*/
+:root {
+  /* Status dot colors */
+  --color-error-dot: #EF4444;
+  --color-warning-dot: #F59E0B;
+  --color-success-dot: #22C55E;
+  --color-blue-dot: #3B82F6;
+  --color-icon-muted: #A5A29C;
+
+  /* Signal brand */
+  --color-signal: #D97706;
+  --color-signal-dark: #B45309;
+  --color-signal-light: #F59E0B;
+
+  /* Inline style colors */
+  --color-text-subtle: #6B6760;
+  --color-border-light: #F0EFED;
+  --color-border-subtle: #E8E5E0;
+
+  /* Gradient backgrounds for cards */
+  --gradient-card-default: linear-gradient(135deg, #FAFAF9 0%, #F5F5F0 100%);
+  --gradient-card-error: linear-gradient(135deg, #FEF2F2 0%, #FECACA20 100%);
+  --gradient-card-warning: linear-gradient(135deg, #FFFBEB 0%, #FEF3C720 100%);
+  --gradient-card-success: linear-gradient(135deg, #F0FDF4 0%, #DCFCE720 100%);
+  --gradient-success: linear-gradient(135deg, #DCFCE7 0%, #BBF7D0 100%);
+  --gradient-warning: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+  --gradient-error: linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%);
+  --gradient-info: linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%);
+  --gradient-blue: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+
+  /* Orange warning colors (maintenance windows) */
+  --color-warning-orange-bg: #FFF7ED;
+  --color-warning-orange-text: #9A3412;
+  --color-warning-orange-border: #F97316;
+
+  /* Blue colors */
+  --color-blue-bg: #EFF6FF;
+  --color-blue-text: #1E40AF;
+}
+
+/* Dark mode variable overrides */
+html.dark,
+.dark,
+[data-theme="dark"] {
+  /* Status dot colors (same or slightly brighter in dark) */
+  --color-error-dot: #F87171;
+  --color-warning-dot: #FBBF24;
+  --color-success-dot: #4ADE80;
+  --color-blue-dot: #60A5FA;
+  --color-icon-muted: #666666;
+
+  /* Signal brand (adjusted for dark) */
+  --color-signal: #F97316;
+  --color-signal-dark: #FB923C;
+  --color-signal-light: #FDBA74;
+
+  /* Inline style colors */
+  --color-text-subtle: #a0a0a0;
+  --color-border-light: #2a2a2a;
+  --color-border-subtle: #333333;
+
+  /* Gradient backgrounds for cards (dark versions) */
+  --gradient-card-default: linear-gradient(135deg, #1e1e1e 0%, #2a2a2a 100%);
+  --gradient-card-error: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%);
+  --gradient-card-warning: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(245, 158, 11, 0.05) 100%);
+  --gradient-card-success: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(34, 197, 94, 0.05) 100%);
+  --gradient-success: linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(34, 197, 94, 0.1) 100%);
+  --gradient-warning: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(245, 158, 11, 0.1) 100%);
+  --gradient-error: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(239, 68, 68, 0.1) 100%);
+  --gradient-info: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(59, 130, 246, 0.1) 100%);
+  --gradient-blue: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.1) 100%);
+
+  /* Orange warning colors (maintenance windows) */
+  --color-warning-orange-bg: rgba(249, 115, 22, 0.15);
+  --color-warning-orange-text: #FDBA74;
+  --color-warning-orange-border: #F97316;
+
+  /* Blue colors */
+  --color-blue-bg: rgba(59, 130, 246, 0.15);
+  --color-blue-text: #93C5FD;
+}
+
+/* System preference support for CSS variables */
+@media (prefers-color-scheme: dark) {
+  html:not(.light):not([data-theme="light"]) {
+    /* Status dot colors */
+    --color-error-dot: #F87171;
+    --color-warning-dot: #FBBF24;
+    --color-success-dot: #4ADE80;
+    --color-blue-dot: #60A5FA;
+    --color-icon-muted: #666666;
+
+    /* Signal brand */
+    --color-signal: #F97316;
+    --color-signal-dark: #FB923C;
+    --color-signal-light: #FDBA74;
+
+    /* Inline style colors */
+    --color-text-subtle: #a0a0a0;
+    --color-border-light: #2a2a2a;
+    --color-border-subtle: #333333;
+
+    /* Gradient backgrounds for cards */
+    --gradient-card-default: linear-gradient(135deg, #1e1e1e 0%, #2a2a2a 100%);
+    --gradient-card-error: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%);
+    --gradient-card-warning: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(245, 158, 11, 0.05) 100%);
+    --gradient-card-success: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(34, 197, 94, 0.05) 100%);
+    --gradient-success: linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(34, 197, 94, 0.1) 100%);
+    --gradient-warning: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(245, 158, 11, 0.1) 100%);
+    --gradient-error: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(239, 68, 68, 0.1) 100%);
+    --gradient-info: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(59, 130, 246, 0.1) 100%);
+    --gradient-blue: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.1) 100%);
+
+    /* Orange warning colors */
+    --color-warning-orange-bg: rgba(249, 115, 22, 0.15);
+    --color-warning-orange-text: #FDBA74;
+    --color-warning-orange-border: #F97316;
+
+    /* Blue colors */
+    --color-blue-bg: rgba(59, 130, 246, 0.15);
+    --color-blue-text: #93C5FD;
+  }
+}
+
+/* ============================================
    Print Styles - Force Light Mode
    ============================================ */
 @media print {
@@ -487,6 +811,12 @@ html.no-transitions * {
     --dm-text-secondary: #6B6760;
     --dm-text-muted: #8B8780;
     --dm-border: #E8E5E0;
+
+    /* Reset gradient backgrounds */
+    --gradient-card-default: linear-gradient(135deg, #FAFAF9 0%, #F5F5F0 100%);
+    --gradient-card-error: linear-gradient(135deg, #FEF2F2 0%, #FECACA20 100%);
+    --gradient-card-warning: linear-gradient(135deg, #FFFBEB 0%, #FEF3C720 100%);
+    --gradient-card-success: linear-gradient(135deg, #F0FDF4 0%, #DCFCE720 100%);
   }
 
   .dm-toggle {
