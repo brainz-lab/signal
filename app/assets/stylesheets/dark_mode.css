@@ -1,428 +1,495 @@
-/* Signal Dark Mode Support
- * Using brainzlab-ui dark mode tokens
- */
+/* ============================================
+   DARK MODE STYLES - BrainzLab Standard
+   ============================================
+   Standardized dark mode implementation for all BrainzLab products.
+   Uses `dm-*` prefix for CSS classes and `brainzlab-theme` localStorage key.
 
+   Dark mode tokens from brainzlab-ui:
+   - Dark bg: #121212
+   - Dark surface: #1e1e1e
+   - Dark surface light: #2a2a2a
+   - Dark text: #e8e1d7
+   - Dark text muted: #a0a0a0
+   - Dark border: #333333
+*/
+
+/* ============================================
+   CSS VARIABLES - Light Theme (Default)
+   ============================================ */
 :root {
-  /* Light mode (default) */
-  --color-bg: #FDFCFB;
-  --color-bg-alt: var(--color-cream-50, #FAF9F7);
-  --color-surface: #FFFFFF;
-  --color-surface-alt: #FFFFFE;
-  --color-surface-hover: #F9FAFB;
+  /* Core backgrounds */
+  --dm-bg: #FAFAF9;
+  --dm-surface: #FFFFFF;
+  --dm-surface-alt: #F5F5F0;
+  --dm-surface-hover: #F0EFED;
 
-  --color-text-primary: #1A1A1A;
-  --color-text-secondary: #525252;
-  --color-text-muted: #8B8780;
-  --color-text-subtle: #6B6760;
+  /* Core text */
+  --dm-text: #1a1a1a;
+  --dm-text-secondary: #6B6760;
+  --dm-text-muted: #8B8780;
+  --dm-text-placeholder: #A5A29C;
 
-  --color-border: #E8E5E0;
-  --color-border-light: #F0EFED;
-  --color-border-subtle: #F5F3EF;
+  /* Core borders */
+  --dm-border: #E8E5E0;
+  --dm-border-light: #F0EFED;
 
-  --color-icon-muted: #C4C0B8;
+  /* Interactive */
+  --dm-input-bg: #FFFFFF;
+  --dm-input-border: #E8E5E0;
+  --dm-hover-bg: #F5F5F0;
 
-  /* Status colors - Light mode */
-  --color-success-bg: #DCFCE7;
-  --color-success-bg-alt: #D1FAE5;
-  --color-success-text: #166534;
-  --color-success-dot: #16A34A;
+  /* Code blocks */
+  --dm-code-bg: #1A1A1A;
+  --dm-code-text: #E8E5E0;
 
-  --color-warning-bg: #FEF3C7;
-  --color-warning-bg-alt: #FEF7ED;
-  --color-warning-text: #92400E;
-  --color-warning-dot: #D97706;
-  --color-warning-orange-text: #9A3412;
-  --color-warning-orange-bg: #FFF7ED;
-  --color-warning-orange-border: #F97316;
+  /* Shadows */
+  --dm-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --dm-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.08);
+  --dm-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
 
-  --color-error-bg: #FEE2E2;
-  --color-error-bg-alt: #FEF2F2;
-  --color-error-text: #991B1B;
-  --color-error-text-dark: #7F1D1D;
-  --color-error-dot: #DC2626;
-  --color-error-border: #FECACA;
+  /* Status colors - Light */
+  --dm-success: #16A34A;
+  --dm-success-bg: #DCFCE7;
+  --dm-success-text: #166534;
+  --dm-success-border: #A7F3D0;
 
-  --color-info-bg: #E0E7FF;
-  --color-info-bg-alt: #EDE9FE;
-  --color-info-text: #3730A3;
-  --color-info-text-alt: #5B21B6;
+  --dm-warning: #D97706;
+  --dm-warning-bg: #FEF3C7;
+  --dm-warning-text: #92400E;
+  --dm-warning-border: #FDE68A;
 
-  --color-blue-bg: #DBEAFE;
-  --color-blue-text: #1E40AF;
-  --color-blue-dot: #3B82F6;
+  --dm-error: #DC2626;
+  --dm-error-bg: #FEF2F2;
+  --dm-error-text: #991B1B;
+  --dm-error-border: #FECACA;
 
-  /* Gradients - Light mode */
-  --gradient-success: linear-gradient(135deg, #DCFCE7 0%, #D1FAE5 100%);
-  --gradient-warning: linear-gradient(135deg, #FEF7ED 0%, #FED7AA 100%);
-  --gradient-error: linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%);
-  --gradient-info: linear-gradient(135deg, #EDE9FE 0%, #DDD6FE 100%);
-  --gradient-blue: linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%);
-  --gradient-card-error: linear-gradient(135deg, #FFFFFF 0%, #FEF2F2 100%);
-  --gradient-card-warning: linear-gradient(135deg, #FFFFFF 0%, #FEF7ED 100%);
-  --gradient-card-success: linear-gradient(135deg, #FFFFFF 0%, #F0FDF4 100%);
-  --gradient-card-default: linear-gradient(135deg, #FFFFFF 0%, #FDFCFB 100%);
-  --gradient-error-zone: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%);
-  --gradient-signal: linear-gradient(135deg, #D97706 0%, #B45309 100%);
-  --gradient-on-call: #FFF7ED;
+  --dm-info: #2563EB;
+  --dm-info-bg: #EFF6FF;
+  --dm-info-text: #1E40AF;
+  --dm-info-border: #BFDBFE;
 
-  /* Signal brand colors */
-  --color-signal: #F97316;
-  --color-signal-dark: #9A3412;
-
-  /* Info colors */
-  --color-info-dot: #3B82F6;
-
-  /* Danger zone colors */
-  --color-danger-zone-bg: #FEF2F2;
-  --color-danger-zone-border: #FECACA;
-  --color-danger-zone-text: #991B1B;
-  --color-danger-btn-bg: #DC2626;
-
-  /* Form elements - Light mode */
-  --color-input-bg: #FDFCFB;
-  --color-input-border: #E8E5E0;
-  --color-input-text: #1A1A1A;
-
-  /* Button colors - Light mode */
-  --color-btn-primary-bg: #1A1A1A;
-  --color-btn-primary-text: #FFFFFE;
-  --color-btn-secondary-bg: #F0EFED;
-  --color-btn-secondary-text: #6B6760;
-  --color-btn-secondary-bg-alt: #F5F3EF;
-  --color-btn-secondary-text-alt: #525252;
+  /* Signal-specific: Brand color */
+  --dm-signal: #F97316;
+  --dm-signal-dark: #9A3412;
 }
 
-/* Dark mode */
-[data-theme="dark"],
-html.dark {
-  --color-bg: #121212;
-  --color-bg-alt: #121212;
-  --color-surface: #1e1e1e;
-  --color-surface-alt: #1e1e1e;
-  --color-surface-hover: #2a2a2a;
+/* ============================================
+   CSS VARIABLES - Dark Theme
+   ============================================ */
+html.dark,
+.dark,
+[data-theme="dark"] {
+  /* Core backgrounds */
+  --dm-bg: #121212;
+  --dm-surface: #1e1e1e;
+  --dm-surface-alt: #2a2a2a;
+  --dm-surface-hover: #333333;
 
-  --color-text-primary: #e8e1d7;
-  --color-text-secondary: #c4c0b8;
-  --color-text-muted: #a0a0a0;
-  --color-text-subtle: #a0a0a0;
+  /* Core text */
+  --dm-text: #e8e1d7;
+  --dm-text-secondary: #a0a0a0;
+  --dm-text-muted: #707070;
+  --dm-text-placeholder: #666666;
 
-  --color-border: #333333;
-  --color-border-light: #2a2a2a;
-  --color-border-subtle: #252525;
+  /* Core borders */
+  --dm-border: #333333;
+  --dm-border-light: #2a2a2a;
 
-  --color-icon-muted: #666666;
+  /* Interactive */
+  --dm-input-bg: #2a2a2a;
+  --dm-input-border: #333333;
+  --dm-hover-bg: #2a2a2a;
 
-  /* Status colors - Dark mode */
-  --color-success-bg: rgba(22, 163, 74, 0.15);
-  --color-success-bg-alt: rgba(22, 163, 74, 0.1);
-  --color-success-text: #4ade80;
-  --color-success-dot: #22c55e;
+  /* Code blocks */
+  --dm-code-bg: #0d0d0d;
+  --dm-code-text: #e8e1d7;
 
-  --color-warning-bg: rgba(217, 119, 6, 0.15);
-  --color-warning-bg-alt: rgba(217, 119, 6, 0.1);
-  --color-warning-text: #fbbf24;
-  --color-warning-dot: #f59e0b;
-  --color-warning-orange-text: #fb923c;
-  --color-warning-orange-bg: rgba(249, 115, 22, 0.15);
-  --color-warning-orange-border: #f97316;
+  /* Shadows */
+  --dm-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --dm-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+  --dm-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
 
-  --color-error-bg: rgba(220, 38, 38, 0.15);
-  --color-error-bg-alt: rgba(220, 38, 38, 0.1);
-  --color-error-text: #f87171;
-  --color-error-text-dark: #fca5a5;
-  --color-error-dot: #ef4444;
-  --color-error-border: rgba(220, 38, 38, 0.3);
+  /* Status colors - Dark */
+  --dm-success: #22C55E;
+  --dm-success-bg: rgba(34, 197, 94, 0.15);
+  --dm-success-text: #86EFAC;
+  --dm-success-border: rgba(34, 197, 94, 0.3);
 
-  --color-info-bg: rgba(99, 102, 241, 0.15);
-  --color-info-bg-alt: rgba(139, 92, 246, 0.15);
-  --color-info-text: #a5b4fc;
-  --color-info-text-alt: #c4b5fd;
+  --dm-warning: #F59E0B;
+  --dm-warning-bg: rgba(245, 158, 11, 0.15);
+  --dm-warning-text: #FCD34D;
+  --dm-warning-border: rgba(245, 158, 11, 0.3);
 
-  --color-blue-bg: rgba(59, 130, 246, 0.15);
-  --color-blue-text: #93c5fd;
-  --color-blue-dot: #3b82f6;
+  --dm-error: #EF4444;
+  --dm-error-bg: rgba(239, 68, 68, 0.15);
+  --dm-error-text: #FCA5A5;
+  --dm-error-border: rgba(239, 68, 68, 0.3);
 
-  /* Gradients - Dark mode (solid colors for cleaner look) */
-  --gradient-success: rgba(22, 163, 74, 0.15);
-  --gradient-warning: rgba(217, 119, 6, 0.15);
-  --gradient-error: rgba(220, 38, 38, 0.15);
-  --gradient-info: rgba(139, 92, 246, 0.15);
-  --gradient-blue: rgba(59, 130, 246, 0.15);
-  --gradient-card-error: #1e1e1e;
-  --gradient-card-warning: #1e1e1e;
-  --gradient-card-success: #1e1e1e;
-  --gradient-card-default: #1e1e1e;
-  --gradient-error-zone: rgba(220, 38, 38, 0.1);
-  --gradient-signal: linear-gradient(135deg, #D97706 0%, #B45309 100%);
-  --gradient-on-call: rgba(249, 115, 22, 0.15);
+  --dm-info: #3B82F6;
+  --dm-info-bg: rgba(59, 130, 246, 0.15);
+  --dm-info-text: #93C5FD;
+  --dm-info-border: rgba(59, 130, 246, 0.3);
 
-  /* Signal brand colors */
-  --color-signal: #F97316;
-  --color-signal-dark: #FB923C;
-
-  /* Info colors */
-  --color-info-dot: #3B82F6;
-
-  /* Danger zone colors */
-  --color-danger-zone-bg: rgba(220, 38, 38, 0.1);
-  --color-danger-zone-border: rgba(220, 38, 38, 0.3);
-  --color-danger-zone-text: #f87171;
-  --color-danger-btn-bg: #DC2626;
-
-  /* Form elements - Dark mode */
-  --color-input-bg: #2a2a2a;
-  --color-input-border: #333333;
-  --color-input-text: #e8e1d7;
-
-  /* Button colors - Dark mode */
-  --color-btn-primary-bg: #D97706;
-  --color-btn-primary-text: #FFFFFF;
-  --color-btn-secondary-bg: #2a2a2a;
-  --color-btn-secondary-text: #a0a0a0;
-  --color-btn-secondary-bg-alt: #333333;
-  --color-btn-secondary-text-alt: #c4c0b8;
+  /* Signal-specific: Brand color (adjusted for dark) */
+  --dm-signal: #F97316;
+  --dm-signal-dark: #FB923C;
 }
 
-/* System preference support */
+/* ============================================
+   System Preference Support
+   ============================================ */
 @media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) {
-    --color-bg: #121212;
-    --color-bg-alt: #121212;
-    --color-surface: #1e1e1e;
-    --color-surface-alt: #1e1e1e;
-    --color-surface-hover: #2a2a2a;
+  html:not(.light):not([data-theme="light"]) {
+    /* Core backgrounds */
+    --dm-bg: #121212;
+    --dm-surface: #1e1e1e;
+    --dm-surface-alt: #2a2a2a;
+    --dm-surface-hover: #333333;
 
-    --color-text-primary: #e8e1d7;
-    --color-text-secondary: #c4c0b8;
-    --color-text-muted: #a0a0a0;
-    --color-text-subtle: #a0a0a0;
+    /* Core text */
+    --dm-text: #e8e1d7;
+    --dm-text-secondary: #a0a0a0;
+    --dm-text-muted: #707070;
+    --dm-text-placeholder: #666666;
 
-    --color-border: #333333;
-    --color-border-light: #2a2a2a;
-    --color-border-subtle: #252525;
+    /* Core borders */
+    --dm-border: #333333;
+    --dm-border-light: #2a2a2a;
 
-    --color-icon-muted: #666666;
+    /* Interactive */
+    --dm-input-bg: #2a2a2a;
+    --dm-input-border: #333333;
+    --dm-hover-bg: #2a2a2a;
 
-    --color-success-bg: rgba(22, 163, 74, 0.15);
-    --color-success-bg-alt: rgba(22, 163, 74, 0.1);
-    --color-success-text: #4ade80;
-    --color-success-dot: #22c55e;
+    /* Code blocks */
+    --dm-code-bg: #0d0d0d;
+    --dm-code-text: #e8e1d7;
 
-    --color-warning-bg: rgba(217, 119, 6, 0.15);
-    --color-warning-bg-alt: rgba(217, 119, 6, 0.1);
-    --color-warning-text: #fbbf24;
-    --color-warning-dot: #f59e0b;
-    --color-warning-orange-text: #fb923c;
-    --color-warning-orange-bg: rgba(249, 115, 22, 0.15);
-    --color-warning-orange-border: #f97316;
+    /* Shadows */
+    --dm-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --dm-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+    --dm-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
 
-    --color-error-bg: rgba(220, 38, 38, 0.15);
-    --color-error-bg-alt: rgba(220, 38, 38, 0.1);
-    --color-error-text: #f87171;
-    --color-error-text-dark: #fca5a5;
-    --color-error-dot: #ef4444;
-    --color-error-border: rgba(220, 38, 38, 0.3);
+    /* Status colors */
+    --dm-success: #22C55E;
+    --dm-success-bg: rgba(34, 197, 94, 0.15);
+    --dm-success-text: #86EFAC;
+    --dm-success-border: rgba(34, 197, 94, 0.3);
 
-    --color-info-bg: rgba(99, 102, 241, 0.15);
-    --color-info-bg-alt: rgba(139, 92, 246, 0.15);
-    --color-info-text: #a5b4fc;
-    --color-info-text-alt: #c4b5fd;
+    --dm-warning: #F59E0B;
+    --dm-warning-bg: rgba(245, 158, 11, 0.15);
+    --dm-warning-text: #FCD34D;
+    --dm-warning-border: rgba(245, 158, 11, 0.3);
 
-    --color-blue-bg: rgba(59, 130, 246, 0.15);
-    --color-blue-text: #93c5fd;
-    --color-blue-dot: #3b82f6;
+    --dm-error: #EF4444;
+    --dm-error-bg: rgba(239, 68, 68, 0.15);
+    --dm-error-text: #FCA5A5;
+    --dm-error-border: rgba(239, 68, 68, 0.3);
 
-    --gradient-success: rgba(22, 163, 74, 0.15);
-    --gradient-warning: rgba(217, 119, 6, 0.15);
-    --gradient-error: rgba(220, 38, 38, 0.15);
-    --gradient-info: rgba(139, 92, 246, 0.15);
-    --gradient-blue: rgba(59, 130, 246, 0.15);
-    --gradient-card-error: #1e1e1e;
-    --gradient-card-warning: #1e1e1e;
-    --gradient-card-success: #1e1e1e;
-    --gradient-card-default: #1e1e1e;
-    --gradient-error-zone: rgba(220, 38, 38, 0.1);
-    --gradient-signal: linear-gradient(135deg, #D97706 0%, #B45309 100%);
-    --gradient-on-call: rgba(249, 115, 22, 0.15);
+    --dm-info: #3B82F6;
+    --dm-info-bg: rgba(59, 130, 246, 0.15);
+    --dm-info-text: #93C5FD;
+    --dm-info-border: rgba(59, 130, 246, 0.3);
 
-    /* Signal brand colors */
-    --color-signal: #F97316;
-    --color-signal-dark: #FB923C;
-
-    /* Info colors */
-    --color-info-dot: #3B82F6;
-
-    /* Danger zone colors */
-    --color-danger-zone-bg: rgba(220, 38, 38, 0.1);
-    --color-danger-zone-border: rgba(220, 38, 38, 0.3);
-    --color-danger-zone-text: #f87171;
-    --color-danger-btn-bg: #DC2626;
-
-    --color-input-bg: #2a2a2a;
-    --color-input-border: #333333;
-    --color-input-text: #e8e1d7;
-
-    --color-btn-primary-bg: #D97706;
-    --color-btn-primary-text: #FFFFFF;
-    --color-btn-secondary-bg: #2a2a2a;
-    --color-btn-secondary-text: #a0a0a0;
-    --color-btn-secondary-bg-alt: #333333;
-    --color-btn-secondary-text-alt: #c4c0b8;
+    /* Signal brand */
+    --dm-signal: #F97316;
+    --dm-signal-dark: #FB923C;
   }
 }
 
-/* Utility classes for theme-aware styling */
-.bg-theme {
-  background-color: var(--color-bg);
+/* ============================================
+   STANDARDIZED UTILITY CLASSES (dm-* prefix)
+   ============================================ */
+
+/* Background utilities */
+.dm-bg {
+  background-color: var(--dm-bg);
 }
 
-.bg-surface {
-  background-color: var(--color-surface);
+.dm-surface {
+  background-color: var(--dm-surface);
 }
 
-.bg-surface-alt {
-  background-color: var(--color-surface-alt);
+.dm-surface-alt {
+  background-color: var(--dm-surface-alt);
 }
 
-.bg-surface-hover {
-  background-color: var(--color-surface-hover);
+.dm-surface-hover:hover {
+  background-color: var(--dm-surface-hover);
 }
 
-.text-primary {
-  color: var(--color-text-primary);
+/* Text utilities */
+.dm-text {
+  color: var(--dm-text);
 }
 
-.text-secondary {
-  color: var(--color-text-secondary);
+.dm-text-secondary {
+  color: var(--dm-text-secondary);
 }
 
-.text-muted {
-  color: var(--color-text-muted);
+.dm-text-muted {
+  color: var(--dm-text-muted);
 }
 
-.text-subtle {
-  color: var(--color-text-subtle);
+.dm-text-placeholder {
+  color: var(--dm-text-placeholder);
 }
 
-.border-theme {
-  border-color: var(--color-border);
+/* Border utilities */
+.dm-border {
+  border-color: var(--dm-border);
 }
 
-.border-light {
-  border-color: var(--color-border-light);
+.dm-border-light {
+  border-color: var(--dm-border-light);
 }
 
-.border-subtle {
-  border-color: var(--color-border-subtle);
+/* Card component */
+.dm-card {
+  background-color: var(--dm-surface);
+  border: 1px solid var(--dm-border);
+  box-shadow: var(--dm-shadow-sm);
 }
 
-/* Status utility classes */
-.bg-success {
-  background-color: var(--color-success-bg);
+/* Input component */
+.dm-input {
+  background-color: var(--dm-input-bg);
+  border: 1px solid var(--dm-input-border);
+  color: var(--dm-text);
 }
 
-.text-success {
-  color: var(--color-success-text);
+.dm-input:focus {
+  border-color: var(--dm-signal);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2);
 }
 
-.bg-warning {
-  background-color: var(--color-warning-bg);
+.dm-input::placeholder {
+  color: var(--dm-text-placeholder);
 }
 
-.text-warning {
-  color: var(--color-warning-text);
+/* Button components */
+.dm-btn-primary {
+  background-color: var(--dm-text);
+  color: var(--dm-bg);
 }
 
-.bg-error {
-  background-color: var(--color-error-bg);
+.dm-btn-primary:hover {
+  opacity: 0.9;
 }
 
-.text-error {
-  color: var(--color-error-text);
+.dm-btn-secondary {
+  background-color: var(--dm-surface-alt);
+  border: 1px solid var(--dm-border);
+  color: var(--dm-text-secondary);
 }
 
-.bg-info {
-  background-color: var(--color-info-bg);
+.dm-btn-secondary:hover {
+  background-color: var(--dm-surface-hover);
 }
 
-.text-info {
-  color: var(--color-info-text);
+/* Table components */
+.dm-table-header {
+  background-color: var(--dm-surface-alt);
+  color: var(--dm-text-muted);
+  border-bottom: 1px solid var(--dm-border);
 }
 
-/* Form elements */
-.input-theme {
-  background-color: var(--color-input-bg);
-  border-color: var(--color-input-border);
-  color: var(--color-input-text);
+.dm-table-row {
+  border-bottom: 1px solid var(--dm-border-light);
 }
 
-/* Button styles */
-.btn-theme-primary {
-  background-color: var(--color-btn-primary-bg);
-  color: var(--color-btn-primary-text);
+.dm-table-row:hover {
+  background-color: var(--dm-hover-bg);
 }
 
-.btn-theme-secondary {
-  background-color: var(--color-btn-secondary-bg);
-  color: var(--color-btn-secondary-text);
+/* Code block */
+.dm-code {
+  background-color: var(--dm-code-bg);
+  color: var(--dm-code-text);
 }
 
-/* Dark mode toggle button */
-.dark-mode-toggle {
-  display: flex;
+/* Sidebar */
+.dm-sidebar {
+  background-color: var(--dm-surface);
+  border-right: 1px solid var(--dm-border);
+}
+
+/* Status alerts */
+.dm-alert-success {
+  background-color: var(--dm-success-bg);
+  color: var(--dm-success-text);
+  border: 1px solid var(--dm-success-border);
+}
+
+.dm-alert-warning {
+  background-color: var(--dm-warning-bg);
+  color: var(--dm-warning-text);
+  border: 1px solid var(--dm-warning-border);
+}
+
+.dm-alert-error {
+  background-color: var(--dm-error-bg);
+  color: var(--dm-error-text);
+  border: 1px solid var(--dm-error-border);
+}
+
+.dm-alert-info {
+  background-color: var(--dm-info-bg);
+  color: var(--dm-info-text);
+  border: 1px solid var(--dm-info-border);
+}
+
+/* Badges */
+.dm-badge-success {
+  background-color: var(--dm-success-bg);
+  color: var(--dm-success-text);
+}
+
+.dm-badge-warning {
+  background-color: var(--dm-warning-bg);
+  color: var(--dm-warning-text);
+}
+
+.dm-badge-error {
+  background-color: var(--dm-error-bg);
+  color: var(--dm-error-text);
+}
+
+.dm-badge-info {
+  background-color: var(--dm-info-bg);
+  color: var(--dm-info-text);
+}
+
+.dm-badge-neutral {
+  background-color: var(--dm-surface-alt);
+  color: var(--dm-text-muted);
+}
+
+/* ============================================
+   Dark Mode Toggle Button
+   ============================================ */
+.dm-toggle {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  border: 1px solid var(--color-border);
-  background-color: var(--color-surface);
-  color: var(--color-text-muted);
+  width: 2rem;
+  height: 2rem;
+  padding: 0.375rem;
+  background: transparent;
+  border: 1px solid var(--dm-border);
+  border-radius: 0.5rem;
+  color: var(--dm-text-secondary);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
-.dark-mode-toggle:hover {
-  background-color: var(--color-surface-hover);
-  color: var(--color-text-primary);
+.dm-toggle:hover {
+  background-color: var(--dm-hover-bg);
+  color: var(--dm-text);
 }
 
-/* Danger zone styles */
-.bg-danger-zone {
-  background-color: var(--color-danger-zone-bg);
+.dm-toggle:focus-visible {
+  outline: 2px solid var(--dm-signal);
+  outline-offset: 2px;
 }
 
-.border-danger-zone {
-  border: 1px solid var(--color-danger-zone-border);
+.dm-toggle svg {
+  width: 1rem;
+  height: 1rem;
+  transition: transform 0.3s ease;
 }
 
-.text-danger-zone {
-  color: var(--color-danger-zone-text);
+.dm-toggle:hover svg {
+  transform: rotate(15deg);
 }
 
-.btn-danger {
-  background-color: var(--color-danger-btn-bg);
-  color: #FFFFFF;
+/* Sun/Moon icon visibility */
+.dm-toggle .icon-sun {
+  display: none;
 }
 
-.btn-danger:hover {
-  background-color: #B91C1C;
+.dm-toggle .icon-moon {
+  display: block;
 }
 
-/* Warning border utility */
-.border-warning {
-  border-color: var(--color-warning-orange-border);
+html.dark .dm-toggle .icon-sun,
+[data-theme="dark"] .dm-toggle .icon-sun {
+  display: block;
 }
 
-/* Focus ring for signal brand */
-.focus\:ring-signal:focus {
-  --tw-ring-color: var(--color-signal);
+html.dark .dm-toggle .icon-moon,
+[data-theme="dark"] .dm-toggle .icon-moon {
+  display: none;
 }
 
-/* Smooth transition for theme changes */
+@media (prefers-color-scheme: dark) {
+  html:not(.light):not([data-theme="light"]) .dm-toggle .icon-sun {
+    display: block;
+  }
+  html:not(.light):not([data-theme="light"]) .dm-toggle .icon-moon {
+    display: none;
+  }
+}
+
+/* ============================================
+   Scrollbar Dark Mode
+   ============================================ */
+html.dark ::-webkit-scrollbar,
+[data-theme="dark"] ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+html.dark ::-webkit-scrollbar-track,
+[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: var(--dm-surface);
+}
+
+html.dark ::-webkit-scrollbar-thumb,
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: var(--dm-border);
+  border-radius: 4px;
+}
+
+html.dark ::-webkit-scrollbar-thumb:hover,
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: #444444;
+}
+
+/* ============================================
+   Transition Support
+   ============================================ */
 html.theme-transition,
 html.theme-transition *,
 html.theme-transition *::before,
 html.theme-transition *::after {
   transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease !important;
+}
+
+/* Disable transitions on initial load */
+html.no-transitions,
+html.no-transitions * {
+  transition: none !important;
+}
+
+/* ============================================
+   Print Styles - Force Light Mode
+   ============================================ */
+@media print {
+  :root,
+  html.dark,
+  [data-theme="dark"] {
+    --dm-bg: #FAFAF9;
+    --dm-surface: #FFFFFF;
+    --dm-surface-alt: #F5F5F0;
+    --dm-text: #1a1a1a;
+    --dm-text-secondary: #6B6760;
+    --dm-text-muted: #8B8780;
+    --dm-border: #E8E5E0;
+  }
+
+  .dm-toggle {
+    display: none;
+  }
 }

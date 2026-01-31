@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full">
+<html lang="en" class="h-full" data-controller="dark-mode">
 <head>
   <title>Signal - <%= content_for(:title) || "Alerting & Incidents" %></title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -25,15 +25,15 @@
     }
   </style>
 
-  <%# Inline script to prevent flash of wrong theme %>
+  <%# Prevent flash of wrong theme on page load %>
   <script>
     (function() {
-      const stored = localStorage.getItem('signal-theme');
-      const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const theme = stored || (systemDark ? 'dark' : 'light');
-      if (theme === 'dark') {
+      const savedTheme = localStorage.getItem('brainzlab-theme');
+      const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
         document.documentElement.classList.add('dark');
-        document.documentElement.setAttribute('data-theme', 'dark');
+      } else {
+        document.documentElement.classList.add('light');
       }
     })();
   </script>
@@ -52,7 +52,7 @@
   <% end %>
 </head>
 <body class="h-full antialiased bg-theme">
-  <div class="flex h-full" data-controller="dark-mode">
+  <div class="flex h-full">
     <!-- Sidebar -->
     <aside class="w-64 flex flex-col bg-surface border-r border-theme">
       <div class="p-5 border-b border-theme">
