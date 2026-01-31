@@ -1,0 +1,428 @@
+/* Signal Dark Mode Support
+ * Using brainzlab-ui dark mode tokens
+ */
+
+:root {
+  /* Light mode (default) */
+  --color-bg: #FDFCFB;
+  --color-bg-alt: var(--color-cream-50, #FAF9F7);
+  --color-surface: #FFFFFF;
+  --color-surface-alt: #FFFFFE;
+  --color-surface-hover: #F9FAFB;
+
+  --color-text-primary: #1A1A1A;
+  --color-text-secondary: #525252;
+  --color-text-muted: #8B8780;
+  --color-text-subtle: #6B6760;
+
+  --color-border: #E8E5E0;
+  --color-border-light: #F0EFED;
+  --color-border-subtle: #F5F3EF;
+
+  --color-icon-muted: #C4C0B8;
+
+  /* Status colors - Light mode */
+  --color-success-bg: #DCFCE7;
+  --color-success-bg-alt: #D1FAE5;
+  --color-success-text: #166534;
+  --color-success-dot: #16A34A;
+
+  --color-warning-bg: #FEF3C7;
+  --color-warning-bg-alt: #FEF7ED;
+  --color-warning-text: #92400E;
+  --color-warning-dot: #D97706;
+  --color-warning-orange-text: #9A3412;
+  --color-warning-orange-bg: #FFF7ED;
+  --color-warning-orange-border: #F97316;
+
+  --color-error-bg: #FEE2E2;
+  --color-error-bg-alt: #FEF2F2;
+  --color-error-text: #991B1B;
+  --color-error-text-dark: #7F1D1D;
+  --color-error-dot: #DC2626;
+  --color-error-border: #FECACA;
+
+  --color-info-bg: #E0E7FF;
+  --color-info-bg-alt: #EDE9FE;
+  --color-info-text: #3730A3;
+  --color-info-text-alt: #5B21B6;
+
+  --color-blue-bg: #DBEAFE;
+  --color-blue-text: #1E40AF;
+  --color-blue-dot: #3B82F6;
+
+  /* Gradients - Light mode */
+  --gradient-success: linear-gradient(135deg, #DCFCE7 0%, #D1FAE5 100%);
+  --gradient-warning: linear-gradient(135deg, #FEF7ED 0%, #FED7AA 100%);
+  --gradient-error: linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%);
+  --gradient-info: linear-gradient(135deg, #EDE9FE 0%, #DDD6FE 100%);
+  --gradient-blue: linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%);
+  --gradient-card-error: linear-gradient(135deg, #FFFFFF 0%, #FEF2F2 100%);
+  --gradient-card-warning: linear-gradient(135deg, #FFFFFF 0%, #FEF7ED 100%);
+  --gradient-card-success: linear-gradient(135deg, #FFFFFF 0%, #F0FDF4 100%);
+  --gradient-card-default: linear-gradient(135deg, #FFFFFF 0%, #FDFCFB 100%);
+  --gradient-error-zone: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%);
+  --gradient-signal: linear-gradient(135deg, #D97706 0%, #B45309 100%);
+  --gradient-on-call: #FFF7ED;
+
+  /* Signal brand colors */
+  --color-signal: #F97316;
+  --color-signal-dark: #9A3412;
+
+  /* Info colors */
+  --color-info-dot: #3B82F6;
+
+  /* Danger zone colors */
+  --color-danger-zone-bg: #FEF2F2;
+  --color-danger-zone-border: #FECACA;
+  --color-danger-zone-text: #991B1B;
+  --color-danger-btn-bg: #DC2626;
+
+  /* Form elements - Light mode */
+  --color-input-bg: #FDFCFB;
+  --color-input-border: #E8E5E0;
+  --color-input-text: #1A1A1A;
+
+  /* Button colors - Light mode */
+  --color-btn-primary-bg: #1A1A1A;
+  --color-btn-primary-text: #FFFFFE;
+  --color-btn-secondary-bg: #F0EFED;
+  --color-btn-secondary-text: #6B6760;
+  --color-btn-secondary-bg-alt: #F5F3EF;
+  --color-btn-secondary-text-alt: #525252;
+}
+
+/* Dark mode */
+[data-theme="dark"],
+html.dark {
+  --color-bg: #121212;
+  --color-bg-alt: #121212;
+  --color-surface: #1e1e1e;
+  --color-surface-alt: #1e1e1e;
+  --color-surface-hover: #2a2a2a;
+
+  --color-text-primary: #e8e1d7;
+  --color-text-secondary: #c4c0b8;
+  --color-text-muted: #a0a0a0;
+  --color-text-subtle: #a0a0a0;
+
+  --color-border: #333333;
+  --color-border-light: #2a2a2a;
+  --color-border-subtle: #252525;
+
+  --color-icon-muted: #666666;
+
+  /* Status colors - Dark mode */
+  --color-success-bg: rgba(22, 163, 74, 0.15);
+  --color-success-bg-alt: rgba(22, 163, 74, 0.1);
+  --color-success-text: #4ade80;
+  --color-success-dot: #22c55e;
+
+  --color-warning-bg: rgba(217, 119, 6, 0.15);
+  --color-warning-bg-alt: rgba(217, 119, 6, 0.1);
+  --color-warning-text: #fbbf24;
+  --color-warning-dot: #f59e0b;
+  --color-warning-orange-text: #fb923c;
+  --color-warning-orange-bg: rgba(249, 115, 22, 0.15);
+  --color-warning-orange-border: #f97316;
+
+  --color-error-bg: rgba(220, 38, 38, 0.15);
+  --color-error-bg-alt: rgba(220, 38, 38, 0.1);
+  --color-error-text: #f87171;
+  --color-error-text-dark: #fca5a5;
+  --color-error-dot: #ef4444;
+  --color-error-border: rgba(220, 38, 38, 0.3);
+
+  --color-info-bg: rgba(99, 102, 241, 0.15);
+  --color-info-bg-alt: rgba(139, 92, 246, 0.15);
+  --color-info-text: #a5b4fc;
+  --color-info-text-alt: #c4b5fd;
+
+  --color-blue-bg: rgba(59, 130, 246, 0.15);
+  --color-blue-text: #93c5fd;
+  --color-blue-dot: #3b82f6;
+
+  /* Gradients - Dark mode (solid colors for cleaner look) */
+  --gradient-success: rgba(22, 163, 74, 0.15);
+  --gradient-warning: rgba(217, 119, 6, 0.15);
+  --gradient-error: rgba(220, 38, 38, 0.15);
+  --gradient-info: rgba(139, 92, 246, 0.15);
+  --gradient-blue: rgba(59, 130, 246, 0.15);
+  --gradient-card-error: #1e1e1e;
+  --gradient-card-warning: #1e1e1e;
+  --gradient-card-success: #1e1e1e;
+  --gradient-card-default: #1e1e1e;
+  --gradient-error-zone: rgba(220, 38, 38, 0.1);
+  --gradient-signal: linear-gradient(135deg, #D97706 0%, #B45309 100%);
+  --gradient-on-call: rgba(249, 115, 22, 0.15);
+
+  /* Signal brand colors */
+  --color-signal: #F97316;
+  --color-signal-dark: #FB923C;
+
+  /* Info colors */
+  --color-info-dot: #3B82F6;
+
+  /* Danger zone colors */
+  --color-danger-zone-bg: rgba(220, 38, 38, 0.1);
+  --color-danger-zone-border: rgba(220, 38, 38, 0.3);
+  --color-danger-zone-text: #f87171;
+  --color-danger-btn-bg: #DC2626;
+
+  /* Form elements - Dark mode */
+  --color-input-bg: #2a2a2a;
+  --color-input-border: #333333;
+  --color-input-text: #e8e1d7;
+
+  /* Button colors - Dark mode */
+  --color-btn-primary-bg: #D97706;
+  --color-btn-primary-text: #FFFFFF;
+  --color-btn-secondary-bg: #2a2a2a;
+  --color-btn-secondary-text: #a0a0a0;
+  --color-btn-secondary-bg-alt: #333333;
+  --color-btn-secondary-text-alt: #c4c0b8;
+}
+
+/* System preference support */
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) {
+    --color-bg: #121212;
+    --color-bg-alt: #121212;
+    --color-surface: #1e1e1e;
+    --color-surface-alt: #1e1e1e;
+    --color-surface-hover: #2a2a2a;
+
+    --color-text-primary: #e8e1d7;
+    --color-text-secondary: #c4c0b8;
+    --color-text-muted: #a0a0a0;
+    --color-text-subtle: #a0a0a0;
+
+    --color-border: #333333;
+    --color-border-light: #2a2a2a;
+    --color-border-subtle: #252525;
+
+    --color-icon-muted: #666666;
+
+    --color-success-bg: rgba(22, 163, 74, 0.15);
+    --color-success-bg-alt: rgba(22, 163, 74, 0.1);
+    --color-success-text: #4ade80;
+    --color-success-dot: #22c55e;
+
+    --color-warning-bg: rgba(217, 119, 6, 0.15);
+    --color-warning-bg-alt: rgba(217, 119, 6, 0.1);
+    --color-warning-text: #fbbf24;
+    --color-warning-dot: #f59e0b;
+    --color-warning-orange-text: #fb923c;
+    --color-warning-orange-bg: rgba(249, 115, 22, 0.15);
+    --color-warning-orange-border: #f97316;
+
+    --color-error-bg: rgba(220, 38, 38, 0.15);
+    --color-error-bg-alt: rgba(220, 38, 38, 0.1);
+    --color-error-text: #f87171;
+    --color-error-text-dark: #fca5a5;
+    --color-error-dot: #ef4444;
+    --color-error-border: rgba(220, 38, 38, 0.3);
+
+    --color-info-bg: rgba(99, 102, 241, 0.15);
+    --color-info-bg-alt: rgba(139, 92, 246, 0.15);
+    --color-info-text: #a5b4fc;
+    --color-info-text-alt: #c4b5fd;
+
+    --color-blue-bg: rgba(59, 130, 246, 0.15);
+    --color-blue-text: #93c5fd;
+    --color-blue-dot: #3b82f6;
+
+    --gradient-success: rgba(22, 163, 74, 0.15);
+    --gradient-warning: rgba(217, 119, 6, 0.15);
+    --gradient-error: rgba(220, 38, 38, 0.15);
+    --gradient-info: rgba(139, 92, 246, 0.15);
+    --gradient-blue: rgba(59, 130, 246, 0.15);
+    --gradient-card-error: #1e1e1e;
+    --gradient-card-warning: #1e1e1e;
+    --gradient-card-success: #1e1e1e;
+    --gradient-card-default: #1e1e1e;
+    --gradient-error-zone: rgba(220, 38, 38, 0.1);
+    --gradient-signal: linear-gradient(135deg, #D97706 0%, #B45309 100%);
+    --gradient-on-call: rgba(249, 115, 22, 0.15);
+
+    /* Signal brand colors */
+    --color-signal: #F97316;
+    --color-signal-dark: #FB923C;
+
+    /* Info colors */
+    --color-info-dot: #3B82F6;
+
+    /* Danger zone colors */
+    --color-danger-zone-bg: rgba(220, 38, 38, 0.1);
+    --color-danger-zone-border: rgba(220, 38, 38, 0.3);
+    --color-danger-zone-text: #f87171;
+    --color-danger-btn-bg: #DC2626;
+
+    --color-input-bg: #2a2a2a;
+    --color-input-border: #333333;
+    --color-input-text: #e8e1d7;
+
+    --color-btn-primary-bg: #D97706;
+    --color-btn-primary-text: #FFFFFF;
+    --color-btn-secondary-bg: #2a2a2a;
+    --color-btn-secondary-text: #a0a0a0;
+    --color-btn-secondary-bg-alt: #333333;
+    --color-btn-secondary-text-alt: #c4c0b8;
+  }
+}
+
+/* Utility classes for theme-aware styling */
+.bg-theme {
+  background-color: var(--color-bg);
+}
+
+.bg-surface {
+  background-color: var(--color-surface);
+}
+
+.bg-surface-alt {
+  background-color: var(--color-surface-alt);
+}
+
+.bg-surface-hover {
+  background-color: var(--color-surface-hover);
+}
+
+.text-primary {
+  color: var(--color-text-primary);
+}
+
+.text-secondary {
+  color: var(--color-text-secondary);
+}
+
+.text-muted {
+  color: var(--color-text-muted);
+}
+
+.text-subtle {
+  color: var(--color-text-subtle);
+}
+
+.border-theme {
+  border-color: var(--color-border);
+}
+
+.border-light {
+  border-color: var(--color-border-light);
+}
+
+.border-subtle {
+  border-color: var(--color-border-subtle);
+}
+
+/* Status utility classes */
+.bg-success {
+  background-color: var(--color-success-bg);
+}
+
+.text-success {
+  color: var(--color-success-text);
+}
+
+.bg-warning {
+  background-color: var(--color-warning-bg);
+}
+
+.text-warning {
+  color: var(--color-warning-text);
+}
+
+.bg-error {
+  background-color: var(--color-error-bg);
+}
+
+.text-error {
+  color: var(--color-error-text);
+}
+
+.bg-info {
+  background-color: var(--color-info-bg);
+}
+
+.text-info {
+  color: var(--color-info-text);
+}
+
+/* Form elements */
+.input-theme {
+  background-color: var(--color-input-bg);
+  border-color: var(--color-input-border);
+  color: var(--color-input-text);
+}
+
+/* Button styles */
+.btn-theme-primary {
+  background-color: var(--color-btn-primary-bg);
+  color: var(--color-btn-primary-text);
+}
+
+.btn-theme-secondary {
+  background-color: var(--color-btn-secondary-bg);
+  color: var(--color-btn-secondary-text);
+}
+
+/* Dark mode toggle button */
+.dark-mode-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dark-mode-toggle:hover {
+  background-color: var(--color-surface-hover);
+  color: var(--color-text-primary);
+}
+
+/* Danger zone styles */
+.bg-danger-zone {
+  background-color: var(--color-danger-zone-bg);
+}
+
+.border-danger-zone {
+  border: 1px solid var(--color-danger-zone-border);
+}
+
+.text-danger-zone {
+  color: var(--color-danger-zone-text);
+}
+
+.btn-danger {
+  background-color: var(--color-danger-btn-bg);
+  color: #FFFFFF;
+}
+
+.btn-danger:hover {
+  background-color: #B91C1C;
+}
+
+/* Warning border utility */
+.border-warning {
+  border-color: var(--color-warning-orange-border);
+}
+
+/* Focus ring for signal brand */
+.focus\:ring-signal:focus {
+  --tw-ring-color: var(--color-signal);
+}
+
+/* Smooth transition for theme changes */
+html.theme-transition,
+html.theme-transition *,
+html.theme-transition *::before,
+html.theme-transition *::after {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease !important;
+}
