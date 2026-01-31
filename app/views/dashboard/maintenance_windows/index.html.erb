@@ -2,23 +2,23 @@
   <!-- Header -->
   <div class="flex items-center justify-between">
     <div>
-      <h1 class="text-[20px] font-semibold" style="color: #1A1A1A;">Maintenance Windows</h1>
+      <h1 class="text-[20px] font-semibold text-primary">Maintenance Windows</h1>
     </div>
-    <%= link_to new_dashboard_project_maintenance_window_path(@project), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-colors", style: "background: #1A1A1A; color: #FFFFFE;" do %>
+    <%= link_to new_dashboard_project_maintenance_window_path(@project), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-colors btn-theme-primary" do %>
       New Window
     <% end %>
   </div>
 
   <!-- Active Windows Alert -->
   <% if @current_windows.any? %>
-    <div class="rounded-xl px-5 py-4" style="border: 2px solid #F97316; background: #FFF7ED;">
+    <div class="rounded-xl px-5 py-4" style="border: 2px solid var(--color-warning-orange-border); background: var(--color-warning-orange-bg);">
       <div class="flex items-center gap-2 mb-2">
-        <span class="w-2 h-2 rounded-full animate-pulse" style="background: #F97316;"></span>
-        <h3 class="text-[14px] font-medium" style="color: #9A3412;">Active Maintenance Windows</h3>
+        <span class="w-2 h-2 rounded-full animate-pulse" style="background: var(--color-warning-orange-border);"></span>
+        <h3 class="text-[14px] font-medium" style="color: var(--color-warning-orange-text);">Active Maintenance Windows</h3>
       </div>
       <ul class="space-y-1">
         <% @current_windows.each do |window| %>
-          <li class="text-[13px]" style="color: #9A3412;">
+          <li class="text-[13px]" style="color: var(--color-warning-orange-text);">
             <%= link_to window.name, dashboard_project_maintenance_window_path(@project, window), class: "underline" %>
             - ends <%= time_ago_in_words(window.ends_at) %>
           </li>
@@ -29,49 +29,49 @@
 
   <!-- Stats -->
   <div class="grid grid-cols-2 gap-4">
-    <div class="rounded-xl px-5 py-4" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
-      <p class="text-[12px] font-medium uppercase tracking-wide" style="color: #8B8780;">Total Windows</p>
-      <p class="text-[28px] font-semibold mt-1" style="color: #1A1A1A;"><%= @total_count %></p>
+    <div class="rounded-xl px-5 py-4 border border-theme bg-surface">
+      <p class="text-[12px] font-medium uppercase tracking-wide text-muted">Total Windows</p>
+      <p class="text-[28px] font-semibold mt-1 text-primary"><%= @total_count %></p>
     </div>
-    <div class="rounded-xl px-5 py-4" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
-      <p class="text-[12px] font-medium uppercase tracking-wide" style="color: #8B8780;">Currently Active</p>
-      <p class="text-[28px] font-semibold mt-1" style="color: #F97316;"><%= @current_windows.count %></p>
+    <div class="rounded-xl px-5 py-4 border border-theme bg-surface">
+      <p class="text-[12px] font-medium uppercase tracking-wide text-muted">Currently Active</p>
+      <p class="text-[28px] font-semibold mt-1" style="color: var(--color-warning-orange-border);"><%= @current_windows.count %></p>
     </div>
   </div>
 
   <!-- Windows List -->
   <% if @maintenance_windows.any? %>
-    <div class="rounded-xl overflow-hidden" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
+    <div class="rounded-xl overflow-hidden border border-theme bg-surface">
       <% @maintenance_windows.each_with_index do |window, index| %>
-        <%= link_to dashboard_project_maintenance_window_path(@project, window), class: "block px-5 py-4 transition-colors hover:bg-gray-50", style: index > 0 ? "border-top: 1px solid #F0EFED;" : "" do %>
+        <%= link_to dashboard_project_maintenance_window_path(@project, window), class: "block px-5 py-4 transition-colors hover:bg-surface-hover #{index > 0 ? 'border-t border-light' : ''}" do %>
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-3">
               <!-- Status indicator -->
               <% if window.currently_active? %>
-                <span class="w-2 h-2 rounded-full animate-pulse" style="background: #F97316;"></span>
+                <span class="w-2 h-2 rounded-full animate-pulse" style="background: var(--color-warning-orange-border);"></span>
               <% elsif window.active && window.starts_at > Time.current %>
-                <span class="w-2 h-2 rounded-full" style="background: #3B82F6;"></span>
+                <span class="w-2 h-2 rounded-full" style="background: var(--color-blue-dot);"></span>
               <% elsif window.ends_at < Time.current %>
-                <span class="w-2 h-2 rounded-full" style="background: #C4C0B8;"></span>
+                <span class="w-2 h-2 rounded-full" style="background: var(--color-icon-muted);"></span>
               <% else %>
-                <span class="w-2 h-2 rounded-full" style="background: #C4C0B8;"></span>
+                <span class="w-2 h-2 rounded-full" style="background: var(--color-icon-muted);"></span>
               <% end %>
 
               <div>
                 <div class="flex items-center gap-2">
-                  <h3 class="text-[14px] font-medium" style="color: #1A1A1A;"><%= window.name %></h3>
+                  <h3 class="text-[14px] font-medium text-primary"><%= window.name %></h3>
                   <% if window.currently_active? %>
-                    <span class="px-2 py-0.5 text-[11px] font-medium uppercase rounded-full" style="background: #FFF7ED; color: #9A3412;">Active Now</span>
+                    <span class="px-2 py-0.5 text-[11px] font-medium uppercase rounded-full" style="background: var(--color-warning-orange-bg); color: var(--color-warning-orange-text);">Active Now</span>
                   <% elsif window.starts_at > Time.current %>
-                    <span class="px-2 py-0.5 text-[11px] font-medium uppercase rounded-full" style="background: #DBEAFE; color: #1E40AF;">Scheduled</span>
+                    <span class="px-2 py-0.5 text-[11px] font-medium uppercase rounded-full bg-blue text-blue" style="background: var(--color-blue-bg); color: var(--color-blue-text);">Scheduled</span>
                   <% else %>
-                    <span class="px-2 py-0.5 text-[11px] font-medium uppercase rounded-full" style="background: #F0EFED; color: #6B6760;">Ended</span>
+                    <span class="px-2 py-0.5 text-[11px] font-medium uppercase rounded-full" style="background: var(--color-border-light); color: var(--color-text-subtle);">Ended</span>
                   <% end %>
                   <% if window.recurring %>
-                    <span class="px-2 py-0.5 text-[11px] font-medium uppercase rounded-full" style="background: #F0EFED; color: #6B6760;">Recurring</span>
+                    <span class="px-2 py-0.5 text-[11px] font-medium uppercase rounded-full" style="background: var(--color-border-light); color: var(--color-text-subtle);">Recurring</span>
                   <% end %>
                 </div>
-                <p class="text-[13px] mt-0.5" style="color: #8B8780;">
+                <p class="text-[13px] mt-0.5 text-muted">
                   <%= window.starts_at.strftime('%b %d, %H:%M') %> - <%= window.ends_at.strftime('%b %d, %H:%M') %>
                   <% if window.rule_ids.present? && window.rule_ids.any? %>
                     &middot; <%= window.rule_ids.length %> rules
@@ -81,7 +81,7 @@
                 </p>
               </div>
             </div>
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="color: #C4C0B8;">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="color: var(--color-icon-muted);">
               <path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>
@@ -89,15 +89,15 @@
       <% end %>
     </div>
   <% else %>
-    <div class="rounded-xl px-8 py-16 text-center" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
+    <div class="rounded-xl px-8 py-16 text-center border border-theme bg-surface">
       <svg class="mx-auto mb-4" width="48" height="48" viewBox="0 0 48 48" fill="none">
-        <circle cx="24" cy="24" r="16" stroke="#C4C0B8" stroke-width="2"/>
-        <path d="M24 16V24L28 28" stroke="#C4C0B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M16 32L12 36M32 32L36 36" stroke="#C4C0B8" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="24" cy="24" r="16" stroke="currentColor" stroke-width="2" style="color: var(--color-icon-muted);"/>
+        <path d="M24 16V24L28 28" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-icon-muted);"/>
+        <path d="M16 32L12 36M32 32L36 36" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color: var(--color-icon-muted);"/>
       </svg>
-      <h3 class="text-[16px] font-medium mb-2" style="color: #1A1A1A;">No maintenance windows yet</h3>
-      <p class="text-[14px] mb-6" style="color: #8B8780;">Schedule a maintenance window to mute alerts during planned downtime.</p>
-      <%= link_to new_dashboard_project_maintenance_window_path(@project), class: "inline-block px-4 py-2 text-[13px] font-medium rounded-lg transition-colors", style: "background: #1A1A1A; color: #FFFFFE;" do %>
+      <h3 class="text-[16px] font-medium mb-2 text-primary">No maintenance windows yet</h3>
+      <p class="text-[14px] mb-6 text-muted">Schedule a maintenance window to mute alerts during planned downtime.</p>
+      <%= link_to new_dashboard_project_maintenance_window_path(@project), class: "inline-block px-4 py-2 text-[13px] font-medium rounded-lg transition-colors btn-theme-primary" do %>
         Create Window
       <% end %>
     </div>

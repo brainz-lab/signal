@@ -1,98 +1,98 @@
 <div class="space-y-6">
   <!-- Header -->
   <div>
-    <h1 class="text-[24px] font-semibold tracking-tight" style="color: #1A1A1A;">Incidents</h1>
-    <p class="text-[14px] mt-1" style="color: #8B8780;">Track and manage grouped alerts and incidents</p>
+    <h1 class="text-[24px] font-semibold tracking-tight text-primary">Incidents</h1>
+    <p class="text-[14px] mt-1 text-muted">Track and manage grouped alerts and incidents</p>
   </div>
 
   <!-- Stats -->
   <div class="grid grid-cols-3 gap-4">
-    <div class="rounded-2xl px-5 py-5 shadow-card transition-all hover:shadow-medium" style="border: 1px solid #E8E5E0; background: linear-gradient(135deg, #FFFFFF 0%, #FEF2F2 100%);">
+    <div class="rounded-2xl px-5 py-5 shadow-card transition-all hover:shadow-medium border border-theme" style="background: var(--gradient-card-error);">
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background: rgba(220, 38, 38, 0.1);">
-          <svg class="w-5 h-5" style="color: #DC2626;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center bg-error">
+          <svg class="w-5 h-5 text-error" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
           </svg>
         </div>
         <div>
-          <p class="text-[11px] font-semibold uppercase tracking-wider" style="color: #8B8780;">Triggered</p>
-          <p class="text-[28px] font-bold leading-none mt-1" style="color: #DC2626;"><%= @triggered_count %></p>
+          <p class="text-[11px] font-semibold uppercase tracking-wider text-muted">Triggered</p>
+          <p class="text-[28px] font-bold leading-none mt-1 text-error"><%= @triggered_count %></p>
         </div>
       </div>
     </div>
-    <div class="rounded-2xl px-5 py-5 shadow-card transition-all hover:shadow-medium" style="border: 1px solid #E8E5E0; background: linear-gradient(135deg, #FFFFFF 0%, #FEF7ED 100%);">
+    <div class="rounded-2xl px-5 py-5 shadow-card transition-all hover:shadow-medium border border-theme" style="background: var(--gradient-card-warning);">
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background: rgba(217, 119, 6, 0.1);">
-          <svg class="w-5 h-5" style="color: #D97706;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center bg-warning">
+          <svg class="w-5 h-5 text-warning" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
           </svg>
         </div>
         <div>
-          <p class="text-[11px] font-semibold uppercase tracking-wider" style="color: #8B8780;">Acknowledged</p>
-          <p class="text-[28px] font-bold leading-none mt-1" style="color: #D97706;"><%= @acknowledged_count %></p>
+          <p class="text-[11px] font-semibold uppercase tracking-wider text-muted">Acknowledged</p>
+          <p class="text-[28px] font-bold leading-none mt-1 text-warning"><%= @acknowledged_count %></p>
         </div>
       </div>
     </div>
-    <div class="rounded-2xl px-5 py-5 shadow-card transition-all hover:shadow-medium" style="border: 1px solid #E8E5E0; background: linear-gradient(135deg, #FFFFFF 0%, #F0FDF4 100%);">
+    <div class="rounded-2xl px-5 py-5 shadow-card transition-all hover:shadow-medium border border-theme" style="background: var(--gradient-card-success);">
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background: rgba(22, 163, 74, 0.1);">
-          <svg class="w-5 h-5" style="color: #16A34A;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center bg-success">
+          <svg class="w-5 h-5 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
           </svg>
         </div>
         <div>
-          <p class="text-[11px] font-semibold uppercase tracking-wider" style="color: #8B8780;">Resolved Today</p>
-          <p class="text-[28px] font-bold leading-none mt-1" style="color: #16A34A;"><%= @resolved_today %></p>
+          <p class="text-[11px] font-semibold uppercase tracking-wider text-muted">Resolved Today</p>
+          <p class="text-[28px] font-bold leading-none mt-1 text-success"><%= @resolved_today %></p>
         </div>
       </div>
     </div>
   </div>
 
   <!-- Filters -->
-  <div class="flex items-center gap-2 p-1 rounded-xl w-fit" style="background: #F5F3EF;">
-    <%= link_to "All", dashboard_project_incidents_path(@project), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-all #{params[:status].blank? ? 'shadow-sm' : 'hover:bg-cream-200'}", style: params[:status].blank? ? "background: #FFFFFF; color: #1A1A1A;" : "color: #6B6760;" %>
-    <%= link_to "Triggered", dashboard_project_incidents_path(@project, status: 'triggered'), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-all #{params[:status] == 'triggered' ? 'shadow-sm' : 'hover:bg-cream-200'}", style: params[:status] == 'triggered' ? "background: #FFFFFF; color: #DC2626;" : "color: #6B6760;" %>
-    <%= link_to "Acknowledged", dashboard_project_incidents_path(@project, status: 'acknowledged'), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-all #{params[:status] == 'acknowledged' ? 'shadow-sm' : 'hover:bg-cream-200'}", style: params[:status] == 'acknowledged' ? "background: #FFFFFF; color: #D97706;" : "color: #6B6760;" %>
-    <%= link_to "Resolved", dashboard_project_incidents_path(@project, status: 'resolved'), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-all #{params[:status] == 'resolved' ? 'shadow-sm' : 'hover:bg-cream-200'}", style: params[:status] == 'resolved' ? "background: #FFFFFF; color: #16A34A;" : "color: #6B6760;" %>
+  <div class="flex items-center gap-2 p-1 rounded-xl w-fit" style="background: var(--color-border-subtle);">
+    <%= link_to "All", dashboard_project_incidents_path(@project), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-all #{params[:status].blank? ? 'shadow-sm bg-surface text-primary' : 'text-subtle hover:bg-surface-hover'}" %>
+    <%= link_to "Triggered", dashboard_project_incidents_path(@project, status: 'triggered'), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-all #{params[:status] == 'triggered' ? 'shadow-sm bg-surface text-error' : 'text-subtle hover:bg-surface-hover'}" %>
+    <%= link_to "Acknowledged", dashboard_project_incidents_path(@project, status: 'acknowledged'), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-all #{params[:status] == 'acknowledged' ? 'shadow-sm bg-surface text-warning' : 'text-subtle hover:bg-surface-hover'}" %>
+    <%= link_to "Resolved", dashboard_project_incidents_path(@project, status: 'resolved'), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-all #{params[:status] == 'resolved' ? 'shadow-sm bg-surface text-success' : 'text-subtle hover:bg-surface-hover'}" %>
   </div>
 
   <!-- Incidents List -->
   <% if @incidents.any? %>
-    <div class="rounded-2xl overflow-hidden shadow-card" style="border: 1px solid #E8E5E0; background: #FFFFFF;">
+    <div class="rounded-2xl overflow-hidden shadow-card border border-theme bg-surface">
       <% @incidents.each_with_index do |incident, index| %>
-        <%= link_to dashboard_project_incident_path(@project, incident), class: "block px-5 py-4 transition-all card-hover group", style: index > 0 ? "border-top: 1px solid #F0EFED;" : "" do %>
+        <%= link_to dashboard_project_incident_path(@project, incident), class: "block px-5 py-4 transition-all card-hover group #{index > 0 ? 'border-t border-light' : ''}" do %>
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-4">
               <!-- Status indicator -->
               <% case incident.status %>
               <% when 'triggered' %>
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background: rgba(220, 38, 38, 0.1);">
-                  <span class="w-3 h-3 rounded-full animate-pulse" style="background: #DC2626;"></span>
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center bg-error">
+                  <span class="w-3 h-3 rounded-full animate-pulse" style="background: var(--color-error-dot);"></span>
                 </div>
               <% when 'acknowledged' %>
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background: rgba(217, 119, 6, 0.1);">
-                  <span class="w-3 h-3 rounded-full" style="background: #D97706;"></span>
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center bg-warning">
+                  <span class="w-3 h-3 rounded-full" style="background: var(--color-warning-dot);"></span>
                 </div>
               <% else %>
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background: rgba(22, 163, 74, 0.1);">
-                  <span class="w-3 h-3 rounded-full" style="background: #16A34A;"></span>
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center bg-success">
+                  <span class="w-3 h-3 rounded-full" style="background: var(--color-success-dot);"></span>
                 </div>
               <% end %>
 
               <div>
                 <div class="flex items-center gap-2">
-                  <h3 class="text-[14px] font-medium group-hover:text-signal transition-colors" style="color: #1A1A1A;"><%= incident.title %></h3>
+                  <h3 class="text-[14px] font-medium group-hover:text-signal transition-colors text-primary"><%= incident.title %></h3>
                   <!-- Severity badge -->
                   <% case incident.severity %>
                   <% when 'critical' %>
-                    <span class="px-2 py-0.5 text-[10px] font-semibold uppercase rounded-full" style="background: #FEE2E2; color: #991B1B;">Critical</span>
+                    <span class="px-2 py-0.5 text-[10px] font-semibold uppercase rounded-full bg-error text-error">Critical</span>
                   <% when 'warning' %>
-                    <span class="px-2 py-0.5 text-[10px] font-semibold uppercase rounded-full" style="background: #FEF3C7; color: #92400E;">Warning</span>
+                    <span class="px-2 py-0.5 text-[10px] font-semibold uppercase rounded-full bg-warning text-warning">Warning</span>
                   <% else %>
-                    <span class="px-2 py-0.5 text-[10px] font-semibold uppercase rounded-full" style="background: #EDE9FE; color: #5B21B6;">Info</span>
+                    <span class="px-2 py-0.5 text-[10px] font-semibold uppercase rounded-full bg-info text-info">Info</span>
                   <% end %>
                 </div>
-                <p class="text-[13px] mt-1 flex items-center gap-2" style="color: #8B8780;">
+                <p class="text-[13px] mt-1 flex items-center gap-2 text-muted">
                   <span class="inline-flex items-center gap-1">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
                     <%= incident.alerts.count %> alerts
@@ -104,7 +104,7 @@
                 </p>
               </div>
             </div>
-            <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" style="color: #C4C0B8;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" style="color: var(--color-icon-muted);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"/>
             </svg>
           </div>
@@ -112,14 +112,14 @@
       <% end %>
     </div>
   <% else %>
-    <div class="rounded-2xl px-8 py-16 text-center shadow-card" style="border: 1px solid #E8E5E0; background: #FFFFFF;">
-      <div class="w-16 h-16 mx-auto mb-5 rounded-2xl flex items-center justify-center" style="background: linear-gradient(135deg, #DCFCE7 0%, #D1FAE5 100%);">
-        <svg class="w-8 h-8" style="color: #16A34A;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div class="rounded-2xl px-8 py-16 text-center shadow-card border border-theme bg-surface">
+      <div class="w-16 h-16 mx-auto mb-5 rounded-2xl flex items-center justify-center" style="background: var(--gradient-success);">
+        <svg class="w-8 h-8 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
         </svg>
       </div>
-      <h3 class="text-[18px] font-semibold mb-2" style="color: #1A1A1A;">No incidents</h3>
-      <p class="text-[14px]" style="color: #8B8780;">No incidents matching your filters.</p>
+      <h3 class="text-[18px] font-semibold mb-2 text-primary">No incidents</h3>
+      <p class="text-[14px] text-muted">No incidents matching your filters.</p>
     </div>
   <% end %>
 </div>

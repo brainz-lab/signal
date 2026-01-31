@@ -1,93 +1,93 @@
 <div class="max-w-2xl space-y-6">
   <div class="flex items-center gap-2 mb-1">
-    <%= link_to "On-Call Schedules", dashboard_project_on_call_schedules_path(@project), class: "text-[13px]", style: "color: #8B8780;" %>
-    <span style="color: #C4C0B8;">/</span>
-    <%= link_to @schedule.name, dashboard_project_on_call_schedule_path(@project, @schedule), class: "text-[13px]", style: "color: #8B8780;" %>
-    <span style="color: #C4C0B8;">/</span>
-    <span class="text-[13px]" style="color: #1A1A1A;">Edit</span>
+    <%= link_to "On-Call Schedules", dashboard_project_on_call_schedules_path(@project), class: "text-[13px] text-muted" %>
+    <span class="text-muted">/</span>
+    <%= link_to @schedule.name, dashboard_project_on_call_schedule_path(@project, @schedule), class: "text-[13px] text-muted" %>
+    <span class="text-muted">/</span>
+    <span class="text-[13px] text-primary">Edit</span>
   </div>
 
-  <h1 class="text-[24px] font-semibold" style="color: #1A1A1A;">Edit On-Call Schedule</h1>
+  <h1 class="text-[24px] font-semibold text-primary">Edit On-Call Schedule</h1>
 
-  <div class="rounded-xl px-6 py-6" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
+  <div class="rounded-xl px-6 py-6 border border-theme bg-surface">
     <%= form_with model: @schedule, url: dashboard_project_on_call_schedule_path(@project, @schedule), method: :patch, class: "space-y-6" do |f| %>
       <!-- Basic Info -->
       <div class="space-y-4">
         <div>
-          <%= f.label :name, class: "block text-[13px] font-medium mb-1.5", style: "color: #1A1A1A;" %>
-          <%= f.text_field :name, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-orange-500", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
+          <%= f.label :name, class: "block text-[13px] font-medium mb-1.5 text-primary" %>
+          <%= f.text_field :name, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-signal input-theme" %>
         </div>
 
         <div class="grid grid-cols-2 gap-4">
           <div>
-            <%= f.label :schedule_type, "Schedule Type", class: "block text-[13px] font-medium mb-1.5", style: "color: #1A1A1A;" %>
-            <%= f.select :schedule_type, [['Weekly (fixed per day)', 'weekly'], ['Custom (rotation)', 'custom']], {}, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-orange-500", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
+            <%= f.label :schedule_type, "Schedule Type", class: "block text-[13px] font-medium mb-1.5 text-primary" %>
+            <%= f.select :schedule_type, [['Weekly (fixed per day)', 'weekly'], ['Custom (rotation)', 'custom']], {}, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-signal input-theme" %>
           </div>
           <div>
-            <%= f.label :timezone, class: "block text-[13px] font-medium mb-1.5", style: "color: #1A1A1A;" %>
-            <%= f.select :timezone, ActiveSupport::TimeZone.all.map { |tz| [tz.to_s, tz.name] }, {}, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-orange-500", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
+            <%= f.label :timezone, class: "block text-[13px] font-medium mb-1.5 text-primary" %>
+            <%= f.select :timezone, ActiveSupport::TimeZone.all.map { |tz| [tz.to_s, tz.name] }, {}, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-signal input-theme" %>
           </div>
         </div>
 
         <div class="flex items-center gap-2">
           <%= f.check_box :enabled, class: "rounded" %>
-          <%= f.label :enabled, "Enabled", class: "text-[13px]", style: "color: #1A1A1A;" %>
+          <%= f.label :enabled, "Enabled", class: "text-[13px] text-primary" %>
         </div>
       </div>
 
       <!-- Members -->
-      <div class="space-y-4 pt-4" style="border-top: 1px solid #F0EFED;">
-        <h2 class="text-[15px] font-medium" style="color: #1A1A1A;">Team Members</h2>
+      <div class="space-y-4 pt-4 border-t border-light">
+        <h2 class="text-[15px] font-medium text-primary">Team Members</h2>
 
         <div>
-          <%= f.label "members_list", "Members (comma separated)", class: "block text-[13px] font-medium mb-1.5", style: "color: #1A1A1A;" %>
-          <%= text_field_tag "members_list", @schedule.members&.join(', '), name: "on_call_schedule[members][]", class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-orange-500", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
+          <%= f.label "members_list", "Members (comma separated)", class: "block text-[13px] font-medium mb-1.5 text-primary" %>
+          <%= text_field_tag "members_list", @schedule.members&.join(', '), name: "on_call_schedule[members][]", class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-signal input-theme" %>
         </div>
       </div>
 
       <!-- Weekly Schedule -->
-      <div class="space-y-4 pt-4" style="border-top: 1px solid #F0EFED;">
-        <h2 class="text-[15px] font-medium" style="color: #1A1A1A;">Weekly Schedule</h2>
-        <p class="text-[13px]" style="color: #8B8780;">Assign a team member for each day of the week (for weekly schedule type).</p>
+      <div class="space-y-4 pt-4 border-t border-light">
+        <h2 class="text-[15px] font-medium text-primary">Weekly Schedule</h2>
+        <p class="text-[13px] text-muted">Assign a team member for each day of the week (for weekly schedule type).</p>
 
         <div class="grid grid-cols-1 gap-3">
           <% %w[monday tuesday wednesday thursday friday saturday sunday].each do |day| %>
             <div class="flex items-center gap-3">
-              <span class="w-24 text-[13px] font-medium capitalize" style="color: #1A1A1A;"><%= day %></span>
-              <%= text_field_tag "on_call_schedule[weekly_schedule][#{day}][user]", @schedule.weekly_schedule.dig(day, 'user'), class: "flex-1 px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-orange-500", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;", placeholder: "team-member@company.com" %>
+              <span class="w-24 text-[13px] font-medium capitalize text-primary"><%= day %></span>
+              <%= text_field_tag "on_call_schedule[weekly_schedule][#{day}][user]", @schedule.weekly_schedule.dig(day, 'user'), class: "flex-1 px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-signal input-theme", placeholder: "team-member@company.com" %>
             </div>
           <% end %>
         </div>
       </div>
 
       <!-- Rotation Settings -->
-      <div class="space-y-4 pt-4" style="border-top: 1px solid #F0EFED;">
-        <h2 class="text-[15px] font-medium" style="color: #1A1A1A;">Rotation Settings</h2>
-        <p class="text-[13px]" style="color: #8B8780;">Configure rotation through team members (for custom schedule type).</p>
+      <div class="space-y-4 pt-4 border-t border-light">
+        <h2 class="text-[15px] font-medium text-primary">Rotation Settings</h2>
+        <p class="text-[13px] text-muted">Configure rotation through team members (for custom schedule type).</p>
 
         <div class="grid grid-cols-2 gap-4">
           <div>
-            <%= f.label :rotation_type, class: "block text-[13px] font-medium mb-1.5", style: "color: #1A1A1A;" %>
-            <%= f.select :rotation_type, [['Daily', 'daily'], ['Weekly', 'weekly']], { include_blank: 'Select rotation...' }, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-orange-500", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
+            <%= f.label :rotation_type, class: "block text-[13px] font-medium mb-1.5 text-primary" %>
+            <%= f.select :rotation_type, [['Daily', 'daily'], ['Weekly', 'weekly']], { include_blank: 'Select rotation...' }, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-signal input-theme" %>
           </div>
           <div>
-            <%= f.label :rotation_start, "Rotation Start Date", class: "block text-[13px] font-medium mb-1.5", style: "color: #1A1A1A;" %>
-            <%= f.date_field :rotation_start, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-orange-500", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
+            <%= f.label :rotation_start, "Rotation Start Date", class: "block text-[13px] font-medium mb-1.5 text-primary" %>
+            <%= f.date_field :rotation_start, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-signal input-theme" %>
           </div>
         </div>
       </div>
 
       <div class="flex items-center gap-3 pt-4">
-        <%= f.submit "Save Changes", class: "px-4 py-2 text-[13px] font-medium rounded-lg cursor-pointer transition-colors", style: "background: #1A1A1A; color: #FFFFFE;" %>
-        <%= link_to "Cancel", dashboard_project_on_call_schedule_path(@project, @schedule), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-colors", style: "background: #F0EFED; color: #6B6760;" %>
+        <%= f.submit "Save Changes", class: "px-4 py-2 text-[13px] font-medium rounded-lg cursor-pointer transition-colors btn-theme-primary" %>
+        <%= link_to "Cancel", dashboard_project_on_call_schedule_path(@project, @schedule), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-colors btn-theme-secondary" %>
       </div>
     <% end %>
   </div>
 
   <!-- Danger Zone -->
-  <div class="rounded-xl px-6 py-6" style="border: 1px solid #FECACA; background: #FEF2F2;">
-    <h2 class="text-[16px] font-medium mb-2" style="color: #991B1B;">Danger Zone</h2>
-    <p class="text-[13px] mb-4" style="color: #991B1B;">Deleting this schedule will remove on-call assignments.</p>
-    <%= button_to "Delete Schedule", dashboard_project_on_call_schedule_path(@project, @schedule), method: :delete, data: { confirm: "Are you sure? This cannot be undone." }, class: "px-4 py-2 text-[13px] font-medium rounded-lg cursor-pointer transition-colors", style: "background: #DC2626; color: #FFFFFE;" %>
+  <div class="rounded-xl px-6 py-6 bg-danger-zone border-danger-zone">
+    <h2 class="text-[16px] font-medium mb-2 text-danger-zone">Danger Zone</h2>
+    <p class="text-[13px] mb-4 text-danger-zone">Deleting this schedule will remove on-call assignments.</p>
+    <%= button_to "Delete Schedule", dashboard_project_on_call_schedule_path(@project, @schedule), method: :delete, data: { confirm: "Are you sure? This cannot be undone." }, class: "px-4 py-2 text-[13px] font-medium rounded-lg cursor-pointer transition-colors btn-danger" %>
   </div>
 </div>

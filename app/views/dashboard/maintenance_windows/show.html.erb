@@ -3,61 +3,61 @@
   <div class="flex items-center justify-between">
     <div>
       <div class="flex items-center gap-2 mb-1">
-        <%= link_to "Maintenance Windows", dashboard_project_maintenance_windows_path(@project), class: "text-[13px]", style: "color: #8B8780;" %>
-        <span style="color: #C4C0B8;">/</span>
+        <%= link_to "Maintenance Windows", dashboard_project_maintenance_windows_path(@project), class: "text-[13px] text-muted" %>
+        <span class="text-muted">/</span>
       </div>
-      <h1 class="text-[24px] font-semibold" style="color: #1A1A1A;"><%= @maintenance_window.name %></h1>
+      <h1 class="text-[24px] font-semibold text-primary"><%= @maintenance_window.name %></h1>
     </div>
 
     <div class="flex items-center gap-2">
-      <%= link_to "Edit", edit_dashboard_project_maintenance_window_path(@project, @maintenance_window), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-colors", style: "background: #1A1A1A; color: #FFFFFE;" %>
+      <%= link_to "Edit", edit_dashboard_project_maintenance_window_path(@project, @maintenance_window), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-colors btn-theme-primary" %>
     </div>
   </div>
 
   <!-- Status -->
   <div class="flex items-center gap-4">
     <% if @maintenance_window.currently_active? %>
-      <span class="flex items-center gap-2 px-3 py-1.5 rounded-full" style="background: #FFF7ED; color: #9A3412;">
-        <span class="w-2 h-2 rounded-full animate-pulse" style="background: #F97316;"></span>
+      <span class="flex items-center gap-2 px-3 py-1.5 rounded-full" style="background: var(--gradient-on-call); color: var(--color-signal-dark);">
+        <span class="w-2 h-2 rounded-full animate-pulse" style="background: var(--color-signal);"></span>
         <span class="text-[13px] font-medium">Active Now</span>
       </span>
     <% elsif @maintenance_window.active && @maintenance_window.starts_at > Time.current %>
-      <span class="flex items-center gap-2 px-3 py-1.5 rounded-full" style="background: #DBEAFE; color: #1E40AF;">
-        <span class="w-2 h-2 rounded-full" style="background: #3B82F6;"></span>
+      <span class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-info text-info">
+        <span class="w-2 h-2 rounded-full" style="background: var(--color-info-dot);"></span>
         <span class="text-[13px] font-medium">Scheduled</span>
       </span>
     <% else %>
-      <span class="flex items-center gap-2 px-3 py-1.5 rounded-full" style="background: #F0EFED; color: #6B6760;">
-        <span class="w-2 h-2 rounded-full" style="background: #C4C0B8;"></span>
+      <span class="flex items-center gap-2 px-3 py-1.5 rounded-full" style="background: var(--color-border-light); color: var(--color-text-subtle);">
+        <span class="w-2 h-2 rounded-full" style="background: var(--color-icon-muted);"></span>
         <span class="text-[13px] font-medium">Ended</span>
       </span>
     <% end %>
 
     <% if @maintenance_window.recurring %>
-      <span class="px-3 py-1.5 text-[13px] font-medium rounded-full" style="background: #F0EFED; color: #6B6760;">Recurring</span>
+      <span class="px-3 py-1.5 text-[13px] font-medium rounded-full" style="background: var(--color-border-light); color: var(--color-text-subtle);">Recurring</span>
     <% end %>
   </div>
 
   <% if @maintenance_window.description.present? %>
-    <p class="text-[14px]" style="color: #6B6760;"><%= @maintenance_window.description %></p>
+    <p class="text-[14px] text-subtle"><%= @maintenance_window.description %></p>
   <% end %>
 
   <!-- Time Window -->
-  <div class="rounded-xl px-5 py-4" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
-    <h3 class="text-[13px] font-medium mb-3" style="color: #8B8780;">Time Window</h3>
+  <div class="rounded-xl px-5 py-4 border border-theme bg-surface">
+    <h3 class="text-[13px] font-medium mb-3 text-muted">Time Window</h3>
     <div class="flex items-center gap-4">
-      <div class="flex-1 text-center rounded-lg px-4 py-3" style="background: #F9FAFB; border: 1px solid #E8E5E0;">
-        <p class="text-[11px] font-medium uppercase" style="color: #8B8780;">Starts</p>
-        <p class="text-[16px] font-semibold mt-1" style="color: #1A1A1A;"><%= @maintenance_window.starts_at.strftime('%b %d, %Y') %></p>
-        <p class="text-[14px]" style="color: #6B6760;"><%= @maintenance_window.starts_at.strftime('%H:%M') %></p>
+      <div class="flex-1 text-center rounded-lg px-4 py-3 bg-surface-alt border border-theme">
+        <p class="text-[11px] font-medium uppercase text-muted">Starts</p>
+        <p class="text-[16px] font-semibold mt-1 text-primary"><%= @maintenance_window.starts_at.strftime('%b %d, %Y') %></p>
+        <p class="text-[14px] text-subtle"><%= @maintenance_window.starts_at.strftime('%H:%M') %></p>
       </div>
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="color: #C4C0B8;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="text-muted">
         <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
-      <div class="flex-1 text-center rounded-lg px-4 py-3" style="background: #F9FAFB; border: 1px solid #E8E5E0;">
-        <p class="text-[11px] font-medium uppercase" style="color: #8B8780;">Ends</p>
-        <p class="text-[16px] font-semibold mt-1" style="color: #1A1A1A;"><%= @maintenance_window.ends_at.strftime('%b %d, %Y') %></p>
-        <p class="text-[14px]" style="color: #6B6760;"><%= @maintenance_window.ends_at.strftime('%H:%M') %></p>
+      <div class="flex-1 text-center rounded-lg px-4 py-3 bg-surface-alt border border-theme">
+        <p class="text-[11px] font-medium uppercase text-muted">Ends</p>
+        <p class="text-[16px] font-semibold mt-1 text-primary"><%= @maintenance_window.ends_at.strftime('%b %d, %Y') %></p>
+        <p class="text-[14px] text-subtle"><%= @maintenance_window.ends_at.strftime('%H:%M') %></p>
       </div>
     </div>
     <%
@@ -65,19 +65,19 @@
       hours = (duration / 3600).to_i
       minutes = ((duration % 3600) / 60).to_i
     %>
-    <p class="text-[13px] text-center mt-3" style="color: #8B8780;">
+    <p class="text-[13px] text-center mt-3 text-muted">
       Duration: <%= hours > 0 ? "#{hours}h " : '' %><%= minutes > 0 ? "#{minutes}m" : '' %>
     </p>
   </div>
 
   <!-- Details -->
   <div class="grid grid-cols-2 gap-6">
-    <div class="rounded-xl px-5 py-4" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
-      <h3 class="text-[13px] font-medium mb-3" style="color: #8B8780;">Details</h3>
+    <div class="rounded-xl px-5 py-4 border border-theme bg-surface">
+      <h3 class="text-[13px] font-medium mb-3 text-muted">Details</h3>
       <dl class="space-y-2">
         <div class="flex justify-between">
-          <dt class="text-[13px]" style="color: #6B6760;">Status</dt>
-          <dd class="text-[13px] font-medium" style="color: #1A1A1A;">
+          <dt class="text-[13px] text-subtle">Status</dt>
+          <dd class="text-[13px] font-medium text-primary">
             <% if @maintenance_window.currently_active? %>
               Active
             <% elsif @maintenance_window.starts_at > Time.current %>
@@ -88,56 +88,56 @@
           </dd>
         </div>
         <div class="flex justify-between">
-          <dt class="text-[13px]" style="color: #6B6760;">Recurring</dt>
-          <dd class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @maintenance_window.recurring ? 'Yes' : 'No' %></dd>
+          <dt class="text-[13px] text-subtle">Recurring</dt>
+          <dd class="text-[13px] font-medium text-primary"><%= @maintenance_window.recurring ? 'Yes' : 'No' %></dd>
         </div>
         <% if @maintenance_window.recurring && @maintenance_window.recurrence_rule.present? %>
           <div class="flex justify-between">
-            <dt class="text-[13px]" style="color: #6B6760;">Recurrence</dt>
-            <dd class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @maintenance_window.recurrence_rule %></dd>
+            <dt class="text-[13px] text-subtle">Recurrence</dt>
+            <dd class="text-[13px] font-medium text-primary"><%= @maintenance_window.recurrence_rule %></dd>
           </div>
         <% end %>
         <div class="flex justify-between">
-          <dt class="text-[13px]" style="color: #6B6760;">Created</dt>
-          <dd class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @maintenance_window.created_at.strftime('%Y-%m-%d') %></dd>
+          <dt class="text-[13px] text-subtle">Created</dt>
+          <dd class="text-[13px] font-medium text-primary"><%= @maintenance_window.created_at.strftime('%Y-%m-%d') %></dd>
         </div>
         <% if @maintenance_window.created_by.present? %>
           <div class="flex justify-between">
-            <dt class="text-[13px]" style="color: #6B6760;">Created By</dt>
-            <dd class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @maintenance_window.created_by %></dd>
+            <dt class="text-[13px] text-subtle">Created By</dt>
+            <dd class="text-[13px] font-medium text-primary"><%= @maintenance_window.created_by %></dd>
           </div>
         <% end %>
       </dl>
     </div>
 
-    <div class="rounded-xl px-5 py-4" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
-      <h3 class="text-[13px] font-medium mb-3" style="color: #8B8780;">Affected Rules</h3>
+    <div class="rounded-xl px-5 py-4 border border-theme bg-surface">
+      <h3 class="text-[13px] font-medium mb-3 text-muted">Affected Rules</h3>
       <% if @affected_rules.any? %>
         <ul class="space-y-2">
           <% @affected_rules.each do |rule| %>
             <li>
-              <%= link_to dashboard_project_rule_path(@project, rule), class: "flex items-center gap-2 text-[13px] hover:underline", style: "color: #F97316;" do %>
-                <span class="w-1.5 h-1.5 rounded-full" style="background: <%= rule.enabled ? '#16A34A' : '#C4C0B8' %>;"></span>
+              <%= link_to dashboard_project_rule_path(@project, rule), class: "flex items-center gap-2 text-[13px] hover:underline", style: "color: var(--color-signal);" do %>
+                <span class="w-1.5 h-1.5 rounded-full" style="background: <%= rule.enabled ? 'var(--color-success-dot)' : 'var(--color-icon-muted)' %>;"></span>
                 <%= rule.name %>
               <% end %>
             </li>
           <% end %>
         </ul>
       <% elsif @maintenance_window.rule_ids.blank? || @maintenance_window.rule_ids.empty? %>
-        <p class="text-[13px]" style="color: #8B8780;">All rules are affected (no specific rules selected)</p>
+        <p class="text-[13px] text-muted">All rules are affected (no specific rules selected)</p>
       <% else %>
-        <p class="text-[13px]" style="color: #8B8780;">No rules found</p>
+        <p class="text-[13px] text-muted">No rules found</p>
       <% end %>
     </div>
   </div>
 
   <!-- Services -->
   <% if @maintenance_window.services.present? && @maintenance_window.services.any? %>
-    <div class="rounded-xl px-5 py-4" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
-      <h3 class="text-[13px] font-medium mb-3" style="color: #8B8780;">Affected Services</h3>
+    <div class="rounded-xl px-5 py-4 border border-theme bg-surface">
+      <h3 class="text-[13px] font-medium mb-3 text-muted">Affected Services</h3>
       <div class="flex flex-wrap gap-2">
         <% @maintenance_window.services.each do |service| %>
-          <span class="px-3 py-1 text-[13px] rounded-full" style="background: #F0EFED; color: #6B6760;"><%= service %></span>
+          <span class="px-3 py-1 text-[13px] rounded-full" style="background: var(--color-border-light); color: var(--color-text-subtle);"><%= service %></span>
         <% end %>
       </div>
     </div>

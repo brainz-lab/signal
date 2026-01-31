@@ -3,3 +3,5 @@
 @import "/brainzlab-ui/app/assets/stylesheets/brainzlab_ui/base.css";
 
 /* Project-specific overrides below */
+
+/* Dark mode support - see app/assets/stylesheets/dark_mode.css for full implementation */

@@ -3,64 +3,64 @@
   <div class="flex items-center justify-between">
     <div>
       <div class="flex items-center gap-2 mb-1">
-        <%= link_to "Escalation Policies", dashboard_project_escalation_policies_path(@project), class: "text-[13px]", style: "color: #8B8780;" %>
-        <span style="color: #C4C0B8;">/</span>
+        <%= link_to "Escalation Policies", dashboard_project_escalation_policies_path(@project), class: "text-[13px] text-muted" %>
+        <span class="text-muted">/</span>
       </div>
-      <h1 class="text-[24px] font-semibold" style="color: #1A1A1A;"><%= @escalation_policy.name %></h1>
+      <h1 class="text-[24px] font-semibold text-primary"><%= @escalation_policy.name %></h1>
     </div>
 
     <div class="flex items-center gap-2">
-      <%= link_to "Edit", edit_dashboard_project_escalation_policy_path(@project, @escalation_policy), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-colors", style: "background: #1A1A1A; color: #FFFFFE;" %>
+      <%= link_to "Edit", edit_dashboard_project_escalation_policy_path(@project, @escalation_policy), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-colors btn-theme-primary" %>
     </div>
   </div>
 
   <!-- Status -->
   <div class="flex items-center gap-4">
     <% if @escalation_policy.enabled %>
-      <span class="flex items-center gap-2 px-3 py-1.5 rounded-full" style="background: #DCFCE7; color: #166534;">
-        <span class="w-2 h-2 rounded-full" style="background: #16A34A;"></span>
+      <span class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-success text-success">
+        <span class="w-2 h-2 rounded-full" style="background: var(--color-success-dot);"></span>
         <span class="text-[13px] font-medium">Enabled</span>
       </span>
     <% else %>
-      <span class="flex items-center gap-2 px-3 py-1.5 rounded-full" style="background: #F0EFED; color: #6B6760;">
-        <span class="w-2 h-2 rounded-full" style="background: #C4C0B8;"></span>
+      <span class="flex items-center gap-2 px-3 py-1.5 rounded-full" style="background: var(--color-border-light); color: var(--color-text-subtle);">
+        <span class="w-2 h-2 rounded-full" style="background: var(--color-icon-muted);"></span>
         <span class="text-[13px] font-medium">Disabled</span>
       </span>
     <% end %>
 
     <% if @escalation_policy.repeat %>
-      <span class="px-3 py-1.5 text-[13px] font-medium rounded-full" style="background: #DBEAFE; color: #1E40AF;">
+      <span class="px-3 py-1.5 text-[13px] font-medium rounded-full bg-info text-info">
         Repeats every <%= @escalation_policy.repeat_after_minutes %> min
       </span>
     <% end %>
   </div>
 
   <% if @escalation_policy.description.present? %>
-    <p class="text-[14px]" style="color: #6B6760;"><%= @escalation_policy.description %></p>
+    <p class="text-[14px] text-subtle"><%= @escalation_policy.description %></p>
   <% end %>
 
   <!-- Escalation Steps -->
-  <div class="rounded-xl px-5 py-4" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
-    <h3 class="text-[13px] font-medium mb-4" style="color: #8B8780;">Escalation Steps</h3>
+  <div class="rounded-xl px-5 py-4 border border-theme bg-surface">
+    <h3 class="text-[13px] font-medium mb-4 text-muted">Escalation Steps</h3>
 
     <% if @escalation_policy.steps.present? && @escalation_policy.steps.any? %>
       <div class="space-y-4">
         <% @escalation_policy.steps.each_with_index do |step, index| %>
           <div class="flex items-center gap-4">
-            <div class="flex items-center justify-center w-8 h-8 rounded-full text-[13px] font-semibold" style="background: #F97316; color: #FFFFFE;">
+            <div class="flex items-center justify-center w-8 h-8 rounded-full text-[13px] font-semibold" style="background: var(--color-signal); color: #FFFFFE;">
               <%= index + 1 %>
             </div>
             <div class="flex-1">
               <div class="flex items-center gap-2">
-                <span class="text-[14px] font-medium" style="color: #1A1A1A;">
+                <span class="text-[14px] font-medium text-primary">
                   <% channel = NotificationChannel.find_by(id: step['channel_id']) %>
                   <%= channel&.name || 'Unknown Channel' %>
                 </span>
                 <% if channel %>
-                  <span class="px-2 py-0.5 text-[11px] font-medium uppercase rounded-full" style="background: #F0EFED; color: #6B6760;"><%= channel.channel_type %></span>
+                  <span class="px-2 py-0.5 text-[11px] font-medium uppercase rounded-full" style="background: var(--color-border-light); color: var(--color-text-subtle);"><%= channel.channel_type %></span>
                 <% end %>
               </div>
-              <p class="text-[13px]" style="color: #8B8780;">
+              <p class="text-[13px] text-muted">
                 <% if index == 0 %>
                   Notified immediately
                 <% else %>
@@ -70,60 +70,60 @@
             </div>
           </div>
           <% if index < @escalation_policy.steps.length - 1 %>
-            <div class="ml-4 border-l-2 h-4" style="border-color: #E8E5E0;"></div>
+            <div class="ml-4 border-l-2 h-4 border-light"></div>
           <% end %>
         <% end %>
       </div>
     <% else %>
-      <p class="text-[13px]" style="color: #8B8780;">No steps configured</p>
+      <p class="text-[13px] text-muted">No steps configured</p>
     <% end %>
   </div>
 
   <!-- Policy Details -->
   <div class="grid grid-cols-2 gap-6">
-    <div class="rounded-xl px-5 py-4" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
-      <h3 class="text-[13px] font-medium mb-3" style="color: #8B8780;">Details</h3>
+    <div class="rounded-xl px-5 py-4 border border-theme bg-surface">
+      <h3 class="text-[13px] font-medium mb-3 text-muted">Details</h3>
       <dl class="space-y-2">
         <div class="flex justify-between">
-          <dt class="text-[13px]" style="color: #6B6760;">Steps</dt>
-          <dd class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @escalation_policy.steps&.length || 0 %></dd>
+          <dt class="text-[13px] text-subtle">Steps</dt>
+          <dd class="text-[13px] font-medium text-primary"><%= @escalation_policy.steps&.length || 0 %></dd>
         </div>
         <div class="flex justify-between">
-          <dt class="text-[13px]" style="color: #6B6760;">Repeat</dt>
-          <dd class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @escalation_policy.repeat ? 'Yes' : 'No' %></dd>
+          <dt class="text-[13px] text-subtle">Repeat</dt>
+          <dd class="text-[13px] font-medium text-primary"><%= @escalation_policy.repeat ? 'Yes' : 'No' %></dd>
         </div>
         <% if @escalation_policy.repeat %>
           <div class="flex justify-between">
-            <dt class="text-[13px]" style="color: #6B6760;">Repeat Every</dt>
-            <dd class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @escalation_policy.repeat_after_minutes %> min</dd>
+            <dt class="text-[13px] text-subtle">Repeat Every</dt>
+            <dd class="text-[13px] font-medium text-primary"><%= @escalation_policy.repeat_after_minutes %> min</dd>
           </div>
           <div class="flex justify-between">
-            <dt class="text-[13px]" style="color: #6B6760;">Max Repeats</dt>
-            <dd class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @escalation_policy.max_repeats || 'Unlimited' %></dd>
+            <dt class="text-[13px] text-subtle">Max Repeats</dt>
+            <dd class="text-[13px] font-medium text-primary"><%= @escalation_policy.max_repeats || 'Unlimited' %></dd>
           </div>
         <% end %>
         <div class="flex justify-between">
-          <dt class="text-[13px]" style="color: #6B6760;">Created</dt>
-          <dd class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @escalation_policy.created_at.strftime('%Y-%m-%d') %></dd>
+          <dt class="text-[13px] text-subtle">Created</dt>
+          <dd class="text-[13px] font-medium text-primary"><%= @escalation_policy.created_at.strftime('%Y-%m-%d') %></dd>
         </div>
       </dl>
     </div>
 
-    <div class="rounded-xl px-5 py-4" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
-      <h3 class="text-[13px] font-medium mb-3" style="color: #8B8780;">Linked Rules</h3>
+    <div class="rounded-xl px-5 py-4 border border-theme bg-surface">
+      <h3 class="text-[13px] font-medium mb-3 text-muted">Linked Rules</h3>
       <% if @linked_rules.any? %>
         <ul class="space-y-2">
           <% @linked_rules.each do |rule| %>
             <li>
-              <%= link_to dashboard_project_rule_path(@project, rule), class: "flex items-center gap-2 text-[13px] hover:underline", style: "color: #F97316;" do %>
-                <span class="w-1.5 h-1.5 rounded-full" style="background: <%= rule.enabled ? '#16A34A' : '#C4C0B8' %>;"></span>
+              <%= link_to dashboard_project_rule_path(@project, rule), class: "flex items-center gap-2 text-[13px] hover:underline", style: "color: var(--color-signal);" do %>
+                <span class="w-1.5 h-1.5 rounded-full" style="background: <%= rule.enabled ? 'var(--color-success-dot)' : 'var(--color-icon-muted)' %>;"></span>
                 <%= rule.name %>
               <% end %>
             </li>
           <% end %>
         </ul>
       <% else %>
-        <p class="text-[13px]" style="color: #8B8780;">No rules using this policy</p>
+        <p class="text-[13px] text-muted">No rules using this policy</p>
       <% end %>
     </div>
   </div>

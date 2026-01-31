@@ -3,18 +3,18 @@
   <div class="flex items-center justify-between">
     <div>
       <div class="flex items-center gap-2 mb-1">
-        <%= link_to "Incidents", dashboard_project_incidents_path(@project), class: "text-[13px]", style: "color: #8B8780;" %>
-        <span style="color: #C4C0B8;">/</span>
+        <%= link_to "Incidents", dashboard_project_incidents_path(@project), class: "text-[13px] text-muted" %>
+        <span class="text-muted">/</span>
       </div>
-      <h1 class="text-[24px] font-semibold" style="color: #1A1A1A;"><%= @incident.title %></h1>
+      <h1 class="text-[24px] font-semibold text-primary"><%= @incident.title %></h1>
     </div>
 
     <div class="flex items-center gap-2">
       <% if @incident.status == 'triggered' %>
-        <%= button_to "Acknowledge", acknowledge_dashboard_project_incident_path(@project, @incident), method: :post, class: "px-4 py-2 text-[13px] font-medium rounded-lg cursor-pointer transition-colors", style: "background: #F0EFED; color: #6B6760;" %>
+        <%= button_to "Acknowledge", acknowledge_dashboard_project_incident_path(@project, @incident), method: :post, class: "px-4 py-2 text-[13px] font-medium rounded-lg cursor-pointer transition-colors btn-theme-secondary" %>
       <% end %>
       <% if @incident.status != 'resolved' %>
-        <%= button_to "Resolve", resolve_dashboard_project_incident_path(@project, @incident), method: :post, class: "px-4 py-2 text-[13px] font-medium rounded-lg cursor-pointer transition-colors", style: "background: #16A34A; color: #FFFFFE;" %>
+        <%= button_to "Resolve", resolve_dashboard_project_incident_path(@project, @incident), method: :post, class: "px-4 py-2 text-[13px] font-medium rounded-lg cursor-pointer transition-colors bg-success text-white" %>
       <% end %>
     </div>
   </div>
@@ -23,110 +23,110 @@
   <div class="flex items-center gap-4">
     <% case @incident.status %>
     <% when 'triggered' %>
-      <span class="flex items-center gap-2 px-3 py-1.5 rounded-full" style="background: #FEE2E2; color: #991B1B;">
-        <span class="w-2 h-2 rounded-full animate-pulse" style="background: #DC2626;"></span>
+      <span class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-error text-error">
+        <span class="w-2 h-2 rounded-full animate-pulse" style="background: var(--color-error-dot);"></span>
         <span class="text-[13px] font-medium">Triggered</span>
       </span>
     <% when 'acknowledged' %>
-      <span class="flex items-center gap-2 px-3 py-1.5 rounded-full" style="background: #FEF3C7; color: #92400E;">
-        <span class="w-2 h-2 rounded-full" style="background: #F97316;"></span>
+      <span class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-warning text-warning">
+        <span class="w-2 h-2 rounded-full" style="background: var(--color-warning-orange-border);"></span>
         <span class="text-[13px] font-medium">Acknowledged</span>
       </span>
     <% else %>
-      <span class="flex items-center gap-2 px-3 py-1.5 rounded-full" style="background: #DCFCE7; color: #166534;">
-        <span class="w-2 h-2 rounded-full" style="background: #16A34A;"></span>
+      <span class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-success text-success">
+        <span class="w-2 h-2 rounded-full" style="background: var(--color-success-dot);"></span>
         <span class="text-[13px] font-medium">Resolved</span>
       </span>
     <% end %>
 
     <% case @incident.severity %>
     <% when 'critical' %>
-      <span class="px-3 py-1.5 text-[13px] font-medium rounded-full" style="background: #FEE2E2; color: #991B1B;">Critical</span>
+      <span class="px-3 py-1.5 text-[13px] font-medium rounded-full bg-error text-error">Critical</span>
     <% when 'warning' %>
-      <span class="px-3 py-1.5 text-[13px] font-medium rounded-full" style="background: #FEF3C7; color: #92400E;">Warning</span>
+      <span class="px-3 py-1.5 text-[13px] font-medium rounded-full bg-warning text-warning">Warning</span>
     <% else %>
-      <span class="px-3 py-1.5 text-[13px] font-medium rounded-full" style="background: #E0E7FF; color: #3730A3;">Info</span>
+      <span class="px-3 py-1.5 text-[13px] font-medium rounded-full bg-info text-info">Info</span>
     <% end %>
   </div>
 
   <!-- Details -->
   <div class="grid grid-cols-2 gap-6">
-    <div class="rounded-xl px-5 py-4" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
-      <h3 class="text-[13px] font-medium mb-3" style="color: #8B8780;">Incident Details</h3>
+    <div class="rounded-xl px-5 py-4 border border-theme bg-surface">
+      <h3 class="text-[13px] font-medium mb-3 text-muted">Incident Details</h3>
       <dl class="space-y-2">
         <div class="flex justify-between">
-          <dt class="text-[13px]" style="color: #6B6760;">Triggered</dt>
-          <dd class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @incident.triggered_at&.strftime('%Y-%m-%d %H:%M:%S') %></dd>
+          <dt class="text-[13px] text-subtle">Triggered</dt>
+          <dd class="text-[13px] font-medium text-primary"><%= @incident.triggered_at&.strftime('%Y-%m-%d %H:%M:%S') %></dd>
         </div>
         <% if @incident.acknowledged_at %>
           <div class="flex justify-between">
-            <dt class="text-[13px]" style="color: #6B6760;">Acknowledged</dt>
-            <dd class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @incident.acknowledged_at.strftime('%Y-%m-%d %H:%M:%S') %></dd>
+            <dt class="text-[13px] text-subtle">Acknowledged</dt>
+            <dd class="text-[13px] font-medium text-primary"><%= @incident.acknowledged_at.strftime('%Y-%m-%d %H:%M:%S') %></dd>
           </div>
           <div class="flex justify-between">
-            <dt class="text-[13px]" style="color: #6B6760;">Acknowledged By</dt>
-            <dd class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @incident.acknowledged_by %></dd>
+            <dt class="text-[13px] text-subtle">Acknowledged By</dt>
+            <dd class="text-[13px] font-medium text-primary"><%= @incident.acknowledged_by %></dd>
           </div>
         <% end %>
         <% if @incident.resolved_at %>
           <div class="flex justify-between">
-            <dt class="text-[13px]" style="color: #6B6760;">Resolved</dt>
-            <dd class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @incident.resolved_at.strftime('%Y-%m-%d %H:%M:%S') %></dd>
+            <dt class="text-[13px] text-subtle">Resolved</dt>
+            <dd class="text-[13px] font-medium text-primary"><%= @incident.resolved_at.strftime('%Y-%m-%d %H:%M:%S') %></dd>
           </div>
           <div class="flex justify-between">
-            <dt class="text-[13px]" style="color: #6B6760;">Resolved By</dt>
-            <dd class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @incident.resolved_by %></dd>
+            <dt class="text-[13px] text-subtle">Resolved By</dt>
+            <dd class="text-[13px] font-medium text-primary"><%= @incident.resolved_by %></dd>
           </div>
         <% end %>
         <div class="flex justify-between">
-          <dt class="text-[13px]" style="color: #6B6760;">Alerts</dt>
-          <dd class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @incident.alerts.count %></dd>
+          <dt class="text-[13px] text-subtle">Alerts</dt>
+          <dd class="text-[13px] font-medium text-primary"><%= @incident.alerts.count %></dd>
         </div>
       </dl>
     </div>
 
-    <div class="rounded-xl px-5 py-4" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
-      <h3 class="text-[13px] font-medium mb-3" style="color: #8B8780;">Affected Services</h3>
+    <div class="rounded-xl px-5 py-4 border border-theme bg-surface">
+      <h3 class="text-[13px] font-medium mb-3 text-muted">Affected Services</h3>
       <% if @incident.affected_services.present? %>
         <div class="flex flex-wrap gap-2">
           <% @incident.affected_services.each do |service| %>
-            <span class="px-2 py-1 text-[12px] rounded" style="background: #F0EFED; color: #6B6760;">
+            <span class="px-2 py-1 text-[12px] rounded" style="background: var(--color-border-light); color: var(--color-text-subtle);">
               <%= service %>
             </span>
           <% end %>
         </div>
       <% else %>
-        <p class="text-[13px]" style="color: #8B8780;">No services tagged</p>
+        <p class="text-[13px] text-muted">No services tagged</p>
       <% end %>
     </div>
   </div>
 
   <!-- Resolution note -->
   <% if @incident.resolution_note.present? %>
-    <div class="rounded-xl px-5 py-4" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
-      <h3 class="text-[13px] font-medium mb-2" style="color: #8B8780;">Resolution Note</h3>
-      <p class="text-[14px]" style="color: #1A1A1A;"><%= @incident.resolution_note %></p>
+    <div class="rounded-xl px-5 py-4 border border-theme bg-surface">
+      <h3 class="text-[13px] font-medium mb-2 text-muted">Resolution Note</h3>
+      <p class="text-[14px] text-primary"><%= @incident.resolution_note %></p>
     </div>
   <% end %>
 
   <!-- Related Alerts -->
-  <div class="rounded-xl overflow-hidden" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
-    <div class="px-5 py-3" style="border-bottom: 1px solid #F0EFED;">
-      <h3 class="text-[13px] font-medium" style="color: #8B8780;">Related Alerts</h3>
+  <div class="rounded-xl overflow-hidden border border-theme bg-surface">
+    <div class="px-5 py-3 border-b border-light">
+      <h3 class="text-[13px] font-medium text-muted">Related Alerts</h3>
     </div>
     <% @incident.alerts.each_with_index do |alert, index| %>
-      <%= link_to dashboard_project_alert_path(@project, alert), class: "block px-5 py-3 transition-colors hover:bg-gray-50", style: index > 0 ? "border-top: 1px solid #F0EFED;" : "" do %>
+      <%= link_to dashboard_project_alert_path(@project, alert), class: "block px-5 py-3 transition-colors hover:bg-surface-hover #{index > 0 ? 'border-t border-light' : ''}" do %>
         <div class="flex items-center gap-3">
           <% case alert.state %>
           <% when 'firing' %>
-            <span class="w-2 h-2 rounded-full" style="background: #DC2626;"></span>
+            <span class="w-2 h-2 rounded-full" style="background: var(--color-error-dot);"></span>
           <% when 'pending' %>
-            <span class="w-2 h-2 rounded-full" style="background: #F97316;"></span>
+            <span class="w-2 h-2 rounded-full" style="background: var(--color-warning-orange-border);"></span>
           <% else %>
-            <span class="w-2 h-2 rounded-full" style="background: #16A34A;"></span>
+            <span class="w-2 h-2 rounded-full" style="background: var(--color-success-dot);"></span>
           <% end %>
-          <span class="text-[13px]" style="color: #1A1A1A;"><%= alert.alert_rule&.name || 'Unknown' %></span>
-          <span class="text-[12px]" style="color: #8B8780;">Value: <%= alert.current_value %></span>
+          <span class="text-[13px] text-primary"><%= alert.alert_rule&.name || 'Unknown' %></span>
+          <span class="text-[12px] text-muted">Value: <%= alert.current_value %></span>
         </div>
       <% end %>
     <% end %>
@@ -134,15 +134,15 @@
 
   <!-- Timeline -->
   <% if @incident.timeline.present? %>
-    <div class="rounded-xl px-5 py-4" style="border: 1px solid #E8E5E0; background: #FFFFFE;">
-      <h3 class="text-[13px] font-medium mb-4" style="color: #8B8780;">Timeline</h3>
+    <div class="rounded-xl px-5 py-4 border border-theme bg-surface">
+      <h3 class="text-[13px] font-medium mb-4 text-muted">Timeline</h3>
       <div class="space-y-3">
         <% @incident.timeline.each do |event| %>
           <div class="flex items-start gap-3">
-            <span class="w-2 h-2 rounded-full mt-1.5" style="background: #C4C0B8;"></span>
+            <span class="w-2 h-2 rounded-full mt-1.5" style="background: var(--color-icon-muted);"></span>
             <div>
-              <p class="text-[13px]" style="color: #1A1A1A;"><%= event['message'] %></p>
-              <p class="text-[12px]" style="color: #8B8780;"><%= Time.parse(event['timestamp']).strftime('%Y-%m-%d %H:%M:%S') rescue event['timestamp'] %></p>
+              <p class="text-[13px] text-primary"><%= event['message'] %></p>
+              <p class="text-[12px] text-muted"><%= Time.parse(event['timestamp']).strftime('%Y-%m-%d %H:%M:%S') rescue event['timestamp'] %></p>
             </div>
           </div>
         <% end %>
