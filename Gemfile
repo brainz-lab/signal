@@ -61,7 +61,7 @@ gem "http", "~> 5.0"
 gem "rack-cors"
 
 # BrainzLab SDK
-gem "brainzlab", "~> 0.1.11"
+gem "brainzlab", "~> 0.1.12"
 
 # BrainzLab UI - Unified design system with Phlex components
 gem "brainzlab-ui", "~> 0.1.0"
