@@ -1,13 +1,10 @@
-<div class="space-y-6">
+<div class="space-y-8">
   <div class="flex items-center justify-between">
-    <div>
-      <h1 class="text-[24px] font-semibold tracking-tight text-primary">Projects</h1>
-      <p class="text-[14px] mt-1 text-muted">Manage your monitoring projects and configurations</p>
-    </div>
+    <h1 class="text-[22px] font-semibold tracking-tight text-primary">Projects</h1>
     <% unless Rails.env.production? %>
-      <%= link_to new_dashboard_project_path, class: "inline-flex items-center gap-2 px-4 py-2.5 text-[13px] font-medium rounded-xl transition-all btn-primary text-white" do %>
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+      <%= link_to new_dashboard_project_path, class: "inline-flex items-center gap-2 px-4 py-2 text-[13px] font-medium rounded-lg transition-colors btn-primary text-white" do %>
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M7 1v12M1 7h12"/>
         </svg>
         New Project
       <% end %>
@@ -15,62 +12,51 @@
   </div>
 
   <% if @projects.any? %>
-    <div class="rounded-2xl overflow-hidden shadow-card border border-theme bg-surface">
-      <% @projects.each_with_index do |project, index| %>
-        <%= link_to dashboard_project_alerts_path(project), class: "block px-5 py-4 transition-all card-hover group #{index > 0 ? 'border-t border-light' : ''}" do %>
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-4">
-              <div class="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-semibold shadow-sm" style="background: var(--gradient-warning); color: var(--color-signal);">
-                <%= project.name.first.upcase %>
-              </div>
-              <div>
-                <h3 class="text-[15px] font-medium group-hover:text-signal transition-colors text-primary"><%= project.name %></h3>
-                <p class="text-[13px] mt-0.5 text-muted">
-                  <span class="inline-flex items-center gap-1">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+    <div class="space-y-2">
+      <% @projects.each do |project| %>
+        <%= link_to dashboard_project_alerts_path(project), class: "block group" do %>
+          <div class="px-5 py-4 rounded-xl transition-all dm-row">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-lg flex items-center justify-center text-sm font-semibold" style="background: rgba(245, 158, 11, 0.15); color: var(--color-signal);">
+                  <%= project.name.first.upcase %>
+                </div>
+                <div class="space-y-0.5">
+                  <h3 class="text-[15px] font-medium group-hover:underline text-primary"><%= project.name %></h3>
+                  <p class="text-[13px] text-muted">
                     <%= project.alert_rules.count %> rules
-                  </span>
-                  <% firing_count = project.alerts.where(state: 'firing').count %>
-                  <% if firing_count > 0 %>
-                    <span class="inline-flex items-center gap-1 ml-2 px-2 py-0.5 rounded-full text-[11px] font-medium bg-error text-error">
-                      <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background: var(--color-error-dot);"></span>
-                      <%= firing_count %> firing
-                    </span>
-                  <% else %>
-                    <span class="inline-flex items-center gap-1 ml-2 px-2 py-0.5 rounded-full text-[11px] font-medium bg-success text-success">
-                      All clear
-                    </span>
-                  <% end %>
-                </p>
+                    <% firing_count = project.alerts.where(state: 'firing').count %>
+                    <% if firing_count > 0 %>
+                      <span class="inline-flex items-center gap-1 ml-2 px-2 py-0.5 rounded text-[11px] font-medium" style="background: var(--dm-error-bg); color: var(--dm-error-text);">
+                        <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background: var(--dm-error);"></span>
+                        <%= firing_count %> firing
+                      </span>
+                    <% else %>
+                      <span class="inline-flex items-center gap-1 ml-2 px-2 py-0.5 rounded text-[11px] font-medium" style="background: var(--dm-success-bg); color: var(--dm-success-text);">
+                        All clear
+                      </span>
+                    <% end %>
+                  </p>
+                </div>
               </div>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="text-muted">
+                <path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
             </div>
-            <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" style="color: var(--color-icon-muted);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"/>
-            </svg>
           </div>
         <% end %>
       <% end %>
     </div>
   <% else %>
-    <div class="rounded-2xl px-8 py-16 text-center shadow-card border border-theme bg-surface">
-      <div class="w-16 h-16 mx-auto mb-5 rounded-2xl flex items-center justify-center" style="background: var(--gradient-warning);">
-        <svg class="w-8 h-8 text-warning" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
-        </svg>
-      </div>
-      <h3 class="text-[18px] font-semibold mb-2 text-primary">No projects yet</h3>
-      <% if Rails.env.production? %>
-        <p class="text-[14px] mb-6 max-w-sm mx-auto text-muted">Create a project in Platform to get started.</p>
-        <%= link_to "Go to Platform", ENV.fetch("BRAINZLAB_PLATFORM_EXTERNAL_URL", "https://platform.brainzlab.ai"), class: "inline-flex items-center gap-2 px-5 py-2.5 text-[14px] font-medium rounded-xl transition-all btn-primary text-white", target: "_blank" %>
-      <% else %>
-        <p class="text-[14px] mb-6 max-w-sm mx-auto text-muted">Create your first project to start monitoring alerts and incidents.</p>
-        <%= link_to new_dashboard_project_path, class: "inline-flex items-center gap-2 px-5 py-2.5 text-[14px] font-medium rounded-xl transition-all btn-primary text-white" do %>
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-          </svg>
-          Create Project
+    <div class="text-center py-16 rounded-xl dm-surface">
+      <div class="space-y-3">
+        <p class="text-[15px] text-muted">No projects yet</p>
+        <% if Rails.env.production? %>
+          <%= link_to "Go to Platform", ENV.fetch("BRAINZLAB_PLATFORM_EXTERNAL_URL", "https://platform.brainzlab.ai"), class: "text-[14px] font-medium hover:underline", style: "color: var(--color-signal);", target: "_blank" %>
+        <% else %>
+          <%= link_to "Create your first project", new_dashboard_project_path, class: "text-[14px] font-medium hover:underline", style: "color: var(--color-signal);" %>
         <% end %>
-      <% end %>
+      </div>
     </div>
   <% end %>
 </div>
