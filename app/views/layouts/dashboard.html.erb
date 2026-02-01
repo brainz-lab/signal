@@ -78,15 +78,27 @@
     <!-- Sidebar -->
     <aside class="w-64 flex flex-col bg-surface border-r border-theme">
       <div class="p-5 border-b border-theme">
-        <%= link_to dashboard_root_path, class: "flex items-center gap-2.5" do %>
-          <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background: var(--color-signal);">
-            <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2L4 12L12 22L20 12L12 2Z"/>
-              <circle cx="12" cy="12" r="3" fill="white"/>
+        <div class="flex items-center justify-between">
+          <%= link_to dashboard_root_path, class: "flex items-center gap-2.5" do %>
+            <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background: var(--color-signal);">
+              <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2L4 12L12 22L20 12L12 2Z"/>
+                <circle cx="12" cy="12" r="3" fill="white"/>
+              </svg>
+            </div>
+            <span class="font-semibold text-primary">Signal</span>
+          <% end %>
+          <button
+            onclick="toggleDarkMode()"
+            data-dark-mode-target="icon"
+            class="p-2 rounded-lg text-subtle hover:text-primary hover:bg-surface-hover transition"
+            aria-label="Toggle dark mode"
+            title="Toggle dark mode">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
             </svg>
-          </div>
-          <span class="font-semibold text-primary">Signal</span>
-        <% end %>
+          </button>
+        </div>
       </div>
 
       <% if @project&.persisted? %>
@@ -151,24 +163,8 @@
         </nav>
       <% end %>
 
-      <!-- Dark Mode Toggle & User Menu -->
+      <!-- User Menu -->
       <div class="border-t border-theme">
-        <!-- Dark Mode Toggle -->
-        <div class="px-4 py-3 border-b border-theme">
-          <button
-            type="button"
-            onclick="toggleDarkMode()"
-            class="flex items-center gap-3 w-full px-2 py-1.5 rounded-lg transition text-subtle hover:text-primary hover:bg-surface-hover"
-          >
-            <span data-dark-mode-target="icon" class="w-5 h-5 flex items-center justify-center">
-              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-              </svg>
-            </span>
-            <span class="text-sm font-medium" data-dark-mode-target="label">Dark Mode</span>
-          </button>
-        </div>
-
         <% if defined?(current_user) && current_user %>
           <div class="p-4">
             <div class="flex items-center gap-3">
