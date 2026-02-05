@@ -86,7 +86,7 @@ group :test do
   # HTTP stubbing for tests
   gem "webmock", "~> 3.0"
   # Mocking and stubbing
-  gem "mocha", "~> 2.0"
+  gem "mocha", "~> 3.0"
 end
 
 group :development do
