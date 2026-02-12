@@ -75,4 +75,5 @@ Rails.application.configure do
   config.hosts << "signal:3000"
   config.hosts << ".localhost"
   config.hosts << "localhost"
+  config.hosts << ".brainzlab.local"
 end
