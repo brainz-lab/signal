@@ -212,7 +212,7 @@ GEM
     mini_mime (1.1.5)
     minitest (6.0.1)
       prism (~> 1.5)
-    mocha (2.8.2)
+    mocha (3.0.2)
       ruby2_keywords (>= 0.0.5)
     msgpack (1.8.0)
     net-imap (0.6.2)
@@ -477,7 +477,7 @@ DEPENDENCIES
   jbuilder
   kamal
   lefthook
-  mocha (~> 2.0)
+  mocha (~> 3.0)
   pg (~> 1.1)
   phlex-rails (~> 2.0)
   propshaft
