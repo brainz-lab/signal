@@ -34,8 +34,9 @@ RUN bundle config set frozen false && \
 # Copy application code
 COPY . .
 
-# Precompile bootsnap
+# Precompile bootsnap and assets
 RUN bundle exec bootsnap precompile app/ lib/
+RUN SECRET_KEY_BASE_DUMMY=1 bundle exec rails assets:precompile
 
 # Final stage
 FROM base
