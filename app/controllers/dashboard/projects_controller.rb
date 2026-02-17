@@ -17,7 +17,7 @@ module Dashboard
         )
         @projects = [ project ]
       else
-        redirect_to dashboard_new_project_path
+        redirect_to new_dashboard_project_path
       end
     end
 
