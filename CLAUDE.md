@@ -213,3 +213,38 @@ kamal app logs -f         # View logs
 kamal lock release        # Release stuck lock
 kamal secrets print       # Print evaluated secrets
 ```
+
+## SSO Environment Variables
+
+Signal requires Platform SSO for dashboard authentication:
+
+```bash
+# Required in .env
+BRAINZLAB_PLATFORM_URL=http://localhost:3000           # Server-to-server SSO token validation
+BRAINZLAB_PLATFORM_EXTERNAL_URL=http://localhost:3000   # Browser redirect for login
+```
+
+Without these, users cannot log in to the Signal dashboard.
+
+## SDK API Quick Reference
+
+```ruby
+# Alert with message and severity
+BrainzLab::Signal.alert("high_error_rate", "Error rate above 5%",
+  severity: :critical,           # :info, :warning, :error, :critical
+  channels: ["slack", "email"],  # optional: target specific channels
+  data: { rate: 5.2 }           # optional: additional context
+)
+
+# Notify specific channels directly
+BrainzLab::Signal.notify("slack", "Deploy completed",
+  title: "Production Deploy",
+  data: { version: "1.2.3" }
+)
+
+# Trigger a predefined alert rule
+BrainzLab::Signal.trigger("high_error_rate", error_count: 150)
+
+# Test alert (verify SDK + channel configuration)
+BrainzLab::Signal.test!
+```

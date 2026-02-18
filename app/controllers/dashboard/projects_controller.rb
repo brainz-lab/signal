@@ -8,8 +8,15 @@ module Dashboard
       if Rails.env.development?
         # In dev, show all projects (including archived for debugging)
         @projects = Project.active.order(created_at: :desc)
+      elsif session[:platform_project_id]
+        # SSO flow - find or create project from session
+        project = Project.find_or_create_for_platform!(
+          platform_project_id: session[:platform_project_id],
+          name: session[:project_slug] || "Project"
+        )
+        redirect_to dashboard_project_alerts_path(project)
       elsif @api_key_info && @api_key_info[:project_id]
-        # In production, show only the project for this API key
+        # API key flow
         project = Project.find_or_create_for_platform!(
           platform_project_id: @api_key_info[:project_id],
           name: @api_key_info[:project_name],
@@ -17,7 +24,7 @@ module Dashboard
         )
         @projects = [ project ]
       else
-        redirect_to dashboard_new_project_path
+        redirect_to new_dashboard_project_path
       end
     end
 
@@ -102,7 +109,7 @@ module Dashboard
       return unless Rails.env.production?
 
       platform_url = ENV.fetch("BRAINZLAB_PLATFORM_EXTERNAL_URL", "https://platform.brainzlab.ai")
-      redirect_to dashboard_projects_path, alert: "Projects are managed in Platform. Visit #{platform_url} to create new projects."
+      redirect_to platform_url, allow_other_host: true
     end
   end
 end
