@@ -65,7 +65,7 @@ gem "brainzlab", "~> 0.1.12"
 
 # BrainzLab UI - Unified design system with Phlex components
 if ENV["BUNDLE_DEPLOYMENT"] == "1"
-  gem "fluyenta-ui", "~> 0.2.0"
+  gem "fluyenta-ui", "~> 0.1.3"
 elsif File.exist?("/fluyenta-ui")
   gem "fluyenta-ui", path: "/fluyenta-ui"
 elsif File.exist?(File.expand_path("../fluyenta-ui", __dir__))
