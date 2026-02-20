@@ -2,30 +2,30 @@
   <!-- Header -->
   <div class="flex items-center justify-between">
     <div>
-      <h1 class="text-[20px] font-semibold text-primary">On-Call Schedules</h1>
+      <h1 class="text-[20px] font-semibold dm-text">On-Call Schedules</h1>
     </div>
-    <%= link_to new_dashboard_project_on_call_schedule_path(@project), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-colors btn-theme-primary" do %>
+    <%= link_to new_dashboard_project_on_call_schedule_path(@project), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-colors dm-btn-primary" do %>
       New Schedule
     <% end %>
   </div>
 
   <!-- Stats -->
   <div class="grid grid-cols-2 gap-4">
-    <div class="rounded-xl px-5 py-4 border border-theme bg-surface">
-      <p class="text-[12px] font-medium uppercase tracking-wide text-muted">Total Schedules</p>
-      <p class="text-[28px] font-semibold mt-1 text-primary"><%= @total_count %></p>
+    <div class="dm-card px-5 py-4">
+      <p class="text-[12px] font-medium uppercase tracking-wide dm-text-muted">Total Schedules</p>
+      <p class="text-[28px] font-semibold mt-1 dm-text"><%= @total_count %></p>
     </div>
-    <div class="rounded-xl px-5 py-4 border border-theme bg-surface">
-      <p class="text-[12px] font-medium uppercase tracking-wide text-muted">Enabled</p>
+    <div class="dm-card px-5 py-4">
+      <p class="text-[12px] font-medium uppercase tracking-wide dm-text-muted">Enabled</p>
       <p class="text-[28px] font-semibold mt-1 text-success"><%= @enabled_count %></p>
     </div>
   </div>
 
   <!-- Schedules List -->
   <% if @schedules.any? %>
-    <div class="rounded-xl overflow-hidden border border-theme bg-surface">
+    <div class="dm-card overflow-hidden">
       <% @schedules.each_with_index do |schedule, index| %>
-        <%= link_to dashboard_project_on_call_schedule_path(@project, schedule), class: "block px-5 py-4 transition-colors hover:bg-surface-hover #{index > 0 ? 'border-t border-light' : ''}" do %>
+        <%= link_to dashboard_project_on_call_schedule_path(@project, schedule), class: "block px-5 py-4 transition-colors dm-surface-hover #{index > 0 ? 'border-t dm-border-light' : ''}" do %>
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-3">
               <!-- Status indicator -->
@@ -37,12 +37,12 @@
 
               <div>
                 <div class="flex items-center gap-2">
-                  <h3 class="text-[14px] font-medium text-primary"><%= schedule.name %></h3>
+                  <h3 class="text-[14px] font-medium dm-text"><%= schedule.name %></h3>
                   <span class="px-2 py-0.5 text-[11px] font-medium uppercase rounded-full" style="background: var(--color-border-light); color: var(--color-text-subtle);"><%= schedule.schedule_type %></span>
                 </div>
-                <p class="text-[13px] mt-0.5 text-muted">
+                <p class="text-[13px] mt-0.5 dm-text-muted">
                   <% if schedule.current_on_call.present? %>
-                    Currently: <span class="text-primary"><%= schedule.current_on_call %></span>
+                    Currently: <span class="dm-text"><%= schedule.current_on_call %></span>
                   <% else %>
                     No one currently on call
                   <% end %>
@@ -58,15 +58,15 @@
       <% end %>
     </div>
   <% else %>
-    <div class="rounded-xl px-8 py-16 text-center border border-theme bg-surface">
+    <div class="dm-card px-8 py-16 text-center">
       <svg class="mx-auto mb-4" width="48" height="48" viewBox="0 0 48 48" fill="none">
         <rect x="10" y="10" width="28" height="28" rx="2" stroke="currentColor" stroke-width="2" style="color: var(--color-icon-muted);"/>
         <path d="M10 18H38" stroke="currentColor" stroke-width="2" style="color: var(--color-icon-muted);"/>
         <path d="M18 10V14M30 10V14" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color: var(--color-icon-muted);"/>
       </svg>
-      <h3 class="text-[16px] font-medium mb-2 text-primary">No on-call schedules yet</h3>
-      <p class="text-[14px] mb-6 text-muted">Create an on-call schedule to manage who receives alerts.</p>
-      <%= link_to new_dashboard_project_on_call_schedule_path(@project), class: "inline-block px-4 py-2 text-[13px] font-medium rounded-lg transition-colors btn-theme-primary" do %>
+      <h3 class="text-[16px] font-medium mb-2 dm-text">No on-call schedules yet</h3>
+      <p class="text-[14px] mb-6 dm-text-muted">Create an on-call schedule to manage who receives alerts.</p>
+      <%= link_to new_dashboard_project_on_call_schedule_path(@project), class: "inline-block px-4 py-2 text-[13px] font-medium rounded-lg transition-colors dm-btn-primary" do %>
         Create Schedule
       <% end %>
     </div>

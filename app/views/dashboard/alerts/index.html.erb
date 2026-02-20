@@ -1,13 +1,13 @@
 <div class="space-y-6">
   <!-- Header -->
   <div>
-    <h1 class="text-[24px] font-semibold tracking-tight text-primary">Alerts</h1>
-    <p class="text-[14px] mt-1 text-muted">Monitor and manage active alerts across your project</p>
+    <h1 class="text-[24px] font-semibold tracking-tight dm-text">Alerts</h1>
+    <p class="text-[14px] mt-1 dm-text-muted">Monitor and manage active alerts across your project</p>
   </div>
 
   <!-- Stats -->
   <div class="grid grid-cols-3 gap-4">
-    <div class="rounded-2xl px-5 py-5 shadow-card transition-all hover:shadow-medium border border-theme" style="background: var(--gradient-card-error);">
+    <div class="rounded-2xl px-5 py-5 shadow-card transition-all hover:shadow-medium dm-border" style="background: var(--gradient-card-error);">
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 rounded-xl flex items-center justify-center bg-error">
           <svg class="w-5 h-5 text-error" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -15,12 +15,12 @@
           </svg>
         </div>
         <div>
-          <p class="text-[11px] font-semibold uppercase tracking-wider text-muted">Firing</p>
+          <p class="text-[11px] font-semibold uppercase tracking-wider dm-text-muted">Firing</p>
           <p class="text-[28px] font-bold leading-none mt-1 text-error"><%= @firing_count %></p>
         </div>
       </div>
     </div>
-    <div class="rounded-2xl px-5 py-5 shadow-card transition-all hover:shadow-medium border border-theme" style="background: var(--gradient-card-warning);">
+    <div class="rounded-2xl px-5 py-5 shadow-card transition-all hover:shadow-medium dm-border" style="background: var(--gradient-card-warning);">
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 rounded-xl flex items-center justify-center bg-warning">
           <svg class="w-5 h-5 text-warning" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -28,12 +28,12 @@
           </svg>
         </div>
         <div>
-          <p class="text-[11px] font-semibold uppercase tracking-wider text-muted">Pending</p>
+          <p class="text-[11px] font-semibold uppercase tracking-wider dm-text-muted">Pending</p>
           <p class="text-[28px] font-bold leading-none mt-1 text-warning"><%= @pending_count %></p>
         </div>
       </div>
     </div>
-    <div class="rounded-2xl px-5 py-5 shadow-card transition-all hover:shadow-medium border border-theme" style="background: var(--gradient-card-success);">
+    <div class="rounded-2xl px-5 py-5 shadow-card transition-all hover:shadow-medium dm-border" style="background: var(--gradient-card-success);">
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 rounded-xl flex items-center justify-center bg-success">
           <svg class="w-5 h-5 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -41,7 +41,7 @@
           </svg>
         </div>
         <div>
-          <p class="text-[11px] font-semibold uppercase tracking-wider text-muted">Resolved Today</p>
+          <p class="text-[11px] font-semibold uppercase tracking-wider dm-text-muted">Resolved Today</p>
           <p class="text-[28px] font-bold leading-none mt-1 text-success"><%= @resolved_today %></p>
         </div>
       </div>
@@ -50,17 +50,17 @@
 
   <!-- Filters -->
   <div class="flex items-center gap-2 p-1 rounded-xl w-fit" style="background: var(--color-border-subtle);">
-    <%= link_to "All", dashboard_project_alerts_path(@project), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-all #{params[:state].blank? ? 'shadow-sm bg-surface text-primary' : 'text-subtle hover:bg-surface-hover'}" %>
-    <%= link_to "Firing", dashboard_project_alerts_path(@project, state: 'firing'), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-all #{params[:state] == 'firing' ? 'shadow-sm bg-surface text-error' : 'text-subtle hover:bg-surface-hover'}" %>
-    <%= link_to "Pending", dashboard_project_alerts_path(@project, state: 'pending'), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-all #{params[:state] == 'pending' ? 'shadow-sm bg-surface text-warning' : 'text-subtle hover:bg-surface-hover'}" %>
-    <%= link_to "Resolved", dashboard_project_alerts_path(@project, state: 'resolved'), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-all #{params[:state] == 'resolved' ? 'shadow-sm bg-surface text-success' : 'text-subtle hover:bg-surface-hover'}" %>
+    <%= link_to "All", dashboard_project_alerts_path(@project), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-all #{params[:state].blank? ? 'shadow-sm dm-card dm-text' : 'dm-text-placeholder hover:bg-surface-hover'}" %>
+    <%= link_to "Firing", dashboard_project_alerts_path(@project, state: 'firing'), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-all #{params[:state] == 'firing' ? 'shadow-sm dm-card text-error' : 'dm-text-placeholder hover:bg-surface-hover'}" %>
+    <%= link_to "Pending", dashboard_project_alerts_path(@project, state: 'pending'), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-all #{params[:state] == 'pending' ? 'shadow-sm dm-card text-warning' : 'dm-text-placeholder hover:bg-surface-hover'}" %>
+    <%= link_to "Resolved", dashboard_project_alerts_path(@project, state: 'resolved'), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-all #{params[:state] == 'resolved' ? 'shadow-sm dm-card text-success' : 'dm-text-placeholder hover:bg-surface-hover'}" %>
   </div>
 
   <!-- Alerts List -->
   <% if @alerts.any? %>
-    <div class="rounded-2xl overflow-hidden shadow-card border border-theme bg-surface">
+    <div class="rounded-2xl overflow-hidden shadow-card dm-card">
       <% @alerts.each_with_index do |alert, index| %>
-        <%= link_to dashboard_project_alert_path(@project, alert), class: "block px-5 py-4 transition-all card-hover group #{index > 0 ? 'border-t border-light' : ''}" do %>
+        <%= link_to dashboard_project_alert_path(@project, alert), class: "block px-5 py-4 transition-all dm-surface-hover group #{index > 0 ? 'border-t dm-border-light' : ''}" do %>
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-4">
               <!-- State indicator -->
@@ -81,18 +81,18 @@
 
               <div>
                 <div class="flex items-center gap-2">
-                  <h3 class="text-[14px] font-medium group-hover:text-signal transition-colors text-primary"><%= alert.alert_rule&.name || 'Unknown Rule' %></h3>
+                  <h3 class="text-[14px] font-medium group-hover:text-signal transition-colors dm-text"><%= alert.alert_rule&.name || 'Unknown Rule' %></h3>
                   <!-- Severity badge -->
                   <% case alert.alert_rule&.severity %>
                   <% when 'critical' %>
-                    <span class="px-2 py-0.5 text-[10px] font-semibold uppercase rounded-full bg-error text-error">Critical</span>
+                    <span class="px-2 py-0.5 text-[10px] font-semibold uppercase rounded-full dm-badge-error">Critical</span>
                   <% when 'warning' %>
-                    <span class="px-2 py-0.5 text-[10px] font-semibold uppercase rounded-full bg-warning text-warning">Warning</span>
+                    <span class="px-2 py-0.5 text-[10px] font-semibold uppercase rounded-full dm-badge-warning">Warning</span>
                   <% else %>
-                    <span class="px-2 py-0.5 text-[10px] font-semibold uppercase rounded-full bg-info text-info">Info</span>
+                    <span class="px-2 py-0.5 text-[10px] font-semibold uppercase rounded-full dm-badge-info">Info</span>
                   <% end %>
                 </div>
-                <p class="text-[13px] mt-1 flex items-center gap-2 text-muted">
+                <p class="text-[13px] mt-1 flex items-center gap-2 dm-text-muted">
                   <span class="inline-flex items-center gap-1">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/></svg>
                     <%= alert.current_value %>
@@ -102,7 +102,7 @@
                     <%= time_ago_in_words(alert.started_at) %> ago
                   </span>
                   <% if alert.acknowledged %>
-                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-success text-success">
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium dm-badge-success">
                       <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
                       Ack
                     </span>
@@ -118,14 +118,14 @@
       <% end %>
     </div>
   <% else %>
-    <div class="rounded-2xl px-8 py-16 text-center shadow-card border border-theme bg-surface">
+    <div class="rounded-2xl px-8 py-16 text-center shadow-card dm-card">
       <div class="w-16 h-16 mx-auto mb-5 rounded-2xl flex items-center justify-center" style="background: var(--gradient-success);">
         <svg class="w-8 h-8 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
         </svg>
       </div>
-      <h3 class="text-[18px] font-semibold mb-2 text-primary">All clear</h3>
-      <p class="text-[14px] text-muted">No alerts matching your filters.</p>
+      <h3 class="text-[18px] font-semibold mb-2 dm-text">All clear</h3>
+      <p class="text-[14px] dm-text-muted">No alerts matching your filters.</p>
     </div>
   <% end %>
 </div>

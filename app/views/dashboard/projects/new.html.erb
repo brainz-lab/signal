@@ -3,13 +3,13 @@
     <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-5 shadow-sm" style="background: var(--gradient-signal);">
       <svg width="28" height="28" viewBox="0 0 24 24" fill="white">
         <path d="M12 2L4 12L12 22L20 12L12 2Z"/>
-        <circle cx="12" cy="12" r="3" style="fill: var(--color-signal);"/>
+        <circle cx="12" cy="12" r="3" style="fill: var(--dm-brand);"/>
       </svg>
     </div>
-    <h1 class="text-[24px] font-semibold tracking-tight text-primary">
+    <h1 class="text-[24px] font-semibold tracking-tight dm-text">
       <%= Rails.env.development? ? 'Create a Project' : 'Connect a Project' %>
     </h1>
-    <p class="mt-2 text-[15px] text-subtle">
+    <p class="mt-2 text-[15px] dm-text-placeholder">
       <%= Rails.env.development? ? 'Create a new project to start monitoring alerts' : 'Enter your API key to start monitoring alerts' %>
     </p>
   </div>
@@ -21,22 +21,22 @@
     </div>
   <% end %>
 
-  <div class="rounded-2xl px-6 py-6 shadow-card border border-theme bg-surface">
+  <div class="rounded-2xl px-6 py-6 shadow-card dm-card">
     <% if Rails.env.development? %>
       <%= form_with model: @project, url: dashboard_projects_path, method: :post, class: "space-y-5" do |f| %>
         <div>
-          <label for="project_name" class="block text-[13px] font-medium mb-2 text-secondary">Project Name</label>
+          <label for="project_name" class="block text-[13px] font-medium mb-2 dm-text-secondary">Project Name</label>
           <input type="text" name="project[name]" id="project_name"
                  value="<%= @project.name %>"
                  placeholder="My App"
                  autocomplete="off"
-                 class="w-full px-4 py-3 rounded-xl text-[14px] transition-all focus:outline-none focus:ring-2 focus:ring-signal input-theme">
+                 class="w-full px-4 py-3 rounded-xl text-[14px] transition-all focus:outline-none dm-input">
         </div>
 
         <div>
-          <label for="project_environment" class="block text-[13px] font-medium mb-2 text-secondary">Environment</label>
+          <label for="project_environment" class="block text-[13px] font-medium mb-2 dm-text-secondary">Environment</label>
           <select name="project[environment]" id="project_environment"
-                  class="w-full px-4 py-3 rounded-xl text-[14px] transition-all focus:outline-none focus:ring-2 focus:ring-signal input-theme">
+                  class="w-full px-4 py-3 rounded-xl text-[14px] transition-all focus:outline-none dm-input">
             <option value="development" <%= 'selected' if @project.environment == 'development' %>>Development</option>
             <option value="staging" <%= 'selected' if @project.environment == 'staging' %>>Staging</option>
             <option value="production" <%= 'selected' if @project.environment == 'production' %>>Production</option>
@@ -44,34 +44,34 @@
         </div>
 
         <button type="submit"
-                class="w-full px-4 py-3 text-[14px] font-medium rounded-xl transition-all btn-primary text-white">
+                class="w-full px-4 py-3 text-[14px] font-medium rounded-xl transition-all dm-btn-primary">
           Create Project
         </button>
       <% end %>
     <% else %>
       <%= form_with url: dashboard_projects_path, method: :post, class: "space-y-5" do |f| %>
         <div>
-          <label for="api_key" class="block text-[13px] font-medium mb-2 text-secondary">API Key</label>
+          <label for="api_key" class="block text-[13px] font-medium mb-2 dm-text-secondary">API Key</label>
           <input type="text" name="api_key" id="api_key"
                  placeholder="sig_..."
                  autocomplete="off"
-                 class="w-full px-4 py-3 rounded-xl text-[14px] transition-all focus:outline-none focus:ring-2 focus:ring-signal input-theme">
-          <p class="mt-2 text-[12px] text-muted">
+                 class="w-full px-4 py-3 rounded-xl text-[14px] transition-all focus:outline-none dm-input">
+          <p class="mt-2 text-[12px] dm-text-muted">
             Get your API key from the
-            <a href="https://platform.brainzlab.ai" target="_blank" class="font-medium underline-offset-2 hover:underline transition-colors" style="color: var(--color-signal);">Brainz Lab Platform</a>
+            <a href="https://platform.brainzlab.ai" target="_blank" class="font-medium underline-offset-2 hover:underline transition-colors" style="color: var(--dm-brand);">Brainz Lab Platform</a>
           </p>
         </div>
 
         <button type="submit"
-                class="w-full px-4 py-3 text-[14px] font-medium rounded-xl transition-all btn-primary text-white">
+                class="w-full px-4 py-3 text-[14px] font-medium rounded-xl transition-all dm-btn-primary">
           Connect Project
         </button>
       <% end %>
 
-      <div class="mt-6 pt-6 text-center border-t border-light">
-        <p class="text-[13px] text-muted">
+      <div class="mt-6 pt-6 text-center border-t dm-border-light">
+        <p class="text-[13px] dm-text-muted">
           Don't have an account?
-          <a href="https://platform.brainzlab.ai/signup" target="_blank" class="font-medium underline-offset-2 hover:underline transition-colors" style="color: var(--color-signal);">Sign up for free</a>
+          <a href="https://platform.brainzlab.ai/signup" target="_blank" class="font-medium underline-offset-2 hover:underline transition-colors" style="color: var(--dm-brand);">Sign up for free</a>
         </p>
       </div>
     <% end %>

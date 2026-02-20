@@ -12,8 +12,8 @@ RUN apt-get update -qq && \
     ln -s /usr/lib/$(uname -m)-linux-gnu/libjemalloc.so.2 /usr/local/lib/libjemalloc.so && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
+# NOTE: BUNDLE_DEPLOYMENT intentionally NOT set here (set in final stage only)
 ENV RAILS_ENV="production" \
-    BUNDLE_DEPLOYMENT="1" \
     BUNDLE_PATH="/usr/local/bundle" \
     BUNDLE_WITHOUT="development:test" \
     LD_PRELOAD="/usr/local/lib/libjemalloc.so"
@@ -27,12 +27,26 @@ RUN apt-get update -qq && \
 
 # Install gems
 COPY Gemfile Gemfile.lock ./
-RUN bundle config set frozen false && \
+
+RUN --mount=type=secret,id=bundle_github \
+    export BUNDLE_RUBYGEMS__PKG__GITHUB__COM=$(cat /run/secrets/bundle_github) && \
+    bundle lock --update fluyenta-ui && \
+    cp Gemfile.lock /tmp/Gemfile.lock.resolved && \
     bundle install && \
     rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git
 
 # Copy application code
 COPY . .
+
+# Restore resolved Gemfile.lock (COPY . . overwrites with the PATH-based local one)
+RUN cp /tmp/Gemfile.lock.resolved Gemfile.lock
+
+# Fix brainzlab_ui symlink: COPY copies a broken absolute symlink from dev,
+# replace it with one pointing to the installed fluyenta-ui gem stylesheets
+RUN ln -sf "$(bundle show fluyenta-ui)/app/assets/stylesheets/brainzlab_ui" app/assets/tailwind/brainzlab_ui
+
+# Create root symlink for fluyenta-ui assets
+RUN ln -s "$(bundle show fluyenta-ui)" /fluyenta-ui-gem
 
 # Precompile bootsnap and assets
 RUN bundle exec bootsnap precompile app/ lib/
@@ -40,6 +54,8 @@ RUN SECRET_KEY_BASE_DUMMY=1 bundle exec rails assets:precompile
 
 # Final stage
 FROM base
+
+ENV BUNDLE_DEPLOYMENT="1"
 
 RUN groupadd --system --gid 1000 rails && \
     useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash

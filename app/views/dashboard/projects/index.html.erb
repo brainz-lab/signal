@@ -1,8 +1,8 @@
 <div class="space-y-8">
   <div class="flex items-center justify-between">
-    <h1 class="text-[22px] font-semibold tracking-tight text-primary">Projects</h1>
+    <h1 class="text-[22px] font-semibold tracking-tight dm-text">Projects</h1>
     <% unless Rails.env.production? %>
-      <%= link_to new_dashboard_project_path, class: "inline-flex items-center gap-2 px-4 py-2 text-[13px] font-medium rounded-lg transition-colors btn-primary text-white" do %>
+      <%= link_to new_dashboard_project_path, class: "inline-flex items-center gap-2 px-4 py-2 text-[13px] font-medium rounded-lg transition-colors dm-btn-primary" do %>
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
           <path d="M7 1v12M1 7h12"/>
         </svg>
@@ -18,12 +18,12 @@
           <div class="px-5 py-4 rounded-xl transition-all dm-row">
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-4">
-                <div class="w-10 h-10 rounded-lg flex items-center justify-center text-sm font-semibold" style="background: rgba(245, 158, 11, 0.15); color: var(--color-signal);">
+                <div class="w-10 h-10 rounded-lg flex items-center justify-center text-sm font-semibold" style="background: rgba(245, 158, 11, 0.15); color: var(--dm-brand);">
                   <%= project.name.first.upcase %>
                 </div>
                 <div class="space-y-0.5">
-                  <h3 class="text-[15px] font-medium group-hover:underline text-primary"><%= project.name %></h3>
-                  <p class="text-[13px] text-muted">
+                  <h3 class="text-[15px] font-medium group-hover:underline dm-text"><%= project.name %></h3>
+                  <p class="text-[13px] dm-text-muted">
                     <%= project.alert_rules.count %> rules
                     <% firing_count = project.alerts.where(state: 'firing').count %>
                     <% if firing_count > 0 %>
@@ -39,7 +39,7 @@
                   </p>
                 </div>
               </div>
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="text-muted">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="dm-text-placeholder">
                 <path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
               </svg>
             </div>
@@ -48,13 +48,13 @@
       <% end %>
     </div>
   <% else %>
-    <div class="text-center py-16 rounded-xl dm-surface">
+    <div class="text-center py-16 rounded-xl dm-card">
       <div class="space-y-3">
-        <p class="text-[15px] text-muted">No projects yet</p>
+        <p class="text-[15px] dm-text-secondary">No projects yet</p>
         <% if Rails.env.production? %>
-          <%= link_to "Go to Platform", ENV.fetch("BRAINZLAB_PLATFORM_EXTERNAL_URL", "https://platform.brainzlab.ai"), class: "text-[14px] font-medium hover:underline", style: "color: var(--color-signal);", target: "_blank" %>
+          <%= link_to "Go to Platform", ENV.fetch("BRAINZLAB_PLATFORM_EXTERNAL_URL", "https://platform.brainzlab.ai"), class: "text-[14px] font-medium hover:underline", style: "color: var(--dm-brand);", target: "_blank" %>
         <% else %>
-          <%= link_to "Create your first project", new_dashboard_project_path, class: "text-[14px] font-medium hover:underline", style: "color: var(--color-signal);" %>
+          <%= link_to "Create your first project", new_dashboard_project_path, class: "text-[14px] font-medium hover:underline", style: "color: var(--dm-brand);" %>
         <% end %>
       </div>
     </div>

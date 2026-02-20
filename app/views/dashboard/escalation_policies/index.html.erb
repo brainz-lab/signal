@@ -2,30 +2,30 @@
   <!-- Header -->
   <div class="flex items-center justify-between">
     <div>
-      <h1 class="text-[20px] font-semibold text-primary">Escalation Policies</h1>
+      <h1 class="text-[20px] font-semibold dm-text">Escalation Policies</h1>
     </div>
-    <%= link_to new_dashboard_project_escalation_policy_path(@project), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-colors btn-theme-primary" do %>
+    <%= link_to new_dashboard_project_escalation_policy_path(@project), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-colors dm-btn-primary" do %>
       New Policy
     <% end %>
   </div>
 
   <!-- Stats -->
   <div class="grid grid-cols-2 gap-4">
-    <div class="rounded-xl px-5 py-4 border border-theme bg-surface">
-      <p class="text-[12px] font-medium uppercase tracking-wide text-muted">Total Policies</p>
-      <p class="text-[28px] font-semibold mt-1 text-primary"><%= @total_count %></p>
+    <div class="dm-card px-5 py-4">
+      <p class="text-[12px] font-medium uppercase tracking-wide dm-text-muted">Total Policies</p>
+      <p class="text-[28px] font-semibold mt-1 dm-text"><%= @total_count %></p>
     </div>
-    <div class="rounded-xl px-5 py-4 border border-theme bg-surface">
-      <p class="text-[12px] font-medium uppercase tracking-wide text-muted">Enabled</p>
+    <div class="dm-card px-5 py-4">
+      <p class="text-[12px] font-medium uppercase tracking-wide dm-text-muted">Enabled</p>
       <p class="text-[28px] font-semibold mt-1 text-success"><%= @enabled_count %></p>
     </div>
   </div>
 
   <!-- Policies List -->
   <% if @escalation_policies.any? %>
-    <div class="rounded-xl overflow-hidden border border-theme bg-surface">
+    <div class="dm-card overflow-hidden">
       <% @escalation_policies.each_with_index do |policy, index| %>
-        <%= link_to dashboard_project_escalation_policy_path(@project, policy), class: "block px-5 py-4 transition-colors hover:bg-surface-hover #{index > 0 ? 'border-t border-light' : ''}" do %>
+        <%= link_to dashboard_project_escalation_policy_path(@project, policy), class: "block px-5 py-4 transition-colors dm-surface-hover #{index > 0 ? 'border-t dm-border-light' : ''}" do %>
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-3">
               <!-- Status indicator -->
@@ -37,10 +37,10 @@
 
               <div>
                 <div class="flex items-center gap-2">
-                  <h3 class="text-[14px] font-medium text-primary"><%= policy.name %></h3>
+                  <h3 class="text-[14px] font-medium dm-text"><%= policy.name %></h3>
                   <span class="px-2 py-0.5 text-[11px] font-medium uppercase rounded-full" style="background: var(--color-border-light); color: var(--color-text-subtle);"><%= policy.steps&.length || 0 %> steps</span>
                 </div>
-                <p class="text-[13px] mt-0.5 text-muted">
+                <p class="text-[13px] mt-0.5 dm-text-muted">
                   <% if policy.description.present? %>
                     <%= truncate(policy.description, length: 60) %>
                   <% else %>
@@ -57,14 +57,14 @@
       <% end %>
     </div>
   <% else %>
-    <div class="rounded-xl px-8 py-16 text-center border border-theme bg-surface">
+    <div class="dm-card px-8 py-16 text-center">
       <svg class="mx-auto mb-4" width="48" height="48" viewBox="0 0 48 48" fill="none">
         <path d="M24 12V24L32 32" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-icon-muted);"/>
         <circle cx="24" cy="24" r="16" stroke="currentColor" stroke-width="2" style="color: var(--color-icon-muted);"/>
       </svg>
-      <h3 class="text-[16px] font-medium mb-2 text-primary">No escalation policies yet</h3>
-      <p class="text-[14px] mb-6 text-muted">Create an escalation policy to automatically notify teams when alerts aren't acknowledged.</p>
-      <%= link_to new_dashboard_project_escalation_policy_path(@project), class: "inline-block px-4 py-2 text-[13px] font-medium rounded-lg transition-colors btn-theme-primary" do %>
+      <h3 class="text-[16px] font-medium mb-2 dm-text">No escalation policies yet</h3>
+      <p class="text-[14px] mb-6 dm-text-muted">Create an escalation policy to automatically notify teams when alerts aren't acknowledged.</p>
+      <%= link_to new_dashboard_project_escalation_policy_path(@project), class: "inline-block px-4 py-2 text-[13px] font-medium rounded-lg transition-colors dm-btn-primary" do %>
         Create Policy
       <% end %>
     </div>

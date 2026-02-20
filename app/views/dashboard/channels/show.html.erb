@@ -3,15 +3,15 @@
   <div class="flex items-center justify-between">
     <div>
       <div class="flex items-center gap-2 mb-1">
-        <%= link_to "Channels", dashboard_project_channels_path(@project), class: "text-[13px] text-muted" %>
-        <span class="text-muted">/</span>
+        <%= link_to "Channels", dashboard_project_channels_path(@project), class: "text-[13px] dm-text-muted" %>
+        <span class="dm-text-muted">/</span>
       </div>
-      <h1 class="text-[24px] font-semibold text-primary"><%= @channel.name %></h1>
+      <h1 class="text-[24px] font-semibold dm-text"><%= @channel.name %></h1>
     </div>
 
     <div class="flex items-center gap-2">
-      <%= button_to "Test", test_dashboard_project_channel_path(@project, @channel), method: :post, class: "px-4 py-2 text-[13px] font-medium rounded-lg cursor-pointer transition-colors btn-theme-secondary" %>
-      <%= link_to "Edit", edit_dashboard_project_channel_path(@project, @channel), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-colors btn-theme-primary" %>
+      <%= button_to "Test", test_dashboard_project_channel_path(@project, @channel), method: :post, class: "px-4 py-2 text-[13px] font-medium rounded-lg cursor-pointer transition-colors dm-btn-secondary" %>
+      <%= link_to "Edit", edit_dashboard_project_channel_path(@project, @channel), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-colors dm-btn-primary" %>
     </div>
   </div>
 
@@ -40,42 +40,42 @@
 
   <!-- Details -->
   <div class="grid grid-cols-2 gap-6">
-    <div class="rounded-xl px-5 py-4 border border-theme bg-surface">
-      <h3 class="text-[13px] font-medium mb-3 text-muted">Channel Details</h3>
+    <div class="rounded-xl px-5 py-4 dm-card">
+      <h3 class="text-[13px] font-medium mb-3 dm-text-muted">Channel Details</h3>
       <dl class="space-y-2">
         <div class="flex justify-between">
-          <dt class="text-[13px] text-subtle">Type</dt>
-          <dd class="text-[13px] font-medium capitalize text-primary"><%= @channel.channel_type %></dd>
+          <dt class="text-[13px] dm-text-placeholder">Type</dt>
+          <dd class="text-[13px] font-medium capitalize dm-text"><%= @channel.channel_type %></dd>
         </div>
         <div class="flex justify-between">
-          <dt class="text-[13px] text-subtle">Created</dt>
-          <dd class="text-[13px] font-medium text-primary"><%= @channel.created_at.strftime('%Y-%m-%d') %></dd>
+          <dt class="text-[13px] dm-text-placeholder">Created</dt>
+          <dd class="text-[13px] font-medium dm-text"><%= @channel.created_at.strftime('%Y-%m-%d') %></dd>
         </div>
         <div class="flex justify-between">
-          <dt class="text-[13px] text-subtle">Last Used</dt>
-          <dd class="text-[13px] font-medium text-primary"><%= @channel.last_used_at&.strftime('%Y-%m-%d %H:%M') || 'Never' %></dd>
+          <dt class="text-[13px] dm-text-placeholder">Last Used</dt>
+          <dd class="text-[13px] font-medium dm-text"><%= @channel.last_used_at&.strftime('%Y-%m-%d %H:%M') || 'Never' %></dd>
         </div>
         <div class="flex justify-between">
-          <dt class="text-[13px] text-subtle">Last Tested</dt>
-          <dd class="text-[13px] font-medium text-primary"><%= @channel.last_tested_at&.strftime('%Y-%m-%d %H:%M') || 'Never' %></dd>
+          <dt class="text-[13px] dm-text-placeholder">Last Tested</dt>
+          <dd class="text-[13px] font-medium dm-text"><%= @channel.last_tested_at&.strftime('%Y-%m-%d %H:%M') || 'Never' %></dd>
         </div>
       </dl>
     </div>
 
-    <div class="rounded-xl px-5 py-4 border border-theme bg-surface">
-      <h3 class="text-[13px] font-medium mb-3 text-muted">Statistics</h3>
+    <div class="rounded-xl px-5 py-4 dm-card">
+      <h3 class="text-[13px] font-medium mb-3 dm-text-muted">Statistics</h3>
       <dl class="space-y-2">
         <div class="flex justify-between">
-          <dt class="text-[13px] text-subtle">Notifications Sent</dt>
-          <dd class="text-[13px] font-medium text-primary"><%= @channel.success_count %></dd>
+          <dt class="text-[13px] dm-text-placeholder">Notifications Sent</dt>
+          <dd class="text-[13px] font-medium dm-text"><%= @channel.success_count %></dd>
         </div>
         <div class="flex justify-between">
-          <dt class="text-[13px] text-subtle">Failed</dt>
+          <dt class="text-[13px] dm-text-placeholder">Failed</dt>
           <dd class="text-[13px] font-medium text-error"><%= @channel.failure_count %></dd>
         </div>
         <div class="flex justify-between">
-          <dt class="text-[13px] text-subtle">Success Rate</dt>
-          <dd class="text-[13px] font-medium text-primary">
+          <dt class="text-[13px] dm-text-placeholder">Success Rate</dt>
+          <dd class="text-[13px] font-medium dm-text">
             <% total = @channel.success_count + @channel.failure_count %>
             <% if total > 0 %>
               <%= ((@channel.success_count.to_f / total) * 100).round(1) %>%
@@ -89,13 +89,13 @@
   </div>
 
   <!-- Recent Notifications -->
-  <div class="rounded-xl overflow-hidden border border-theme bg-surface">
-    <div class="px-5 py-3 border-b border-light">
-      <h3 class="text-[13px] font-medium text-muted">Recent Notifications</h3>
+  <div class="rounded-xl overflow-hidden dm-card">
+    <div class="px-5 py-3 border-b dm-border-light">
+      <h3 class="text-[13px] font-medium dm-text-muted">Recent Notifications</h3>
     </div>
     <% if @recent_notifications.any? %>
       <% @recent_notifications.each_with_index do |notification, index| %>
-        <div class="px-5 py-3 <%= index > 0 ? 'border-t border-light' : '' %>">
+        <div class="px-5 py-3 <%= index > 0 ? 'border-t dm-border-light' : '' %>">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-3">
               <% case notification.status %>
@@ -106,16 +106,16 @@
               <% else %>
                 <span class="w-2 h-2 rounded-full" style="background: var(--color-warning-orange-border);"></span>
               <% end %>
-              <span class="text-[13px] text-primary"><%= notification.notification_type %></span>
-              <span class="text-[12px] text-muted"><%= time_ago_in_words(notification.created_at) %> ago</span>
+              <span class="text-[13px] dm-text"><%= notification.notification_type %></span>
+              <span class="text-[12px] dm-text-muted"><%= time_ago_in_words(notification.created_at) %> ago</span>
             </div>
-            <span class="text-[12px] capitalize text-muted"><%= notification.status %></span>
+            <span class="text-[12px] capitalize dm-text-muted"><%= notification.status %></span>
           </div>
         </div>
       <% end %>
     <% else %>
       <div class="px-5 py-8 text-center">
-        <p class="text-[13px] text-muted">No notifications sent yet</p>
+        <p class="text-[13px] dm-text-muted">No notifications sent yet</p>
       </div>
     <% end %>
   </div>
