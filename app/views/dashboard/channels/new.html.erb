@@ -1,23 +1,23 @@
 <div class="max-w-2xl space-y-6">
   <div class="flex items-center gap-2 mb-1">
-    <%= link_to "Channels", dashboard_project_channels_path(@project), class: "text-[13px] text-muted" %>
-    <span class="text-muted">/</span>
-    <span class="text-[13px] text-primary">New Channel</span>
+    <%= link_to "Channels", dashboard_project_channels_path(@project), class: "text-[13px] dm-text-muted" %>
+    <span class="dm-text-muted">/</span>
+    <span class="text-[13px] dm-text">New Channel</span>
   </div>
 
-  <h1 class="text-[24px] font-semibold text-primary">Create Notification Channel</h1>
+  <h1 class="text-[24px] font-semibold dm-text">Create Notification Channel</h1>
 
-  <div class="rounded-xl px-6 py-6 border border-theme bg-surface">
+  <div class="rounded-xl px-6 py-6 dm-card">
     <%= form_with model: @channel, url: dashboard_project_channels_path(@project), method: :post, class: "space-y-6" do |f| %>
       <!-- Basic Info -->
       <div class="space-y-4">
         <div>
-          <%= f.label :name, class: "block text-[13px] font-medium mb-1.5 text-primary" %>
-          <%= f.text_field :name, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-signal input-theme", placeholder: "Engineering Slack" %>
+          <%= f.label :name, class: "block text-[13px] font-medium mb-1.5 dm-text" %>
+          <%= f.text_field :name, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none dm-input", placeholder: "Engineering Slack" %>
         </div>
 
         <div>
-          <%= f.label :channel_type, "Type", class: "block text-[13px] font-medium mb-1.5 text-primary" %>
+          <%= f.label :channel_type, "Type", class: "block text-[13px] font-medium mb-1.5 dm-text" %>
           <%= f.select :channel_type, [
             ['Slack', 'slack'],
             ['PagerDuty', 'pagerduty'],
@@ -26,27 +26,27 @@
             ['Discord', 'discord'],
             ['Microsoft Teams', 'teams'],
             ['Opsgenie', 'opsgenie']
-          ], {}, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-signal input-theme" %>
+          ], {}, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none dm-input" %>
         </div>
       </div>
 
       <!-- Configuration -->
-      <div class="space-y-4 pt-4 border-t border-light">
-        <h2 class="text-[15px] font-medium text-primary">Configuration</h2>
-        <p class="text-[13px] text-muted">
+      <div class="space-y-4 pt-4 border-t dm-border-light">
+        <h2 class="text-[15px] font-medium dm-text">Configuration</h2>
+        <p class="text-[13px] dm-text-muted">
           Configuration depends on the channel type. After creating, you can edit to add the specific settings.
         </p>
 
         <div>
-          <%= f.label "config[webhook_url]", "Webhook URL", class: "block text-[13px] font-medium mb-1.5 text-primary" %>
-          <%= f.text_field "config[webhook_url]", class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-signal input-theme", placeholder: "https://hooks.slack.com/services/..." %>
-          <p class="text-[12px] mt-1 text-muted">For Slack, Discord, Teams, and Webhook types</p>
+          <%= f.label "config[webhook_url]", "Webhook URL", class: "block text-[13px] font-medium mb-1.5 dm-text" %>
+          <%= f.text_field "config[webhook_url]", class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none dm-input", placeholder: "https://hooks.slack.com/services/..." %>
+          <p class="text-[12px] mt-1 dm-text-muted">For Slack, Discord, Teams, and Webhook types</p>
         </div>
       </div>
 
       <div class="flex items-center gap-3 pt-4">
-        <%= f.submit "Create Channel", class: "px-4 py-2 text-[13px] font-medium rounded-lg cursor-pointer transition-colors btn-theme-primary" %>
-        <%= link_to "Cancel", dashboard_project_channels_path(@project), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-colors btn-theme-secondary" %>
+        <%= f.submit "Create Channel", class: "px-4 py-2 text-[13px] font-medium rounded-lg cursor-pointer transition-colors dm-btn-primary" %>
+        <%= link_to "Cancel", dashboard_project_channels_path(@project), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-colors dm-btn-secondary" %>
       </div>
     <% end %>
   </div>

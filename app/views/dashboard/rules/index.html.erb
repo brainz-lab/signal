@@ -2,10 +2,10 @@
   <!-- Header -->
   <div class="flex items-center justify-between">
     <div>
-      <h1 class="text-[24px] font-semibold tracking-tight text-primary">Alert Rules</h1>
-      <p class="text-[14px] mt-1 text-muted">Configure conditions that trigger alerts</p>
+      <h1 class="text-[24px] font-semibold tracking-tight dm-text">Alert Rules</h1>
+      <p class="text-[14px] mt-1 dm-text-muted">Configure conditions that trigger alerts</p>
     </div>
-    <%= link_to new_dashboard_project_rule_path(@project), class: "inline-flex items-center gap-2 px-4 py-2.5 text-[13px] font-medium rounded-xl transition-all btn-primary text-white" do %>
+    <%= link_to new_dashboard_project_rule_path(@project), class: "inline-flex items-center gap-2 px-4 py-2.5 text-[13px] font-medium rounded-xl transition-all dm-btn-primary text-white" do %>
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
       </svg>
@@ -15,20 +15,20 @@
 
   <!-- Stats -->
   <div class="grid grid-cols-3 gap-4">
-    <div class="rounded-2xl px-5 py-5 shadow-card transition-all hover:shadow-medium border border-theme" style="background: var(--gradient-card-default);">
+    <div class="rounded-2xl px-5 py-5 shadow-card transition-all hover:shadow-medium dm-border" style="background: var(--gradient-card-default);">
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background: rgba(26, 26, 26, 0.05);">
-          <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-5 h-5 dm-text" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
           </svg>
         </div>
         <div>
-          <p class="text-[11px] font-semibold uppercase tracking-wider text-muted">Total Rules</p>
-          <p class="text-[28px] font-bold leading-none mt-1 text-primary"><%= @total_count %></p>
+          <p class="text-[11px] font-semibold uppercase tracking-wider dm-text-muted">Total Rules</p>
+          <p class="text-[28px] font-bold leading-none mt-1 dm-text"><%= @total_count %></p>
         </div>
       </div>
     </div>
-    <div class="rounded-2xl px-5 py-5 shadow-card transition-all hover:shadow-medium border border-theme" style="background: var(--gradient-card-success);">
+    <div class="rounded-2xl px-5 py-5 shadow-card transition-all hover:shadow-medium dm-border" style="background: var(--gradient-card-success);">
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 rounded-xl flex items-center justify-center bg-success">
           <svg class="w-5 h-5 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -36,12 +36,12 @@
           </svg>
         </div>
         <div>
-          <p class="text-[11px] font-semibold uppercase tracking-wider text-muted">Enabled</p>
+          <p class="text-[11px] font-semibold uppercase tracking-wider dm-text-muted">Enabled</p>
           <p class="text-[28px] font-bold leading-none mt-1 text-success"><%= @enabled_count %></p>
         </div>
       </div>
     </div>
-    <div class="rounded-2xl px-5 py-5 shadow-card transition-all hover:shadow-medium border border-theme" style="background: var(--gradient-card-warning);">
+    <div class="rounded-2xl px-5 py-5 shadow-card transition-all hover:shadow-medium dm-border" style="background: var(--gradient-card-warning);">
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 rounded-xl flex items-center justify-center bg-warning">
           <svg class="w-5 h-5 text-warning" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -49,7 +49,7 @@
           </svg>
         </div>
         <div>
-          <p class="text-[11px] font-semibold uppercase tracking-wider text-muted">Muted</p>
+          <p class="text-[11px] font-semibold uppercase tracking-wider dm-text-muted">Muted</p>
           <p class="text-[28px] font-bold leading-none mt-1 text-warning"><%= @muted_count %></p>
         </div>
       </div>
@@ -58,9 +58,9 @@
 
   <!-- Rules List -->
   <% if @rules.any? %>
-    <div class="rounded-2xl overflow-hidden shadow-card border border-theme bg-surface">
+    <div class="rounded-2xl overflow-hidden shadow-card dm-card">
       <% @rules.each_with_index do |rule, index| %>
-        <%= link_to dashboard_project_rule_path(@project, rule), class: "block px-5 py-4 transition-all card-hover group #{index > 0 ? 'border-t border-light' : ''}" do %>
+        <%= link_to dashboard_project_rule_path(@project, rule), class: "block px-5 py-4 transition-all dm-surface-hover group #{index > 0 ? 'border-t dm-border-light' : ''}" do %>
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-4">
               <!-- Status indicator -->
@@ -80,7 +80,7 @@
 
               <div>
                 <div class="flex items-center gap-2">
-                  <h3 class="text-[14px] font-medium group-hover:text-signal transition-colors text-primary"><%= rule.name %></h3>
+                  <h3 class="text-[14px] font-medium group-hover:text-signal transition-colors dm-text"><%= rule.name %></h3>
                   <!-- Severity badge -->
                   <% case rule.severity %>
                   <% when 'critical' %>
@@ -94,7 +94,7 @@
                     <span class="px-2 py-0.5 text-[10px] font-semibold uppercase rounded-full" style="background: var(--color-border-subtle); color: var(--color-text-subtle);">Muted</span>
                   <% end %>
                 </div>
-                <p class="text-[13px] mt-1 flex items-center gap-2 text-muted">
+                <p class="text-[13px] mt-1 flex items-center gap-2 dm-text-muted">
                   <span class="inline-flex items-center gap-1">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/></svg>
                     <%= rule.source %>
@@ -112,15 +112,15 @@
       <% end %>
     </div>
   <% else %>
-    <div class="rounded-2xl px-8 py-16 text-center shadow-card border border-theme bg-surface">
+    <div class="rounded-2xl px-8 py-16 text-center shadow-card dm-card">
       <div class="w-16 h-16 mx-auto mb-5 rounded-2xl flex items-center justify-center" style="background: var(--gradient-warning);">
         <svg class="w-8 h-8 text-warning" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
         </svg>
       </div>
-      <h3 class="text-[18px] font-semibold mb-2 text-primary">No rules yet</h3>
-      <p class="text-[14px] mb-6 max-w-sm mx-auto text-muted">Create your first alert rule to start monitoring your metrics and events.</p>
-      <%= link_to new_dashboard_project_rule_path(@project), class: "inline-flex items-center gap-2 px-5 py-2.5 text-[14px] font-medium rounded-xl transition-all btn-primary text-white" do %>
+      <h3 class="text-[18px] font-semibold mb-2 dm-text">No rules yet</h3>
+      <p class="text-[14px] mb-6 max-w-sm mx-auto dm-text-muted">Create your first alert rule to start monitoring your metrics and events.</p>
+      <%= link_to new_dashboard_project_rule_path(@project), class: "inline-flex items-center gap-2 px-5 py-2.5 text-[14px] font-medium rounded-xl transition-all dm-btn-primary text-white" do %>
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
         </svg>

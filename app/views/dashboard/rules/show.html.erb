@@ -3,19 +3,19 @@
   <div class="flex items-center justify-between">
     <div>
       <div class="flex items-center gap-2 mb-1">
-        <%= link_to "Rules", dashboard_project_rules_path(@project), class: "text-[13px] text-muted" %>
-        <span class="text-muted">/</span>
+        <%= link_to "Rules", dashboard_project_rules_path(@project), class: "text-[13px] dm-text-muted" %>
+        <span class="dm-text-muted">/</span>
       </div>
-      <h1 class="text-[24px] font-semibold text-primary"><%= @rule.name %></h1>
+      <h1 class="text-[24px] font-semibold dm-text"><%= @rule.name %></h1>
     </div>
 
     <div class="flex items-center gap-2">
       <% if @rule.muted %>
         <%= button_to "Unmute", unmute_dashboard_project_rule_path(@project, @rule), method: :post, class: "px-4 py-2 text-[13px] font-medium rounded-lg cursor-pointer transition-colors bg-success text-white" %>
       <% else %>
-        <%= button_to "Mute 1h", mute_dashboard_project_rule_path(@project, @rule, duration: '1h'), method: :post, class: "px-4 py-2 text-[13px] font-medium rounded-lg cursor-pointer transition-colors btn-theme-secondary" %>
+        <%= button_to "Mute 1h", mute_dashboard_project_rule_path(@project, @rule, duration: '1h'), method: :post, class: "px-4 py-2 text-[13px] font-medium rounded-lg cursor-pointer transition-colors dm-btn-secondary" %>
       <% end %>
-      <%= link_to "Edit", edit_dashboard_project_rule_path(@project, @rule), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-colors btn-theme-primary" %>
+      <%= link_to "Edit", edit_dashboard_project_rule_path(@project, @rule), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-colors dm-btn-primary" %>
     </div>
   </div>
 
@@ -50,50 +50,50 @@
 
   <!-- Details -->
   <div class="grid grid-cols-2 gap-6">
-    <div class="rounded-xl px-5 py-4 border border-theme bg-surface">
-      <h3 class="text-[13px] font-medium mb-3 text-muted">Rule Configuration</h3>
+    <div class="rounded-xl px-5 py-4 dm-card">
+      <h3 class="text-[13px] font-medium mb-3 dm-text-muted">Rule Configuration</h3>
       <dl class="space-y-2">
         <div class="flex justify-between">
-          <dt class="text-[13px] text-subtle">Source</dt>
-          <dd class="text-[13px] font-medium text-primary"><%= @rule.source %></dd>
+          <dt class="text-[13px] dm-text-placeholder">Source</dt>
+          <dd class="text-[13px] font-medium dm-text"><%= @rule.source %></dd>
         </div>
         <div class="flex justify-between">
-          <dt class="text-[13px] text-subtle">Metric</dt>
-          <dd class="text-[13px] font-medium text-primary"><%= @rule.source_name %></dd>
+          <dt class="text-[13px] dm-text-placeholder">Metric</dt>
+          <dd class="text-[13px] font-medium dm-text"><%= @rule.source_name %></dd>
         </div>
         <div class="flex justify-between">
-          <dt class="text-[13px] text-subtle">Type</dt>
-          <dd class="text-[13px] font-medium text-primary"><%= @rule.rule_type %></dd>
+          <dt class="text-[13px] dm-text-placeholder">Type</dt>
+          <dd class="text-[13px] font-medium dm-text"><%= @rule.rule_type %></dd>
         </div>
         <div class="flex justify-between">
-          <dt class="text-[13px] text-subtle">Condition</dt>
-          <dd class="text-[13px] font-medium text-primary"><%= @rule.aggregation || 'value' %> <%= @rule.operator %> <%= @rule.threshold %></dd>
+          <dt class="text-[13px] dm-text-placeholder">Condition</dt>
+          <dd class="text-[13px] font-medium dm-text"><%= @rule.aggregation || 'value' %> <%= @rule.operator %> <%= @rule.threshold %></dd>
         </div>
         <div class="flex justify-between">
-          <dt class="text-[13px] text-subtle">Window</dt>
-          <dd class="text-[13px] font-medium text-primary"><%= @rule.window %></dd>
+          <dt class="text-[13px] dm-text-placeholder">Window</dt>
+          <dd class="text-[13px] font-medium dm-text"><%= @rule.window %></dd>
         </div>
       </dl>
     </div>
 
-    <div class="rounded-xl px-5 py-4 border border-theme bg-surface">
-      <h3 class="text-[13px] font-medium mb-3 text-muted">Timing</h3>
+    <div class="rounded-xl px-5 py-4 dm-card">
+      <h3 class="text-[13px] font-medium mb-3 dm-text-muted">Timing</h3>
       <dl class="space-y-2">
         <div class="flex justify-between">
-          <dt class="text-[13px] text-subtle">Evaluation Interval</dt>
-          <dd class="text-[13px] font-medium text-primary"><%= @rule.evaluation_interval %>s</dd>
+          <dt class="text-[13px] dm-text-placeholder">Evaluation Interval</dt>
+          <dd class="text-[13px] font-medium dm-text"><%= @rule.evaluation_interval %>s</dd>
         </div>
         <div class="flex justify-between">
-          <dt class="text-[13px] text-subtle">Pending Period</dt>
-          <dd class="text-[13px] font-medium text-primary"><%= @rule.pending_period %>s</dd>
+          <dt class="text-[13px] dm-text-placeholder">Pending Period</dt>
+          <dd class="text-[13px] font-medium dm-text"><%= @rule.pending_period %>s</dd>
         </div>
         <div class="flex justify-between">
-          <dt class="text-[13px] text-subtle">Resolve Period</dt>
-          <dd class="text-[13px] font-medium text-primary"><%= @rule.resolve_period %>s</dd>
+          <dt class="text-[13px] dm-text-placeholder">Resolve Period</dt>
+          <dd class="text-[13px] font-medium dm-text"><%= @rule.resolve_period %>s</dd>
         </div>
         <div class="flex justify-between">
-          <dt class="text-[13px] text-subtle">Last Evaluated</dt>
-          <dd class="text-[13px] font-medium text-primary"><%= @rule.last_evaluated_at&.strftime('%Y-%m-%d %H:%M:%S') || 'Never' %></dd>
+          <dt class="text-[13px] dm-text-placeholder">Last Evaluated</dt>
+          <dd class="text-[13px] font-medium dm-text"><%= @rule.last_evaluated_at&.strftime('%Y-%m-%d %H:%M:%S') || 'Never' %></dd>
         </div>
       </dl>
     </div>
@@ -101,20 +101,20 @@
 
   <!-- Description -->
   <% if @rule.description.present? %>
-    <div class="rounded-xl px-5 py-4 border border-theme bg-surface">
-      <h3 class="text-[13px] font-medium mb-2 text-muted">Description</h3>
-      <p class="text-[14px] text-primary"><%= @rule.description %></p>
+    <div class="rounded-xl px-5 py-4 dm-card">
+      <h3 class="text-[13px] font-medium mb-2 dm-text-muted">Description</h3>
+      <p class="text-[14px] dm-text"><%= @rule.description %></p>
     </div>
   <% end %>
 
   <!-- Recent Alerts -->
-  <div class="rounded-xl overflow-hidden border border-theme bg-surface">
-    <div class="px-5 py-3 border-b border-light">
-      <h3 class="text-[13px] font-medium text-muted">Recent Alerts</h3>
+  <div class="rounded-xl overflow-hidden dm-card">
+    <div class="px-5 py-3 border-b dm-border-light">
+      <h3 class="text-[13px] font-medium dm-text-muted">Recent Alerts</h3>
     </div>
     <% if @recent_alerts.any? %>
       <% @recent_alerts.each_with_index do |alert, index| %>
-        <%= link_to dashboard_project_alert_path(@project, alert), class: "block px-5 py-3 transition-colors hover:bg-surface-hover #{index > 0 ? 'border-t border-light' : ''}" do %>
+        <%= link_to dashboard_project_alert_path(@project, alert), class: "block px-5 py-3 transition-colors hover:bg-surface-hover #{index > 0 ? 'border-t dm-border-light' : ''}" do %>
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-3">
               <% case alert.state %>
@@ -125,16 +125,16 @@
               <% else %>
                 <span class="w-2 h-2 rounded-full" style="background: var(--color-success-dot);"></span>
               <% end %>
-              <span class="text-[13px] text-primary">Value: <%= alert.current_value %></span>
-              <span class="text-[12px] text-muted"><%= time_ago_in_words(alert.started_at) %> ago</span>
+              <span class="text-[13px] dm-text">Value: <%= alert.current_value %></span>
+              <span class="text-[12px] dm-text-muted"><%= time_ago_in_words(alert.started_at) %> ago</span>
             </div>
-            <span class="text-[12px] capitalize text-muted"><%= alert.state %></span>
+            <span class="text-[12px] capitalize dm-text-muted"><%= alert.state %></span>
           </div>
         <% end %>
       <% end %>
     <% else %>
       <div class="px-5 py-8 text-center">
-        <p class="text-[13px] text-muted">No alerts triggered yet</p>
+        <p class="text-[13px] dm-text-muted">No alerts triggered yet</p>
       </div>
     <% end %>
   </div>

@@ -2,34 +2,34 @@
   <!-- Header -->
   <div class="flex items-center justify-between">
     <div>
-      <h1 class="text-[20px] font-semibold text-primary">Notification Channels</h1>
+      <h1 class="text-[20px] font-semibold dm-text">Notification Channels</h1>
     </div>
-    <%= link_to new_dashboard_project_channel_path(@project), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-colors btn-theme-primary" do %>
+    <%= link_to new_dashboard_project_channel_path(@project), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-colors dm-btn-primary" do %>
       New Channel
     <% end %>
   </div>
 
   <!-- Stats -->
   <div class="grid grid-cols-3 gap-4">
-    <div class="rounded-xl px-5 py-4 border border-theme bg-surface">
-      <p class="text-[12px] font-medium uppercase tracking-wide text-muted">Total Channels</p>
-      <p class="text-[28px] font-semibold mt-1 text-primary"><%= @total_count %></p>
+    <div class="rounded-xl px-5 py-4 dm-card">
+      <p class="text-[12px] font-medium uppercase tracking-wide dm-text-muted">Total Channels</p>
+      <p class="text-[28px] font-semibold mt-1 dm-text"><%= @total_count %></p>
     </div>
-    <div class="rounded-xl px-5 py-4 border border-theme bg-surface">
-      <p class="text-[12px] font-medium uppercase tracking-wide text-muted">Enabled</p>
+    <div class="rounded-xl px-5 py-4 dm-card">
+      <p class="text-[12px] font-medium uppercase tracking-wide dm-text-muted">Enabled</p>
       <p class="text-[28px] font-semibold mt-1 text-success"><%= @enabled_count %></p>
     </div>
-    <div class="rounded-xl px-5 py-4 border border-theme bg-surface">
-      <p class="text-[12px] font-medium uppercase tracking-wide text-muted">Verified</p>
+    <div class="rounded-xl px-5 py-4 dm-card">
+      <p class="text-[12px] font-medium uppercase tracking-wide dm-text-muted">Verified</p>
       <p class="text-[28px] font-semibold mt-1" style="color: var(--color-blue-dot);"><%= @verified_count %></p>
     </div>
   </div>
 
   <!-- Channels List -->
   <% if @channels.any? %>
-    <div class="rounded-xl overflow-hidden border border-theme bg-surface">
+    <div class="rounded-xl overflow-hidden dm-card">
       <% @channels.each_with_index do |channel, index| %>
-        <%= link_to dashboard_project_channel_path(@project, channel), class: "block px-5 py-4 transition-colors hover:bg-surface-hover #{index > 0 ? 'border-t border-light' : ''}" do %>
+        <%= link_to dashboard_project_channel_path(@project, channel), class: "block px-5 py-4 transition-colors hover:bg-surface-hover #{index > 0 ? 'border-t dm-border-light' : ''}" do %>
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-3">
               <!-- Status indicator -->
@@ -41,14 +41,14 @@
 
               <div>
                 <div class="flex items-center gap-2">
-                  <h3 class="text-[14px] font-medium text-primary"><%= channel.name %></h3>
+                  <h3 class="text-[14px] font-medium dm-text"><%= channel.name %></h3>
                   <!-- Type badge -->
                   <span class="px-2 py-0.5 text-[11px] font-medium uppercase rounded-full" style="background: var(--color-border-light); color: var(--color-text-subtle);"><%= channel.channel_type %></span>
                   <% if channel.verified %>
                     <span class="px-2 py-0.5 text-[11px] font-medium uppercase rounded-full bg-success text-success">Verified</span>
                   <% end %>
                 </div>
-                <p class="text-[13px] mt-0.5 text-muted">
+                <p class="text-[13px] mt-0.5 dm-text-muted">
                   <%= channel.success_count %> sent &middot;
                   <% if channel.last_used_at %>
                     Last used <%= time_ago_in_words(channel.last_used_at) %> ago
@@ -66,14 +66,14 @@
       <% end %>
     </div>
   <% else %>
-    <div class="rounded-xl px-8 py-16 text-center border border-theme bg-surface">
+    <div class="rounded-xl px-8 py-16 text-center dm-card">
       <svg class="mx-auto mb-4" width="48" height="48" viewBox="0 0 48 48" fill="none">
         <rect x="8" y="8" width="32" height="32" rx="4" stroke="currentColor" stroke-width="2" style="color: var(--color-icon-muted);"/>
         <path d="M24 18V30M18 24H30" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color: var(--color-icon-muted);"/>
       </svg>
-      <h3 class="text-[16px] font-medium mb-2 text-primary">No channels yet</h3>
-      <p class="text-[14px] mb-6 text-muted">Create a notification channel to receive alerts.</p>
-      <%= link_to new_dashboard_project_channel_path(@project), class: "inline-block px-4 py-2 text-[13px] font-medium rounded-lg transition-colors btn-theme-primary" do %>
+      <h3 class="text-[16px] font-medium mb-2 dm-text">No channels yet</h3>
+      <p class="text-[14px] mb-6 dm-text-muted">Create a notification channel to receive alerts.</p>
+      <%= link_to new_dashboard_project_channel_path(@project), class: "inline-block px-4 py-2 text-[13px] font-medium rounded-lg transition-colors dm-btn-primary" do %>
         Create Channel
       <% end %>
     </div>

@@ -2,6 +2,7 @@
 @import "tailwindcss";
 @import "./brainzlab_ui/base.css";
 
-/* Project-specific overrides below */
+/* Dark mode support */
+@import "../stylesheets/dark_mode.css";
 
-/* Dark mode support - see app/assets/stylesheets/dark_mode.css for full implementation */
+/* Project-specific overrides below */
