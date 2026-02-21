@@ -9,14 +9,14 @@
 
   <h1 class="text-[24px] font-semibold dm-text">Edit Rule</h1>
 
-  <div class="rounded-xl px-6 py-6 dm-card">
+  <div class="rounded-xl px-6 py-6 dm-card" data-controller="rule-form">
     <%= form_with model: @rule, url: dashboard_project_rule_path(@project, @rule), method: :patch, class: "space-y-6" do |f| %>
       <!-- Basic Info -->
       <div class="space-y-4">
         <h2 class="text-[15px] font-medium dm-text">Basic Info</h2>
         <div>
           <%= f.label :name, class: "block text-[13px] font-medium mb-1.5 dm-text" %>
-          <%= f.text_field :name, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none dm-input" %>
+          <%= f.text_field :name, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none dm-input", data: { action: "input->rule-form#fieldChanged" } %>
         </div>
         <div>
           <%= f.label :description, class: "block text-[13px] font-medium mb-1.5 dm-text" %>
@@ -28,40 +28,182 @@
         </div>
       </div>
 
-      <!-- Source -->
+      <!-- Data Source -->
       <div class="space-y-4 pt-4 border-t dm-border-light">
         <h2 class="text-[15px] font-medium dm-text">Data Source</h2>
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <%= f.label :source, class: "block text-[13px] font-medium mb-1.5 dm-text" %>
-            <%= f.select :source, [['Flux (Metrics)', 'flux'], ['Pulse (APM)', 'pulse'], ['Reflex (Errors)', 'reflex'], ['Recall (Logs)', 'recall']], {}, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none dm-input" %>
+
+        <!-- Source selector -->
+        <div>
+          <%= f.label :source, class: "block text-[13px] font-medium mb-1.5 dm-text" %>
+          <%= f.select :source,
+            [['Flux (Metrics)', 'flux'], ['Pulse (APM)', 'pulse'], ['Reflex (Errors)', 'reflex'], ['Recall (Logs)', 'recall']],
+            {},
+            class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none dm-input",
+            data: { rule_form_target: "sourceSelect", action: "change->rule-form#sourceChanged" } %>
+        </div>
+
+        <!-- Source help panel -->
+        <div data-rule-form-target="sourceHelp" class="rounded-lg p-3" style="background: var(--color-border-subtle);"></div>
+
+        <!-- Metric suggestions -->
+        <div>
+          <p class="text-[11px] font-semibold uppercase tracking-wider dm-text-muted mb-2">Common metrics</p>
+          <div class="flex flex-wrap gap-2" data-rule-form-target="metricSuggestions"></div>
+        </div>
+
+        <!-- Source name + Aggregation -->
+        <div class="grid grid-cols-3 gap-4">
+          <div class="col-span-2">
+            <label data-rule-form-target="sourceNameLabel" class="block text-[13px] font-medium mb-1.5 dm-text">Metric Name</label>
+            <%= f.text_field :source_name,
+              class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none dm-input font-mono",
+              data: { rule_form_target: "sourceName", action: "input->rule-form#fieldChanged" } %>
           </div>
           <div>
-            <%= f.label :source_name, "Metric/Event Name", class: "block text-[13px] font-medium mb-1.5 dm-text" %>
-            <%= f.text_field :source_name, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none dm-input" %>
+            <%= f.label :aggregation, class: "block text-[13px] font-medium mb-1.5 dm-text" %>
+            <%= f.select :aggregation,
+              [['AVG', 'avg'], ['SUM', 'sum'], ['COUNT', 'count'], ['MIN', 'min'], ['MAX', 'max'], ['P50', 'p50'], ['P95', 'p95'], ['P99', 'p99']],
+              {},
+              class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none dm-input",
+              data: { rule_form_target: "aggregationSelect", action: "change->rule-form#fieldChanged" } %>
           </div>
+        </div>
+
+        <!-- Query filter -->
+        <div>
+          <label class="block text-[13px] font-medium mb-1.5 dm-text">Query Filter <span class="text-[11px] dm-text-muted font-normal">(optional JSON)</span></label>
+          <%= f.text_field :query,
+            value: @rule.query.present? ? @rule.query.to_json : "",
+            class: "w-full px-3 py-2 rounded-lg text-[13px] outline-none dm-input font-mono",
+            placeholder: '{"host": "web-1"}',
+            data: { rule_form_target: "queryInput" } %>
+          <p class="mt-1 text-[11px] dm-text-muted" data-rule-form-target="queryHint"></p>
+        </div>
+
+        <!-- Group By -->
+        <div>
+          <label class="block text-[13px] font-medium mb-1.5 dm-text">Group By <span class="text-[11px] dm-text-muted font-normal">(optional)</span></label>
+          <%= f.text_field :group_by,
+            value: @rule.group_by&.join(", "),
+            class: "w-full px-3 py-2 rounded-lg text-[13px] outline-none dm-input font-mono",
+            placeholder: "host, env",
+            data: { rule_form_target: "groupByInput" } %>
+          <p class="mt-1 text-[11px] dm-text-muted" data-rule-form-target="groupByHint"></p>
         </div>
       </div>
 
       <!-- Condition -->
       <div class="space-y-4 pt-4 border-t dm-border-light">
         <h2 class="text-[15px] font-medium dm-text">Condition</h2>
-        <div class="grid grid-cols-4 gap-4">
-          <div>
-            <%= f.label :rule_type, "Type", class: "block text-[13px] font-medium mb-1.5 dm-text" %>
-            <%= f.select :rule_type, [['Threshold', 'threshold'], ['Anomaly', 'anomaly'], ['Absence', 'absence']], {}, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none dm-input" %>
+
+        <!-- Live condition preview -->
+        <div class="rounded-lg px-3 py-2.5 flex items-center gap-2" style="background: var(--color-border-subtle);">
+          <svg class="w-4 h-4 flex-shrink-0 dm-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          <p class="text-[13px] dm-text" data-rule-form-target="conditionPreview"></p>
+        </div>
+
+        <!-- Rule type -->
+        <div>
+          <%= f.label :rule_type, "Type", class: "block text-[13px] font-medium mb-1.5 dm-text" %>
+          <%= f.select :rule_type,
+            [['Threshold', 'threshold'], ['Anomaly', 'anomaly'], ['Absence', 'absence']],
+            {},
+            class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none dm-input",
+            data: { rule_form_target: "ruleTypeSelect", action: "change->rule-form#ruleTypeChanged" } %>
+        </div>
+
+        <!-- Threshold fields -->
+        <div data-rule-form-target="thresholdFields" class="<%= 'hidden' unless @rule.rule_type == 'threshold' || @rule.rule_type.blank? %>">
+          <div class="grid grid-cols-3 gap-4">
+            <div>
+              <%= f.label :operator, class: "block text-[13px] font-medium mb-1.5 dm-text" %>
+              <%= f.select :operator,
+                [['> greater than', 'gt'], ['>= at least', 'gte'], ['< less than', 'lt'], ['<= at most', 'lte'], ['= equals', 'eq'], ['!= not equal', 'neq']],
+                {},
+                class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none dm-input",
+                data: { action: "change->rule-form#fieldChanged" } %>
+            </div>
+            <div>
+              <%= f.label :threshold, class: "block text-[13px] font-medium mb-1.5 dm-text" %>
+              <%= f.number_field :threshold, step: "any", class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none dm-input", data: { action: "input->rule-form#fieldChanged" } %>
+            </div>
+            <div>
+              <%= f.label :window, "Eval Window", class: "block text-[13px] font-medium mb-1.5 dm-text" %>
+              <%= f.select :window,
+                [['1 minute', '1m'], ['5 minutes', '5m'], ['15 minutes', '15m'], ['30 minutes', '30m'], ['1 hour', '1h'], ['6 hours', '6h']],
+                {},
+                class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none dm-input",
+                data: { action: "change->rule-form#fieldChanged" } %>
+            </div>
+          </div>
+        </div>
+
+        <!-- Anomaly fields -->
+        <div data-rule-form-target="anomalyFields" class="<%= 'hidden' unless @rule.rule_type == 'anomaly' %> space-y-4">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <%= f.label :sensitivity, class: "block text-[13px] font-medium mb-1.5 dm-text" %>
+              <div class="flex items-center gap-3">
+                <%= f.range_field :sensitivity, min: 1, max: 10, step: 1, value: @rule.sensitivity || 5, class: "flex-1", data: { action: "input->rule-form#fieldChanged" } %>
+                <span class="text-[13px] font-mono dm-text w-8 text-center"><%= @rule.sensitivity || 5 %></span>
+              </div>
+              <p class="mt-1 text-[11px] dm-text-muted">Higher = more sensitive (1-10)</p>
+            </div>
+            <div>
+              <%= f.label :baseline_window, "Baseline Window", class: "block text-[13px] font-medium mb-1.5 dm-text" %>
+              <%= f.select :baseline_window,
+                [['1 hour', '1h'], ['6 hours', '6h'], ['24 hours', '24h'], ['7 days', '7d'], ['30 days', '30d']],
+                { selected: @rule.baseline_window || '24h' },
+                class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none dm-input" %>
+            </div>
           </div>
           <div>
-            <%= f.label :operator, class: "block text-[13px] font-medium mb-1.5 dm-text" %>
-            <%= f.select :operator, [['>', 'gt'], ['>=', 'gte'], ['<', 'lt'], ['<=', 'lte'], ['=', 'eq'], ['!=', 'neq']], {}, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none dm-input" %>
+            <%= f.label :window, "Eval Window", class: "block text-[13px] font-medium mb-1.5 dm-text" %>
+            <%= f.select :window,
+              [['5 minutes', '5m'], ['15 minutes', '15m'], ['1 hour', '1h']],
+              {},
+              class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none dm-input" %>
+          </div>
+        </div>
+
+        <!-- Absence fields -->
+        <div data-rule-form-target="absenceFields" class="<%= 'hidden' unless @rule.rule_type == 'absence' %> space-y-4">
+          <div>
+            <%= f.label :expected_interval, "Expected Data Interval", class: "block text-[13px] font-medium mb-1.5 dm-text" %>
+            <%= f.select :expected_interval,
+              [['1 minute', '1m'], ['5 minutes', '5m'], ['15 minutes', '15m'], ['30 minutes', '30m'], ['1 hour', '1h'], ['6 hours', '6h'], ['24 hours', '24h']],
+              { selected: @rule.expected_interval || '5m' },
+              class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none dm-input",
+              data: { action: "change->rule-form#fieldChanged" } %>
+            <p class="mt-1 text-[11px] dm-text-muted">Alert fires when no data is received within this interval</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Timing -->
+      <div class="space-y-4 pt-4 border-t dm-border-light">
+        <h2 class="text-[15px] font-medium dm-text">Timing</h2>
+        <div class="grid grid-cols-3 gap-4">
+          <div>
+            <%= f.label :evaluation_interval, "Check Every", class: "block text-[13px] font-medium mb-1.5 dm-text" %>
+            <%= f.select :evaluation_interval,
+              [['30 seconds', 30], ['1 minute', 60], ['2 minutes', 120], ['5 minutes', 300]],
+              { selected: @rule.evaluation_interval || 60 },
+              class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none dm-input" %>
           </div>
           <div>
-            <%= f.label :threshold, class: "block text-[13px] font-medium mb-1.5 dm-text" %>
-            <%= f.number_field :threshold, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none dm-input" %>
+            <%= f.label :pending_period, "Pending Period", class: "block text-[13px] font-medium mb-1.5 dm-text" %>
+            <%= f.select :pending_period,
+              [['Immediate', 0], ['30 seconds', 30], ['1 minute', 60], ['5 minutes', 300]],
+              { selected: @rule.pending_period || 0 },
+              class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none dm-input" %>
           </div>
           <div>
-            <%= f.label :window, class: "block text-[13px] font-medium mb-1.5 dm-text" %>
-            <%= f.select :window, [['1 minute', '1m'], ['5 minutes', '5m'], ['15 minutes', '15m'], ['1 hour', '1h']], {}, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none dm-input" %>
+            <%= f.label :resolve_period, "Resolve After", class: "block text-[13px] font-medium mb-1.5 dm-text" %>
+            <%= f.select :resolve_period,
+              [['1 minute', 60], ['5 minutes', 300], ['15 minutes', 900], ['30 minutes', 1800]],
+              { selected: @rule.resolve_period || 300 },
+              class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none dm-input" %>
           </div>
         </div>
       </div>
@@ -69,8 +211,28 @@
       <!-- Severity -->
       <div class="space-y-4 pt-4 border-t dm-border-light">
         <h2 class="text-[15px] font-medium dm-text">Severity</h2>
-        <div>
-          <%= f.select :severity, [['Info', 'info'], ['Warning', 'warning'], ['Critical', 'critical']], {}, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none dm-input" %>
+        <div class="grid grid-cols-3 gap-3">
+          <label class="relative cursor-pointer">
+            <%= f.radio_button :severity, "info", class: "peer sr-only" %>
+            <div class="rounded-xl px-4 py-3 text-center transition-all dm-border peer-checked:ring-2 peer-checked:ring-blue-500" style="background: var(--gradient-card-info, var(--color-border-subtle));">
+              <p class="text-[13px] font-semibold dm-text">Info</p>
+              <p class="text-[11px] dm-text-muted">No action needed</p>
+            </div>
+          </label>
+          <label class="relative cursor-pointer">
+            <%= f.radio_button :severity, "warning", class: "peer sr-only" %>
+            <div class="rounded-xl px-4 py-3 text-center transition-all dm-border peer-checked:ring-2 peer-checked:ring-amber-500" style="background: var(--gradient-card-warning);">
+              <p class="text-[13px] font-semibold dm-text">Warning</p>
+              <p class="text-[11px] dm-text-muted">Investigate soon</p>
+            </div>
+          </label>
+          <label class="relative cursor-pointer">
+            <%= f.radio_button :severity, "critical", class: "peer sr-only" %>
+            <div class="rounded-xl px-4 py-3 text-center transition-all dm-border peer-checked:ring-2 peer-checked:ring-red-500" style="background: var(--gradient-card-error);">
+              <p class="text-[13px] font-semibold dm-text">Critical</p>
+              <p class="text-[11px] dm-text-muted">Immediate action</p>
+            </div>
+          </label>
         </div>
       </div>
 
