@@ -161,6 +161,11 @@
             Setup
           <% end %>
 
+          <%= link_to dashboard_project_mcp_setup_path(@project), class: nav_link_class('/mcp') do %>
+            <%= icon(:mcp) %>
+            MCP
+          <% end %>
+
           <%= link_to edit_dashboard_project_path(@project), class: nav_link_class('/settings') do %>
             <%= icon(:settings) %>
             Settings

@@ -30,6 +30,8 @@ Rails.application.routes.draw do
       get :overview, to: "overview#show"
       get :analytics, to: "analytics#show"
       get :setup, to: "projects#setup"
+      get :mcp_setup, to: "projects#mcp_setup"
+      post :regenerate_mcp_token, to: "projects#regenerate_mcp_token"
       resources :alerts, only: [ :index, :show ] do
         member do
           post :acknowledge

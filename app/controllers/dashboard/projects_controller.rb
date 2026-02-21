@@ -92,6 +92,18 @@ module Dashboard
     def setup
     end
 
+    def mcp_setup
+      ensure_api_key!
+    end
+
+    def regenerate_mcp_token
+      new_key = "sig_api_#{SecureRandom.hex(24)}"
+      @project.settings["api_key"] = new_key
+      @project.save!
+      @raw_token = new_key
+      redirect_to dashboard_project_mcp_setup_path(@project), notice: "API key regenerated"
+    end
+
     def update
       if @project.update(project_params)
         redirect_to edit_dashboard_project_path(@project), notice: "Project updated successfully"
@@ -107,6 +119,16 @@ module Dashboard
     end
 
     private
+
+    def ensure_api_key!
+      return if @project.api_key.present?
+
+      new_key = "sig_api_#{SecureRandom.hex(24)}"
+      @project.settings ||= {}
+      @project.settings["api_key"] = new_key
+      @project.save!
+      @raw_token = new_key
+    end
 
     def project_params
       params.require(:project).permit(:name, :environment, :platform_project_id, settings: {})
