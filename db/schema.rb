@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_01_25_000002) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_20_000001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -236,6 +236,16 @@ ActiveRecord::Schema[8.1].define(version: 2025_01_25_000002) do
     t.datetime "updated_at", null: false
     t.index ["archived_at"], name: "index_projects_on_archived_at"
     t.index ["platform_project_id"], name: "index_projects_on_platform_project_id", unique: true
+  end
+
+  create_table "saved_searches", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.uuid "project_id", null: false
+    t.jsonb "query_params", default: {}, null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id", "name"], name: "index_saved_searches_on_project_id_and_name", unique: true
+    t.index ["project_id"], name: "index_saved_searches_on_project_id"
   end
 
   add_foreign_key "alert_histories", "alert_rules"

@@ -24,6 +24,7 @@ class Incident < ApplicationRecord
     )
 
     add_timeline_event(type: "acknowledged", by: by)
+    AlertsChannel.broadcast_incident(project, self)
   end
 
   def resolve!(by: nil, note: nil)
@@ -35,6 +36,7 @@ class Incident < ApplicationRecord
     )
 
     add_timeline_event(type: "resolved", by: by, message: note)
+    AlertsChannel.broadcast_incident(project, self)
   end
 
   def add_timeline_event(type:, message: nil, by: nil, data: {})

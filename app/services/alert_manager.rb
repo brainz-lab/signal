@@ -37,6 +37,7 @@ class AlertManager
         alert.fire!
       else
         alert.save!
+        AlertsChannel.broadcast_alert(alert.project, alert)
       end
     when "firing"
       alert.update!(last_fired_at: Time.current)
@@ -47,6 +48,7 @@ class AlertManager
       alert.resolved_at = nil
       alert.acknowledged = false
       alert.save!
+      AlertsChannel.broadcast_alert(alert.project, alert)
     end
   end
 

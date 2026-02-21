@@ -2,10 +2,29 @@ module Api
   module V1
     class BaseController < ApplicationController
       before_action :authenticate!
+      before_action :check_rate_limit!
 
       attr_reader :current_project
 
       private
+
+      def check_rate_limit!
+        return unless @current_project
+
+        key = "signal:api_rate:#{@current_project.id}"
+        path = request.path
+        limit = path.include?("/browser") || path.include?("/trigger") ? 100 : 1000
+        window = 1.minute
+
+        count = Rails.cache.increment(key, 1, expires_in: window) || begin
+          Rails.cache.write(key, 1, expires_in: window)
+          1
+        end
+
+        if count > limit
+          render json: { error: "Rate limit exceeded. Max #{limit} requests per minute." }, status: :too_many_requests
+        end
+      end
 
       def authenticate!
         raw_key = extract_api_key

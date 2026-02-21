@@ -27,6 +27,9 @@ Rails.application.routes.draw do
     root to: "projects#index"
 
     resources :projects, except: [ :new, :edit ] do
+      get :overview, to: "overview#show"
+      get :analytics, to: "analytics#show"
+      get :setup, to: "projects#setup"
       resources :alerts, only: [ :index, :show ] do
         member do
           post :acknowledge
@@ -38,6 +41,8 @@ Rails.application.routes.draw do
           post :resolve
         end
       end
+      resources :saved_searches, only: [ :create, :destroy ]
+      resources :exports, only: [ :create ]
       resources :rules, except: [ :new, :edit ] do
         member do
           post :mute

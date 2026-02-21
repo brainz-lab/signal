@@ -14,7 +14,7 @@ module Dashboard
           platform_project_id: session[:platform_project_id],
           name: session[:project_slug] || "Project"
         )
-        redirect_to dashboard_project_alerts_path(project)
+        redirect_to dashboard_project_overview_path(project)
       elsif @api_key_info && @api_key_info[:project_id]
         # API key flow
         project = Project.find_or_create_for_platform!(
@@ -48,7 +48,7 @@ module Dashboard
 
         if @project.save
           session[:api_key] = "dev_#{@project.id}"
-          redirect_to dashboard_project_alerts_path(@project), notice: "Created #{@project.name}"
+          redirect_to dashboard_project_overview_path(@project), notice: "Created #{@project.name}"
         else
           flash.now[:alert] = @project.errors.full_messages.join(", ")
           render :new, status: :unprocessable_entity
@@ -78,11 +78,18 @@ module Dashboard
         )
 
         session[:api_key] = api_key
-        redirect_to dashboard_project_alerts_path(project), notice: "Connected to #{project.name}"
+        redirect_to dashboard_project_overview_path(project), notice: "Connected to #{project.name}"
       end
     end
 
+    def show
+      redirect_to dashboard_project_overview_path(@project)
+    end
+
     def edit
+    end
+
+    def setup
     end
 
     def update
