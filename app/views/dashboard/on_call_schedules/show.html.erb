@@ -3,14 +3,14 @@
   <div class="flex items-center justify-between">
     <div>
       <div class="flex items-center gap-2 mb-1">
-        <%= link_to "On-Call Schedules", dashboard_project_on_call_schedules_path(@project), class: "text-[13px] text-muted" %>
-        <span class="text-muted">/</span>
+        <%= link_to "On-Call Schedules", dashboard_project_on_call_schedules_path(@project), class: "text-[13px] dm-text-muted" %>
+        <span class="dm-text-muted">/</span>
       </div>
-      <h1 class="text-[24px] font-semibold text-primary"><%= @schedule.name %></h1>
+      <h1 class="text-[24px] font-semibold dm-text"><%= @schedule.name %></h1>
     </div>
 
     <div class="flex items-center gap-2">
-      <%= link_to "Edit", edit_dashboard_project_on_call_schedule_path(@project, @schedule), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-colors btn-theme-primary" %>
+      <%= link_to "Edit", edit_dashboard_project_on_call_schedule_path(@project, @schedule), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-colors dm-btn-primary" %>
     </div>
   </div>
 
@@ -36,51 +36,51 @@
   <div class="rounded-xl px-5 py-4" style="border: 2px solid var(--color-signal); background: var(--gradient-on-call);">
     <h3 class="text-[13px] font-medium mb-2" style="color: var(--color-signal-dark);">Currently On-Call</h3>
     <% if @schedule.current_on_call.present? %>
-      <p class="text-[20px] font-semibold text-primary"><%= @schedule.current_on_call %></p>
+      <p class="text-[20px] font-semibold dm-text"><%= @schedule.current_on_call %></p>
       <% if @schedule.current_shift_start && @schedule.current_shift_end %>
         <p class="text-[13px] mt-1" style="color: var(--color-signal-dark);">
           <%= @schedule.current_shift_start.strftime('%b %d, %H:%M') %> - <%= @schedule.current_shift_end.strftime('%b %d, %H:%M') %>
         </p>
       <% end %>
     <% else %>
-      <p class="text-[16px] font-medium text-subtle">No one currently on call</p>
+      <p class="text-[16px] font-medium dm-text-placeholder">No one currently on call</p>
     <% end %>
   </div>
 
   <!-- Schedule Details -->
   <div class="grid grid-cols-2 gap-6">
-    <div class="rounded-xl px-5 py-4 border border-theme bg-surface">
-      <h3 class="text-[13px] font-medium mb-3 text-muted">Schedule Details</h3>
+    <div class="dm-card px-5 py-4">
+      <h3 class="text-[13px] font-medium mb-3 dm-text-muted">Schedule Details</h3>
       <dl class="space-y-2">
         <div class="flex justify-between">
-          <dt class="text-[13px] text-subtle">Type</dt>
-          <dd class="text-[13px] font-medium capitalize text-primary"><%= @schedule.schedule_type %></dd>
+          <dt class="text-[13px] dm-text-placeholder">Type</dt>
+          <dd class="text-[13px] font-medium capitalize dm-text"><%= @schedule.schedule_type %></dd>
         </div>
         <div class="flex justify-between">
-          <dt class="text-[13px] text-subtle">Timezone</dt>
-          <dd class="text-[13px] font-medium text-primary"><%= @schedule.timezone %></dd>
+          <dt class="text-[13px] dm-text-placeholder">Timezone</dt>
+          <dd class="text-[13px] font-medium dm-text"><%= @schedule.timezone %></dd>
         </div>
         <% if @schedule.schedule_type == 'custom' && @schedule.rotation_type %>
           <div class="flex justify-between">
-            <dt class="text-[13px] text-subtle">Rotation</dt>
-            <dd class="text-[13px] font-medium capitalize text-primary"><%= @schedule.rotation_type %></dd>
+            <dt class="text-[13px] dm-text-placeholder">Rotation</dt>
+            <dd class="text-[13px] font-medium capitalize dm-text"><%= @schedule.rotation_type %></dd>
           </div>
           <% if @schedule.rotation_start %>
             <div class="flex justify-between">
-              <dt class="text-[13px] text-subtle">Started</dt>
-              <dd class="text-[13px] font-medium text-primary"><%= @schedule.rotation_start.strftime('%Y-%m-%d') %></dd>
+              <dt class="text-[13px] dm-text-placeholder">Started</dt>
+              <dd class="text-[13px] font-medium dm-text"><%= @schedule.rotation_start.strftime('%Y-%m-%d') %></dd>
             </div>
           <% end %>
         <% end %>
         <div class="flex justify-between">
-          <dt class="text-[13px] text-subtle">Created</dt>
-          <dd class="text-[13px] font-medium text-primary"><%= @schedule.created_at.strftime('%Y-%m-%d') %></dd>
+          <dt class="text-[13px] dm-text-placeholder">Created</dt>
+          <dd class="text-[13px] font-medium dm-text"><%= @schedule.created_at.strftime('%Y-%m-%d') %></dd>
         </div>
       </dl>
     </div>
 
-    <div class="rounded-xl px-5 py-4 border border-theme bg-surface">
-      <h3 class="text-[13px] font-medium mb-3 text-muted">Team Members</h3>
+    <div class="dm-card px-5 py-4">
+      <h3 class="text-[13px] font-medium mb-3 dm-text-muted">Team Members</h3>
       <% if @schedule.members.present? && @schedule.members.any? %>
         <ul class="space-y-2">
           <% @schedule.members.each do |member| %>
@@ -88,26 +88,26 @@
               <span class="w-6 h-6 flex items-center justify-center rounded-full text-[11px] font-medium" style="background: var(--color-signal); color: #FFFFFE;">
                 <%= member.to_s.chars.first.upcase %>
               </span>
-              <span class="text-[13px] text-primary"><%= member %></span>
+              <span class="text-[13px] dm-text"><%= member %></span>
             </li>
           <% end %>
         </ul>
       <% else %>
-        <p class="text-[13px] text-muted">No members configured</p>
+        <p class="text-[13px] dm-text-muted">No members configured</p>
       <% end %>
     </div>
   </div>
 
   <!-- Weekly Schedule -->
   <% if @schedule.schedule_type == 'weekly' && @schedule.weekly_schedule.present? %>
-    <div class="rounded-xl px-5 py-4 border border-theme bg-surface">
-      <h3 class="text-[13px] font-medium mb-3 text-muted">Weekly Schedule</h3>
+    <div class="dm-card px-5 py-4">
+      <h3 class="text-[13px] font-medium mb-3 dm-text-muted">Weekly Schedule</h3>
       <div class="grid grid-cols-7 gap-2">
         <% %w[monday tuesday wednesday thursday friday saturday sunday].each do |day| %>
           <div class="text-center">
-            <p class="text-[11px] font-medium uppercase mb-1 text-muted"><%= day[0..2] %></p>
-            <div class="rounded-lg px-2 py-2 bg-surface-alt border border-theme">
-              <p class="text-[12px] font-medium text-primary">
+            <p class="text-[11px] font-medium uppercase mb-1 dm-text-muted"><%= day[0..2] %></p>
+            <div class="rounded-lg px-2 py-2 bg-surface-alt border dm-border">
+              <p class="text-[12px] font-medium dm-text">
                 <%= @schedule.weekly_schedule.dig(day, 'user') || '-' %>
               </p>
             </div>

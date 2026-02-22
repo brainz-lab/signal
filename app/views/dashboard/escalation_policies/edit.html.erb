@@ -1,46 +1,46 @@
 <div class="max-w-2xl space-y-6">
   <div class="flex items-center gap-2 mb-1">
-    <%= link_to "Escalation Policies", dashboard_project_escalation_policies_path(@project), class: "text-[13px] text-muted" %>
-    <span class="text-muted">/</span>
-    <%= link_to @escalation_policy.name, dashboard_project_escalation_policy_path(@project, @escalation_policy), class: "text-[13px] text-muted" %>
-    <span class="text-muted">/</span>
-    <span class="text-[13px] text-primary">Edit</span>
+    <%= link_to "Escalation Policies", dashboard_project_escalation_policies_path(@project), class: "text-[13px] dm-text-muted" %>
+    <span class="dm-text-muted">/</span>
+    <%= link_to @escalation_policy.name, dashboard_project_escalation_policy_path(@project, @escalation_policy), class: "text-[13px] dm-text-muted" %>
+    <span class="dm-text-muted">/</span>
+    <span class="text-[13px] dm-text">Edit</span>
   </div>
 
-  <h1 class="text-[24px] font-semibold text-primary">Edit Escalation Policy</h1>
+  <h1 class="text-[24px] font-semibold dm-text">Edit Escalation Policy</h1>
 
-  <div class="rounded-xl px-6 py-6 border border-theme bg-surface">
+  <div class="dm-card px-6 py-6">
     <%= form_with model: @escalation_policy, url: dashboard_project_escalation_policy_path(@project, @escalation_policy), method: :patch, class: "space-y-6" do |f| %>
       <!-- Basic Info -->
       <div class="space-y-4">
         <div>
-          <%= f.label :name, class: "block text-[13px] font-medium mb-1.5 text-primary" %>
-          <%= f.text_field :name, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-signal input-theme" %>
+          <%= f.label :name, class: "block text-[13px] font-medium mb-1.5 dm-text" %>
+          <%= f.text_field :name, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 dm-input" %>
         </div>
 
         <div>
-          <%= f.label :description, class: "block text-[13px] font-medium mb-1.5 text-primary" %>
-          <%= f.text_area :description, rows: 2, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-signal input-theme" %>
+          <%= f.label :description, class: "block text-[13px] font-medium mb-1.5 dm-text" %>
+          <%= f.text_area :description, rows: 2, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 dm-input" %>
         </div>
 
         <div class="flex items-center gap-2">
           <%= f.check_box :enabled, class: "rounded" %>
-          <%= f.label :enabled, "Enabled", class: "text-[13px] text-primary" %>
+          <%= f.label :enabled, "Enabled", class: "text-[13px] dm-text" %>
         </div>
       </div>
 
       <!-- Steps -->
-      <div class="space-y-4 pt-4 border-t border-light">
-        <h2 class="text-[15px] font-medium text-primary">Escalation Steps</h2>
+      <div class="space-y-4 pt-4 border-t dm-border-light">
+        <h2 class="text-[15px] font-medium dm-text">Escalation Steps</h2>
 
         <div id="escalation-steps" class="space-y-3">
           <% (@escalation_policy.steps || []).each_with_index do |step, index| %>
-            <div class="flex items-center gap-3 rounded-lg px-4 py-3 bg-surface-alt border border-theme">
+            <div class="flex items-center gap-3 rounded-lg px-4 py-3 bg-surface-alt border dm-border">
               <span class="flex items-center justify-center w-6 h-6 rounded-full text-[12px] font-semibold" style="background: var(--color-signal); color: #FFFFFE;">
                 <%= index + 1 %>
               </span>
               <div class="flex-1 grid grid-cols-2 gap-3">
-                <select name="escalation_policy[steps][][channel_id]" class="px-3 py-2 rounded-lg text-[13px] outline-none input-theme">
+                <select name="escalation_policy[steps][][channel_id]" class="px-3 py-2 rounded-lg text-[13px] outline-none dm-input">
                   <option value="">Select channel...</option>
                   <% @channels.each do |channel| %>
                     <option value="<%= channel.id %>" <%= 'selected' if step['channel_id'] == channel.id.to_s %>>
@@ -49,62 +49,62 @@
                   <% end %>
                 </select>
                 <div class="flex items-center gap-2">
-                  <input type="number" name="escalation_policy[steps][][delay_minutes]" value="<%= step['delay_minutes'] %>" placeholder="0" class="flex-1 px-3 py-2 rounded-lg text-[13px] outline-none input-theme">
-                  <span class="text-[13px] text-muted">min delay</span>
+                  <input type="number" name="escalation_policy[steps][][delay_minutes]" value="<%= step['delay_minutes'] %>" placeholder="0" class="flex-1 px-3 py-2 rounded-lg text-[13px] outline-none dm-input">
+                  <span class="text-[13px] dm-text-muted">min delay</span>
                 </div>
               </div>
             </div>
           <% end %>
 
           <% if @escalation_policy.steps.blank? || @escalation_policy.steps.empty? %>
-            <div class="flex items-center gap-3 rounded-lg px-4 py-3 bg-surface-alt border border-theme">
+            <div class="flex items-center gap-3 rounded-lg px-4 py-3 bg-surface-alt border dm-border">
               <span class="flex items-center justify-center w-6 h-6 rounded-full text-[12px] font-semibold" style="background: var(--color-signal); color: #FFFFFE;">1</span>
               <div class="flex-1 grid grid-cols-2 gap-3">
-                <select name="escalation_policy[steps][][channel_id]" class="px-3 py-2 rounded-lg text-[13px] outline-none input-theme">
+                <select name="escalation_policy[steps][][channel_id]" class="px-3 py-2 rounded-lg text-[13px] outline-none dm-input">
                   <option value="">Select channel...</option>
                   <% @channels.each do |channel| %>
                     <option value="<%= channel.id %>"><%= channel.name %> (<%= channel.channel_type %>)</option>
                   <% end %>
                 </select>
                 <div class="flex items-center gap-2">
-                  <input type="number" name="escalation_policy[steps][][delay_minutes]" value="0" placeholder="0" class="flex-1 px-3 py-2 rounded-lg text-[13px] outline-none input-theme">
-                  <span class="text-[13px] text-muted">min delay</span>
+                  <input type="number" name="escalation_policy[steps][][delay_minutes]" value="0" placeholder="0" class="flex-1 px-3 py-2 rounded-lg text-[13px] outline-none dm-input">
+                  <span class="text-[13px] dm-text-muted">min delay</span>
                 </div>
               </div>
             </div>
           <% end %>
         </div>
 
-        <p class="text-[12px] text-muted">
+        <p class="text-[12px] dm-text-muted">
           First step is notified immediately. Subsequent steps are notified after the specified delay if the alert is not acknowledged.
         </p>
       </div>
 
       <!-- Repeat Settings -->
-      <div class="space-y-4 pt-4 border-t border-light">
-        <h2 class="text-[15px] font-medium text-primary">Repeat Settings</h2>
+      <div class="space-y-4 pt-4 border-t dm-border-light">
+        <h2 class="text-[15px] font-medium dm-text">Repeat Settings</h2>
 
         <div class="flex items-center gap-2">
           <%= f.check_box :repeat, class: "rounded" %>
-          <%= f.label :repeat, "Repeat escalation if not acknowledged", class: "text-[13px] text-primary" %>
+          <%= f.label :repeat, "Repeat escalation if not acknowledged", class: "text-[13px] dm-text" %>
         </div>
 
         <div class="grid grid-cols-2 gap-4">
           <div>
-            <%= f.label :repeat_after_minutes, "Repeat After (minutes)", class: "block text-[13px] font-medium mb-1.5 text-primary" %>
-            <%= f.number_field :repeat_after_minutes, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-signal input-theme" %>
+            <%= f.label :repeat_after_minutes, "Repeat After (minutes)", class: "block text-[13px] font-medium mb-1.5 dm-text" %>
+            <%= f.number_field :repeat_after_minutes, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 dm-input" %>
           </div>
           <div>
-            <%= f.label :max_repeats, "Max Repeats", class: "block text-[13px] font-medium mb-1.5 text-primary" %>
-            <%= f.number_field :max_repeats, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 focus:ring-signal input-theme" %>
-            <p class="text-[12px] mt-1 text-muted">Leave blank for unlimited</p>
+            <%= f.label :max_repeats, "Max Repeats", class: "block text-[13px] font-medium mb-1.5 dm-text" %>
+            <%= f.number_field :max_repeats, class: "w-full px-3 py-2 rounded-lg text-[14px] outline-none focus:ring-2 dm-input" %>
+            <p class="text-[12px] mt-1 dm-text-muted">Leave blank for unlimited</p>
           </div>
         </div>
       </div>
 
       <div class="flex items-center gap-3 pt-4">
-        <%= f.submit "Save Changes", class: "px-4 py-2 text-[13px] font-medium rounded-lg cursor-pointer transition-colors btn-theme-primary" %>
-        <%= link_to "Cancel", dashboard_project_escalation_policy_path(@project, @escalation_policy), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-colors btn-theme-secondary" %>
+        <%= f.submit "Save Changes", class: "px-4 py-2 text-[13px] font-medium rounded-lg cursor-pointer transition-colors dm-btn-primary" %>
+        <%= link_to "Cancel", dashboard_project_escalation_policy_path(@project, @escalation_policy), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-colors dm-btn-secondary" %>
       </div>
     <% end %>
   </div>
