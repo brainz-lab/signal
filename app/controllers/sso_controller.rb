@@ -22,7 +22,7 @@ class SsoController < ApplicationController
       # Sync all user's projects from Platform
       sync_projects_from_platform(token)
 
-      redirect_to params[:return_to] || dashboard_root_path
+      redirect_to params[:return_to] || project_redirect_path(user_info) || dashboard_root_path
     else
       redirect_to "#{platform_external_url}/login?error=sso_failed", allow_other_host: true
     end
@@ -100,6 +100,13 @@ class SsoController < ApplicationController
   rescue => e
     Rails.logger.error("[SSO] fetch_user_projects failed: #{e.message}")
     nil
+  end
+
+  def project_redirect_path(user_info)
+    return nil unless user_info[:project_id].present?
+    project = Project.find_by(platform_project_id: user_info[:project_id].to_s)
+    return nil unless project
+    dashboard_project_overview_path(project)
   end
 
   def platform_url
