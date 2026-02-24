@@ -1,0 +1,127 @@
+<div class="max-w-2xl space-y-8">
+  <div>
+    <h1 class="text-[22px] font-semibold tracking-tight dm-text">MCP Setup Guide</h1>
+    <p class="mt-2 text-[15px] dm-text-secondary">Connect Claude or other AI assistants to your alerts using the Model Context Protocol.</p>
+  </div>
+
+  <!-- Step 1 -->
+  <% display_key = @raw_token || @project.api_key %>
+  <div class="space-y-4">
+    <div class="flex items-center gap-3">
+      <span class="flex items-center justify-center w-7 h-7 rounded-full text-[13px] font-semibold signal-step-badge" style="background: rgba(217, 119, 6, 0.15); color: var(--color-signal, #d97706);">1</span>
+      <h2 class="text-[16px] font-medium dm-text">Get your API key</h2>
+    </div>
+    <p class="text-[14px] dm-text-secondary">Use this API key to authenticate MCP requests:</p>
+    <% if @raw_token %>
+      <div class="mb-4 rounded-md bg-amber-50 p-3 border border-amber-200">
+        <p class="text-sm text-amber-800">New API key created. Copy it now - it won't be shown again.</p>
+      </div>
+    <% end %>
+    <div class="group" style="position: relative;" data-controller="clipboard">
+      <pre class="px-5 py-4 rounded-xl text-[13px] font-mono overflow-x-auto dm-code"><code><%= display_key %></code></pre>
+      <button data-action="click->clipboard#copy" data-clipboard-target="source"
+              data-copy="<%= display_key %>"
+              class="px-3 py-1.5 text-[12px] font-medium rounded-md transition-all opacity-0 group-hover:opacity-100 dm-btn-secondary"
+              style="position: absolute; top: 12px; right: 12px;">
+        Copy
+      </button>
+    </div>
+    <div class="mt-2">
+      <%= button_to "Regenerate API Key", dashboard_project_regenerate_mcp_token_path(@project), method: :post, class: "px-3 py-1.5 text-[12px] font-medium rounded-md dm-btn-secondary", data: { turbo_confirm: "This will invalidate the current API key. Continue?" } %>
+    </div>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="space-y-4">
+    <div class="flex items-center gap-3">
+      <span class="flex items-center justify-center w-7 h-7 rounded-full text-[13px] font-semibold" style="background: rgba(217, 119, 6, 0.15); color: var(--color-signal, #d97706);">2</span>
+      <h2 class="text-[16px] font-medium dm-text">Configure Claude Code</h2>
+    </div>
+    <p class="text-[14px] dm-text-secondary">Add Signal as an MCP server in your Claude Code settings:</p>
+    <div class="group" style="position: relative;" data-controller="clipboard">
+      <pre class="px-5 py-4 rounded-xl text-[13px] font-mono overflow-x-auto dm-code"><code>{
+  "mcpServers": {
+    "signal": {
+      "url": "<%= request.base_url %>/mcp/rpc",
+      "headers": {
+        "Authorization": "Bearer <%= display_key %>"
+      }
+    }
+  }
+}</code></pre>
+      <button data-action="click->clipboard#copy" data-clipboard-target="source"
+              data-copy='{"mcpServers":{"signal":{"url":"<%= request.base_url %>/mcp/rpc","headers":{"Authorization":"Bearer <%= display_key %>"}}}}'
+              class="px-3 py-1.5 text-[12px] font-medium rounded-md transition-all opacity-0 group-hover:opacity-100 dm-btn-secondary"
+              style="position: absolute; top: 12px; right: 12px;">
+        Copy
+      </button>
+    </div>
+    <p class="text-[14px] dm-text-muted">Add this to <code class="px-1.5 py-0.5 rounded text-[13px] dm-code">~/.claude/settings.json</code> or your project's <code class="px-1.5 py-0.5 rounded text-[13px] dm-code">.claude/settings.json</code></p>
+  </div>
+
+  <!-- Step 3 -->
+  <div class="space-y-4">
+    <div class="flex items-center gap-3">
+      <span class="flex items-center justify-center w-7 h-7 rounded-full text-[13px] font-semibold" style="background: rgba(217, 119, 6, 0.15); color: var(--color-signal, #d97706);">3</span>
+      <h2 class="text-[16px] font-medium dm-text">Start using Signal with Claude</h2>
+    </div>
+    <p class="text-[14px] dm-text-secondary">Once configured, Claude can manage your alerts directly. Try asking:</p>
+    <div class="space-y-3 mt-4">
+      <div class="px-4 py-3 rounded-lg dm-card">
+        <p class="text-[14px] font-medium dm-text">"Show me all active critical alerts"</p>
+      </div>
+      <div class="px-4 py-3 rounded-lg dm-card">
+        <p class="text-[14px] font-medium dm-text">"Create an alert rule for error rate above 5%"</p>
+      </div>
+      <div class="px-4 py-3 rounded-lg dm-card">
+        <p class="text-[14px] font-medium dm-text">"Acknowledge the latest firing alert"</p>
+      </div>
+      <div class="px-4 py-3 rounded-lg dm-card">
+        <p class="text-[14px] font-medium dm-text">"List all open incidents"</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Available Tools -->
+  <div class="pt-6 border-t dm-border">
+    <h3 class="text-[15px] font-medium mb-4 dm-text">Available MCP tools</h3>
+    <div class="space-y-3">
+      <div class="flex items-start gap-3">
+        <code class="px-2 py-1 rounded text-[12px] font-mono shrink-0" style="background: rgba(217, 119, 6, 0.1); color: var(--color-signal, #d97706);">signal_list_alerts</code>
+        <p class="text-[13px] dm-text-secondary">List active alerts with optional severity and status filters</p>
+      </div>
+      <div class="flex items-start gap-3">
+        <code class="px-2 py-1 rounded text-[12px] font-mono shrink-0" style="background: rgba(217, 119, 6, 0.1); color: var(--color-signal, #d97706);">signal_acknowledge</code>
+        <p class="text-[13px] dm-text-secondary">Acknowledge an alert by ID</p>
+      </div>
+      <div class="flex items-start gap-3">
+        <code class="px-2 py-1 rounded text-[12px] font-mono shrink-0" style="background: rgba(217, 119, 6, 0.1); color: var(--color-signal, #d97706);">signal_create_rule</code>
+        <p class="text-[13px] dm-text-secondary">Create a new alert rule (threshold, anomaly, absence, or composite)</p>
+      </div>
+      <div class="flex items-start gap-3">
+        <code class="px-2 py-1 rounded text-[12px] font-mono shrink-0" style="background: rgba(217, 119, 6, 0.1); color: var(--color-signal, #d97706);">signal_mute</code>
+        <p class="text-[13px] dm-text-secondary">Mute alerts temporarily to reduce noise</p>
+      </div>
+      <div class="flex items-start gap-3">
+        <code class="px-2 py-1 rounded text-[12px] font-mono shrink-0" style="background: rgba(217, 119, 6, 0.1); color: var(--color-signal, #d97706);">signal_incidents</code>
+        <p class="text-[13px] dm-text-secondary">List incidents with status and severity details</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Test it -->
+  <div class="space-y-4">
+    <h3 class="text-[15px] font-medium dm-text">Test MCP connection</h3>
+    <p class="text-[14px] dm-text-secondary">List available tools with curl:</p>
+    <div class="group" style="position: relative;" data-controller="clipboard">
+      <pre class="px-5 py-4 rounded-xl text-[13px] font-mono overflow-x-auto dm-code"><code>curl <%= request.base_url %>/mcp/tools \
+  -H "Authorization: Bearer <%= display_key %>"</code></pre>
+      <button data-action="click->clipboard#copy" data-clipboard-target="source"
+              data-copy="curl <%= request.base_url %>/mcp/tools -H &quot;Authorization: Bearer <%= display_key %>&quot;"
+              class="px-3 py-1.5 text-[12px] font-medium rounded-md transition-all opacity-0 group-hover:opacity-100 dm-btn-secondary"
+              style="position: absolute; top: 12px; right: 12px;">
+        Copy
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,162 @@
+<div class="space-y-6" data-controller="realtime-alerts" data-realtime-alerts-project-id-value="<%= @project.id %>">
+  <!-- Header + Time Range -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-[24px] font-semibold tracking-tight dm-text">Overview</h1>
+      <p class="text-[14px] mt-1 dm-text-muted">Real-time health of your alerting pipeline</p>
+    </div>
+    <div class="flex items-center gap-1 p-1 rounded-xl" style="background: var(--color-border-subtle);">
+      <% %w[1h 6h 24h 7d 30d].each do |range| %>
+        <%= link_to range,
+          dashboard_project_overview_path(@project, range: range),
+          class: "px-3 py-1.5 text-[12px] font-medium rounded-lg transition-all #{@range == range ? 'shadow-sm dm-card dm-text' : 'dm-text-placeholder hover:bg-surface-hover'}" %>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+    <!-- Firing -->
+    <div class="rounded-2xl px-5 py-5 shadow-card transition-all hover:shadow-medium dm-border" style="background: var(--gradient-card-error);">
+      <p class="text-[11px] font-semibold uppercase tracking-wider dm-text-muted">Firing</p>
+      <p class="text-[28px] font-bold leading-none mt-2 text-error" data-realtime-alerts-target="firingCount"><%= @firing_count %></p>
+    </div>
+
+    <!-- Pending -->
+    <div class="rounded-2xl px-5 py-5 shadow-card transition-all hover:shadow-medium dm-border" style="background: var(--gradient-card-warning);">
+      <p class="text-[11px] font-semibold uppercase tracking-wider dm-text-muted">Pending</p>
+      <p class="text-[28px] font-bold leading-none mt-2 text-warning" data-realtime-alerts-target="pendingCount"><%= @pending_count %></p>
+    </div>
+
+    <!-- MTTA -->
+    <div class="rounded-2xl px-5 py-5 shadow-card transition-all hover:shadow-medium dm-border dm-card">
+      <p class="text-[11px] font-semibold uppercase tracking-wider dm-text-muted">MTTA</p>
+      <p class="text-[28px] font-bold leading-none mt-2 dm-text" data-realtime-alerts-target="mtta">
+        <%= @mtta ? format_duration(@mtta) : "—" %>
+      </p>
+    </div>
+
+    <!-- MTTR -->
+    <div class="rounded-2xl px-5 py-5 shadow-card transition-all hover:shadow-medium dm-border dm-card">
+      <p class="text-[11px] font-semibold uppercase tracking-wider dm-text-muted">MTTR</p>
+      <p class="text-[28px] font-bold leading-none mt-2 dm-text" data-realtime-alerts-target="mttr">
+        <%= @mttr ? format_duration(@mttr) : "—" %>
+      </p>
+    </div>
+
+    <!-- Incidents Open -->
+    <div class="rounded-2xl px-5 py-5 shadow-card transition-all hover:shadow-medium dm-border" style="background: var(--gradient-card-error);">
+      <p class="text-[11px] font-semibold uppercase tracking-wider dm-text-muted">Incidents</p>
+      <p class="text-[28px] font-bold leading-none mt-2 text-error" data-realtime-alerts-target="incidentsOpen"><%= @incidents_open %></p>
+    </div>
+
+    <!-- Notification Success -->
+    <div class="rounded-2xl px-5 py-5 shadow-card transition-all hover:shadow-medium dm-border" style="background: var(--gradient-card-success);">
+      <p class="text-[11px] font-semibold uppercase tracking-wider dm-text-muted">Notif. Rate</p>
+      <p class="text-[28px] font-bold leading-none mt-2 text-success" data-realtime-alerts-target="notificationRate"><%= @notification_rate %>%</p>
+    </div>
+  </div>
+
+  <!-- Charts Row -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Alert Volume -->
+    <div class="rounded-2xl p-6 shadow-card dm-card dm-border">
+      <h3 class="text-[14px] font-semibold dm-text mb-4">Alert Volume</h3>
+      <div class="h-[240px]">
+        <canvas data-controller="chart"
+                data-chart-type-value="line"
+                data-chart-data-value="<%= @alert_volume_data.to_json %>"
+                data-chart-metric-value="alert_volume"></canvas>
+      </div>
+    </div>
+
+    <!-- Severity Distribution -->
+    <div class="rounded-2xl p-6 shadow-card dm-card dm-border">
+      <h3 class="text-[14px] font-semibold dm-text mb-4">Alerts by Severity</h3>
+      <div class="h-[240px]">
+        <canvas data-controller="chart"
+                data-chart-type-value="doughnut"
+                data-chart-data-value="<%= [@severity_data[:critical], @severity_data[:warning], @severity_data[:info]].to_json %>"
+                data-chart-labels-value='["Critical","Warning","Info"]'
+                data-chart-metric-value="severity"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Row: Top Rules + Recent Alerts -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Top Firing Rules -->
+    <div class="rounded-2xl shadow-card dm-card dm-border overflow-hidden">
+      <div class="px-5 py-4 border-b dm-border-light">
+        <h3 class="text-[14px] font-semibold dm-text">Top Firing Rules</h3>
+      </div>
+      <% if @top_rules.any? %>
+        <% @top_rules.each_with_index do |(rule, count), index| %>
+          <div class="flex items-center justify-between px-5 py-3 <%= 'border-t dm-border-light' if index > 0 %>">
+            <div class="flex items-center gap-3">
+              <span class="w-6 h-6 rounded-lg flex items-center justify-center text-[11px] font-bold dm-text-muted" style="background: var(--color-border-subtle);"><%= index + 1 %></span>
+              <div>
+                <p class="text-[13px] font-medium dm-text"><%= rule.name %></p>
+                <p class="text-[11px] dm-text-muted"><%= rule.source %> · <%= rule.severity %></p>
+              </div>
+            </div>
+            <span class="text-[13px] font-semibold text-error"><%= count %></span>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="px-5 py-8 text-center">
+          <p class="text-[13px] dm-text-muted">No firing rules in this period</p>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Recent Alerts -->
+    <div class="rounded-2xl shadow-card dm-card dm-border overflow-hidden">
+      <div class="px-5 py-4 border-b dm-border-light">
+        <h3 class="text-[14px] font-semibold dm-text">Recent Alerts</h3>
+      </div>
+      <div data-realtime-alerts-target="recentAlerts">
+        <% if @recent_alerts.any? %>
+          <% @recent_alerts.each_with_index do |alert, index| %>
+            <%= link_to dashboard_project_alert_path(@project, alert),
+                class: "flex items-center justify-between px-4 py-3 transition-all dm-surface-hover group #{index > 0 ? 'border-t dm-border-light' : ''}",
+                data: { recent_row: "" } do %>
+              <div class="flex items-center gap-3">
+                <% case alert.state %>
+                <% when "firing" %>
+                  <div class="w-8 h-8 rounded-lg flex items-center justify-center bg-error">
+                    <span class="w-2 h-2 rounded-full animate-pulse" style="background: var(--color-error-dot);"></span>
+                  </div>
+                <% when "pending" %>
+                  <div class="w-8 h-8 rounded-lg flex items-center justify-center bg-warning">
+                    <span class="w-2 h-2 rounded-full" style="background: var(--color-warning-dot);"></span>
+                  </div>
+                <% else %>
+                  <div class="w-8 h-8 rounded-lg flex items-center justify-center bg-success">
+                    <span class="w-2 h-2 rounded-full" style="background: var(--color-success-dot);"></span>
+                  </div>
+                <% end %>
+                <div>
+                  <p class="text-[13px] font-medium group-hover:text-signal transition-colors dm-text"><%= alert.alert_rule&.name || "Unknown" %></p>
+                  <p class="text-[11px] dm-text-muted"><%= time_ago_in_words(alert.started_at) %> ago</p>
+                </div>
+              </div>
+              <% case alert.state %>
+              <% when "firing" %>
+                <span class="px-2 py-0.5 text-[10px] font-semibold uppercase rounded-full dm-badge-error">Firing</span>
+              <% when "pending" %>
+                <span class="px-2 py-0.5 text-[10px] font-semibold uppercase rounded-full dm-badge-warning">Pending</span>
+              <% else %>
+                <span class="px-2 py-0.5 text-[10px] font-semibold uppercase rounded-full dm-badge-success">Resolved</span>
+              <% end %>
+            <% end %>
+          <% end %>
+        <% else %>
+          <div class="px-5 py-8 text-center">
+            <p class="text-[13px] dm-text-muted">No alerts yet</p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -111,6 +111,16 @@
 
         <!-- Navigation -->
         <nav class="p-4 space-y-1 flex-1 relative z-10">
+          <%= link_to dashboard_project_overview_path(@project), class: nav_link_class('/overview') do %>
+            <%= icon(:overview) %>
+            Overview
+          <% end %>
+
+          <%= link_to dashboard_project_analytics_path(@project), class: nav_link_class('/analytics') do %>
+            <%= icon(:analytics) %>
+            Analytics
+          <% end %>
+
           <%= link_to dashboard_project_alerts_path(@project), class: nav_link_class('/alerts') do %>
             <%= icon(:alerts) %>
             Alerts
@@ -144,6 +154,16 @@
           <%= link_to dashboard_project_maintenance_windows_path(@project), class: nav_link_class('/maintenance') do %>
             <%= icon(:maintenance) %>
             Maintenance
+          <% end %>
+
+          <%= link_to dashboard_project_setup_path(@project), class: nav_link_class('/setup') do %>
+            <%= icon(:setup) %>
+            Setup
+          <% end %>
+
+          <%= link_to dashboard_project_mcp_setup_path(@project), class: nav_link_class('/mcp') do %>
+            <%= icon(:mcp) %>
+            MCP
           <% end %>
 
           <%= link_to edit_dashboard_project_path(@project), class: nav_link_class('/settings') do %>

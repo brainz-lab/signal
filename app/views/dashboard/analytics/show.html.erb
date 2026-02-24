@@ -1,0 +1,163 @@
+<div class="space-y-6">
+  <!-- Header + Time Range -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-[24px] font-semibold tracking-tight dm-text">Analytics</h1>
+      <p class="text-[14px] mt-1 dm-text-muted">Alert trends, response times, and notification performance</p>
+    </div>
+    <div class="flex items-center gap-1 p-1 rounded-xl" style="background: var(--color-border-subtle);">
+      <% %w[24h 7d 30d].each do |range| %>
+        <%= link_to range,
+          dashboard_project_analytics_path(@project, range: range),
+          class: "px-3 py-1.5 text-[12px] font-medium rounded-lg transition-all #{@range == range ? 'shadow-sm dm-card dm-text' : 'dm-text-placeholder hover:bg-surface-hover'}" %>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="rounded-2xl px-5 py-5 shadow-card dm-card dm-border">
+      <p class="text-[11px] font-semibold uppercase tracking-wider dm-text-muted">Total Alerts</p>
+      <p class="text-[28px] font-bold leading-none mt-2 dm-text"><%= @total_alerts %></p>
+    </div>
+    <div class="rounded-2xl px-5 py-5 shadow-card dm-card dm-border">
+      <p class="text-[11px] font-semibold uppercase tracking-wider dm-text-muted">MTTA</p>
+      <p class="text-[28px] font-bold leading-none mt-2 dm-text"><%= @mtta ? format_duration(@mtta) : "—" %></p>
+    </div>
+    <div class="rounded-2xl px-5 py-5 shadow-card dm-card dm-border">
+      <p class="text-[11px] font-semibold uppercase tracking-wider dm-text-muted">MTTR</p>
+      <p class="text-[28px] font-bold leading-none mt-2 dm-text"><%= @mttr ? format_duration(@mttr) : "—" %></p>
+    </div>
+    <div class="rounded-2xl px-5 py-5 shadow-card transition-all hover:shadow-medium dm-border" style="background: var(--gradient-card-success);">
+      <p class="text-[11px] font-semibold uppercase tracking-wider dm-text-muted">Resolution Rate</p>
+      <p class="text-[28px] font-bold leading-none mt-2 text-success"><%= @resolution_rate %>%</p>
+    </div>
+  </div>
+
+  <!-- Charts Row 1: MTTA/MTTR Trends -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="rounded-2xl p-6 shadow-card dm-card dm-border">
+      <h3 class="text-[14px] font-semibold dm-text mb-4">MTTA Trend (seconds)</h3>
+      <div class="h-[220px]">
+        <canvas data-controller="chart"
+                data-chart-type-value="line"
+                data-chart-data-value="<%= @mtta_trend.to_json %>"
+                data-chart-metric-value="mtta_trend"></canvas>
+      </div>
+    </div>
+    <div class="rounded-2xl p-6 shadow-card dm-card dm-border">
+      <h3 class="text-[14px] font-semibold dm-text mb-4">MTTR Trend (seconds)</h3>
+      <div class="h-[220px]">
+        <canvas data-controller="chart"
+                data-chart-type-value="line"
+                data-chart-data-value="<%= @mttr_trend.to_json %>"
+                data-chart-metric-value="mttr_trend"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts Row 2: By Source + Severity + Notifications -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Alerts by Source -->
+    <div class="rounded-2xl p-6 shadow-card dm-card dm-border">
+      <h3 class="text-[14px] font-semibold dm-text mb-4">Alerts by Source</h3>
+      <div class="space-y-3">
+        <% max_source = @alerts_by_source.map(&:last).max || 1 %>
+        <% source_colors = { "flux" => "#3b82f6", "pulse" => "#8b5cf6", "reflex" => "#ef4444", "recall" => "#10b981" } %>
+        <% @alerts_by_source.each do |source, count| %>
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-[12px] font-medium dm-text capitalize"><%= source %></span>
+              <span class="text-[12px] font-semibold dm-text-muted"><%= count %></span>
+            </div>
+            <div class="h-2 rounded-full overflow-hidden" style="background: var(--color-border-subtle);">
+              <div class="h-full rounded-full transition-all" style="width: <%= (count.to_f / max_source * 100).round %>%; background: <%= source_colors[source] || '#6b7280' %>;"></div>
+            </div>
+          </div>
+        <% end %>
+        <% if @alerts_by_source.empty? %>
+          <p class="text-[13px] dm-text-muted text-center py-4">No data</p>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Severity Distribution -->
+    <div class="rounded-2xl p-6 shadow-card dm-card dm-border">
+      <h3 class="text-[14px] font-semibold dm-text mb-4">By Severity</h3>
+      <div class="h-[200px]">
+        <canvas data-controller="chart"
+                data-chart-type-value="doughnut"
+                data-chart-data-value="<%= [@severity_data[:critical], @severity_data[:warning], @severity_data[:info]].to_json %>"
+                data-chart-labels-value='["Critical","Warning","Info"]'
+                data-chart-metric-value="analytics_severity"></canvas>
+      </div>
+    </div>
+
+    <!-- Notification Stats -->
+    <div class="rounded-2xl p-6 shadow-card dm-card dm-border">
+      <h3 class="text-[14px] font-semibold dm-text mb-4">Notification Delivery</h3>
+      <div class="h-[200px]">
+        <canvas data-controller="chart"
+                data-chart-type-value="doughnut"
+                data-chart-data-value="<%= [@notification_stats[:sent], @notification_stats[:failed], @notification_stats[:skipped]].to_json %>"
+                data-chart-labels-value='["Sent","Failed","Skipped"]'
+                data-chart-colors-value='["rgba(16,185,129,0.8)","rgba(239,68,68,0.8)","rgba(107,114,128,0.8)"]'
+                data-chart-metric-value="notification_delivery"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tables Row: Noisy Rules + Channel Performance -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Top Noisy Rules -->
+    <div class="rounded-2xl shadow-card dm-card dm-border overflow-hidden">
+      <div class="px-5 py-4 border-b dm-border-light">
+        <h3 class="text-[14px] font-semibold dm-text">Top Noisy Rules</h3>
+      </div>
+      <% if @noisy_rules.any? %>
+        <% @noisy_rules.each_with_index do |rule, index| %>
+          <div class="flex items-center justify-between px-5 py-3 <%= 'border-t dm-border-light' if index > 0 %>">
+            <div class="flex items-center gap-3">
+              <span class="w-6 h-6 rounded-lg flex items-center justify-center text-[11px] font-bold dm-text-muted" style="background: var(--color-border-subtle);"><%= index + 1 %></span>
+              <div>
+                <p class="text-[13px] font-medium dm-text"><%= rule[:name] %></p>
+                <p class="text-[11px] dm-text-muted"><%= rule[:source] %> · <%= rule[:severity] %></p>
+              </div>
+            </div>
+            <span class="text-[13px] font-semibold dm-text"><%= rule[:count] %> fires</span>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="px-5 py-8 text-center">
+          <p class="text-[13px] dm-text-muted">No alert activity in this period</p>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Channel Performance -->
+    <div class="rounded-2xl shadow-card dm-card dm-border overflow-hidden">
+      <div class="px-5 py-4 border-b dm-border-light">
+        <h3 class="text-[14px] font-semibold dm-text">Channel Performance</h3>
+      </div>
+      <% if @channel_stats.any? %>
+        <% @channel_stats.each_with_index do |ch, index| %>
+          <% sent = ch.sent_count.to_i; failed = ch.failed_count.to_i; total = sent + failed %>
+          <div class="flex items-center justify-between px-5 py-3 <%= 'border-t dm-border-light' if index > 0 %>">
+            <div>
+              <p class="text-[13px] font-medium dm-text"><%= ch.name %></p>
+              <p class="text-[11px] dm-text-muted"><%= ch.channel_type %></p>
+            </div>
+            <div class="text-right">
+              <p class="text-[13px] font-semibold dm-text"><%= total > 0 ? "#{((sent.to_f / total) * 100).round}%" : "—" %></p>
+              <p class="text-[11px] dm-text-muted"><%= sent %> sent · <%= failed %> failed</p>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="px-5 py-8 text-center">
+          <p class="text-[13px] dm-text-muted">No channels configured</p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

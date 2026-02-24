@@ -31,7 +31,7 @@ module Dashboard
     end
 
     def create
-      @rule = @project.alert_rules.new(rule_params)
+      @rule = @project.alert_rules.new(processed_rule_params)
       if @rule.save
         redirect_to dashboard_project_rule_path(@project, @rule), notice: "Rule created successfully"
       else
@@ -45,7 +45,7 @@ module Dashboard
 
     def update
       @rule = @project.alert_rules.find(params[:id])
-      if @rule.update(rule_params)
+      if @rule.update(processed_rule_params)
         redirect_to dashboard_project_rule_path(@project, @rule), notice: "Rule updated successfully"
       else
         render :edit
@@ -86,9 +86,29 @@ module Dashboard
         :rule_type, :operator, :threshold, :aggregation, :window,
         :sensitivity, :baseline_window, :expected_interval,
         :severity, :evaluation_interval, :pending_period, :resolve_period,
-        :enabled, :escalation_policy_id,
-        notify_channels: [], group_by: [], labels: {}, annotations: {}
+        :enabled, :escalation_policy_id, :query, :group_by,
+        notify_channels: [], labels: {}, annotations: {}
       )
+    end
+
+    def processed_rule_params
+      processed = rule_params.to_h
+
+      # Parse group_by from comma-separated string to array
+      if processed[:group_by].is_a?(String)
+        processed[:group_by] = processed[:group_by].split(",").map(&:strip).reject(&:blank?)
+      end
+
+      # Parse query from JSON string to hash
+      if processed[:query].is_a?(String) && processed[:query].present?
+        begin
+          processed[:query] = JSON.parse(processed[:query])
+        rescue JSON::ParserError
+          processed[:query] = {}
+        end
+      end
+
+      processed
     end
   end
 end

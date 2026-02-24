@@ -6,6 +6,8 @@ class Project < ApplicationRecord
   has_many :escalation_policies, dependent: :destroy
   has_many :on_call_schedules, dependent: :destroy
   has_many :maintenance_windows, dependent: :destroy
+  has_many :notifications, dependent: :destroy
+  has_many :saved_searches, dependent: :destroy
 
   validates :platform_project_id, presence: true, uniqueness: true
 

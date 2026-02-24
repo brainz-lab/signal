@@ -12,6 +12,25 @@ class NotificationJob < ApplicationJob
     # Check maintenance windows
     return if in_maintenance_window?(alert)
 
+    # Check rate limits
+    limiter = NotificationRateLimiter.new(
+      project: alert.project,
+      channel: channel,
+      rule: alert.alert_rule
+    )
+    reason = limiter.check_limits
+    if reason
+      Notification.create!(
+        project: alert.project,
+        alert: alert,
+        notification_channel: channel,
+        notification_type: notification_type,
+        status: "skipped",
+        error_message: reason
+      )
+      return
+    end
+
     channel.send_notification!(
       alert: alert,
       notification_type: notification_type.to_sym

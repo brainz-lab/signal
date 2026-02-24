@@ -1,0 +1,80 @@
+<div class="space-y-6">
+  <div>
+    <h1 class="text-[24px] font-semibold tracking-tight dm-text">Setup Guide</h1>
+    <p class="text-[14px] mt-1 dm-text-muted">Get started with Signal alerting for <strong class="dm-text"><%= @project.name %></strong></p>
+  </div>
+
+  <!-- Step 1: API Keys -->
+  <div class="rounded-2xl p-6 shadow-card dm-card dm-border">
+    <div class="flex items-center gap-3 mb-4">
+      <span class="w-8 h-8 rounded-lg flex items-center justify-center text-[14px] font-bold text-white" style="background: var(--color-signal);">1</span>
+      <h2 class="text-[16px] font-semibold dm-text">API Keys</h2>
+    </div>
+    <p class="text-[13px] dm-text-muted mb-4">Use these keys to authenticate requests to the Signal API.</p>
+
+    <div class="space-y-3">
+      <div class="flex items-center gap-3">
+        <code class="flex-1 px-4 py-2.5 rounded-lg text-[13px] font-mono dm-text" style="background: var(--color-border-subtle);"><%= @project.api_key || "No API key generated" %></code>
+        <button onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent.trim()).then(() => { this.textContent = 'Copied!'; setTimeout(() => this.textContent = 'Copy', 1500) })"
+                class="px-4 py-2.5 rounded-lg text-[13px] font-medium transition-all dm-btn-secondary">Copy</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 2: SDK Integration -->
+  <div class="rounded-2xl p-6 shadow-card dm-card dm-border">
+    <div class="flex items-center gap-3 mb-4">
+      <span class="w-8 h-8 rounded-lg flex items-center justify-center text-[14px] font-bold text-white" style="background: var(--color-signal);">2</span>
+      <h2 class="text-[16px] font-semibold dm-text">Integration</h2>
+    </div>
+
+    <div class="space-y-4">
+      <div>
+        <h3 class="text-[13px] font-semibold dm-text mb-2">Ruby SDK</h3>
+        <pre class="px-4 py-3 rounded-lg text-[12px] font-mono overflow-x-auto dm-text" style="background: var(--color-border-subtle);">BrainzLab.configure do |config|
+  config.api_key = "<%= @project.api_key || 'your_api_key' %>"
+end
+
+# Send an alert
+BrainzLab::Signal.alert("high_error_rate", "Error rate above 5%",
+  severity: :critical,
+  data: { rate: 5.2 }
+)</pre>
+      </div>
+
+      <div>
+        <h3 class="text-[13px] font-semibold dm-text mb-2">cURL</h3>
+        <pre class="px-4 py-3 rounded-lg text-[12px] font-mono overflow-x-auto dm-text" style="background: var(--color-border-subtle);">curl -X POST <%= request.base_url %>/api/v1/alerts/trigger \
+  -H "Authorization: Bearer <%= @project.api_key || 'your_api_key' %>" \
+  -H "Content-Type: application/json" \
+  -d '{"rule_name": "high_error_rate", "value": 5.2}'</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 3: Create a Rule -->
+  <div class="rounded-2xl p-6 shadow-card dm-card dm-border">
+    <div class="flex items-center gap-3 mb-4">
+      <span class="w-8 h-8 rounded-lg flex items-center justify-center text-[14px] font-bold text-white" style="background: var(--color-signal);">3</span>
+      <h2 class="text-[16px] font-semibold dm-text">Create Your First Alert Rule</h2>
+    </div>
+    <p class="text-[13px] dm-text-muted mb-4">Alert rules define the conditions under which alerts are triggered.</p>
+    <%= link_to new_dashboard_project_rule_path(@project), class: "inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-[13px] font-semibold text-white transition-all hover:opacity-90", style: "background: var(--color-signal);" do %>
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+      Create Rule
+    <% end %>
+  </div>
+
+  <!-- Step 4: Configure Channels -->
+  <div class="rounded-2xl p-6 shadow-card dm-card dm-border">
+    <div class="flex items-center gap-3 mb-4">
+      <span class="w-8 h-8 rounded-lg flex items-center justify-center text-[14px] font-bold text-white" style="background: var(--color-signal);">4</span>
+      <h2 class="text-[16px] font-semibold dm-text">Configure Notification Channels</h2>
+    </div>
+    <p class="text-[13px] dm-text-muted mb-4">Set up where you want to receive alert notifications: Slack, PagerDuty, Email, Webhook, and more.</p>
+    <%= link_to new_dashboard_project_channel_path(@project), class: "inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-[13px] font-semibold text-white transition-all hover:opacity-90", style: "background: var(--color-signal);" do %>
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+      Add Channel
+    <% end %>
+  </div>
+</div>

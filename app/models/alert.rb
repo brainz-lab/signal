@@ -27,6 +27,9 @@ class Alert < ApplicationRecord
 
     # Send notifications
     notify!(:alert_fired)
+
+    # Broadcast real-time update
+    AlertsChannel.broadcast_alert(project, self)
   end
 
   def resolve!
@@ -40,6 +43,9 @@ class Alert < ApplicationRecord
 
     # Send resolution notification
     notify!(:alert_resolved)
+
+    # Broadcast real-time update
+    AlertsChannel.broadcast_alert(project, self)
   end
 
   def acknowledge!(by:, note: nil)
@@ -52,6 +58,9 @@ class Alert < ApplicationRecord
 
     # Update incident
     incident&.acknowledge!(by: by)
+
+    # Broadcast real-time update
+    AlertsChannel.broadcast_alert(project, self)
   end
 
   def duration
