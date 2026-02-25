@@ -33,13 +33,19 @@ module Api
         # Check if it's a standalone sig_ API key (from auto-provisioning)
         if raw_key.start_with?("sig_api_", "sig_ingest_")
           @current_project = Project.find_by("settings->>'api_key' = ? OR settings->>'ingest_key' = ?", raw_key, raw_key)
-          return if @current_project
+          if @current_project
+            @project_id = @current_project.id
+            return
+          end
         end
 
         # Try Platform key (sk_live_... or sk_test_...)
         if raw_key.start_with?("sk_live_", "sk_test_")
           @current_project = validate_with_platform(raw_key)
-          return if @current_project
+          if @current_project
+            @project_id = @current_project.id
+            return
+          end
         end
 
         render_unauthorized

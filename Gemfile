@@ -73,6 +73,7 @@ gem "phlex-rails", "~> 2.0"
 
 group :development, :test do
   gem "simplecov", require: false
+  gem "simplecov-json", require: false
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
 
@@ -84,6 +85,10 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  # Testing
+  gem "rspec-rails"
+  gem "factory_bot_rails"
 end
 
 group :test do
@@ -91,6 +96,12 @@ group :test do
   gem "webmock", "~> 3.0"
   # Mocking and stubbing
   gem "mocha", "~> 2.0"
+  # One-liner matchers for validations and associations
+  gem "shoulda-matchers"
+  # Database cleanup between tests
+  gem "database_cleaner-active_record"
+  # Time manipulation in tests
+  gem "timecop"
 end
 
 group :development do
