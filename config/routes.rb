@@ -124,6 +124,9 @@ Rails.application.routes.draw do
 
       # Maintenance Windows
       resources :maintenance_windows
+
+      # Catch-all for unmatched API routes → 404 JSON
+      match "*unmatched", to: "base#not_found", via: :all
     end
   end
 

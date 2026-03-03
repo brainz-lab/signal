@@ -1,10 +1,16 @@
 module Api
   module V1
     class BaseController < ApplicationController
+      skip_forgery_protection
+
       before_action :authenticate!
       before_action :check_rate_limit!
 
       attr_reader :current_project
+
+      def not_found
+        render json: { error: "Not found" }, status: :not_found
+      end
 
       private
 

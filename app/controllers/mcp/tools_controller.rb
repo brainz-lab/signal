@@ -1,5 +1,7 @@
 module Mcp
   class ToolsController < ApplicationController
+    skip_forgery_protection
+
     before_action :authenticate!
     before_action :set_project
 
@@ -50,13 +52,22 @@ module Mcp
     private
 
     def authenticate!
-      token = request.headers["Authorization"]&.split(" ")&.last
-      render json: { error: "Unauthorized" }, status: :unauthorized unless token
+      raw_key = extract_api_key
+      return render json: { error: "Unauthorized" }, status: :unauthorized unless raw_key.present?
+
+      @current_project = Project.find_by("settings->>'api_key' = ? OR settings->>'ingest_key' = ?", raw_key, raw_key)
+      return render json: { error: "Invalid API key" }, status: :unauthorized unless @current_project
     end
 
     def set_project
-      @project_id = request.headers["X-Project-ID"] || params[:project_id]
+      @project_id = @current_project&.id || request.headers["X-Project-ID"] || params[:project_id]
       render json: { error: "Project ID required" }, status: :bad_request unless @project_id
+    end
+
+    def extract_api_key
+      auth_header = request.headers["Authorization"]
+      return auth_header.sub(/^Bearer\s+/, "") if auth_header&.start_with?("Bearer ")
+      request.headers["X-API-Key"] || params[:api_key]
     end
 
     def tool_for(name)
