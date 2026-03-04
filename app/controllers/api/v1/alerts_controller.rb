@@ -51,6 +51,7 @@ module Api
           labels: params[:labels] || {}
         )
 
+        track_usage!(1)
         render json: serialize_alert(alert), status: :created
       rescue ActiveRecord::RecordNotFound
         render_not_found
