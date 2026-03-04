@@ -48,8 +48,11 @@ RUN ln -sf "$(bundle show fluyenta-ui)/app/assets/stylesheets/brainzlab_ui" app/
 # Create root symlink for fluyenta-ui assets
 RUN ln -s "$(bundle show fluyenta-ui)" /fluyenta-ui-gem
 
-# Precompile bootsnap and assets
+# Precompile bootsnap
 RUN bundle exec bootsnap precompile app/ lib/
+
+# Build Tailwind CSS first so Propshaft includes it in the manifest
+RUN SECRET_KEY_BASE_DUMMY=1 bundle exec rails tailwindcss:build
 RUN SECRET_KEY_BASE_DUMMY=1 bundle exec rails assets:precompile
 
 # Final stage

@@ -6,39 +6,59 @@ on:
     branches: [ main ]
 
 env:
-  RUNNER_TOOL_CACHE: /tmp/hostedtoolcache
+  BUNDLE_RUBYGEMS__PKG__GITHUB__COM: ${{ secrets.BUNDLE_RUBYGEMS__PKG__GITHUB__COM }}
 
 jobs:
   scan_ruby:
     runs-on: arc-runner-set
 
     steps:
+      - name: Prepare tool cache
+        run: sudo mkdir -p /opt/hostedtoolcache && sudo chmod -R 777 /opt/hostedtoolcache
+
+      - name: Install build dependencies
+        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y build-essential libpq-dev libyaml-dev
+
       - name: Checkout code
         uses: actions/checkout@v5
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
+
+      - name: Re-resolve fluyenta-ui from GitHub Packages
+        run: bundle lock --update fluyenta-ui
+
+      - name: Bundle install
+        run: bundle install --jobs 4
 
       - name: Scan for common Rails security vulnerabilities using static analysis
         run: bin/brakeman --no-pager
-      
+
       - name: Scan for known security vulnerabilities in gems used
         run: bin/bundler-audit
-      
+
   lint:
     runs-on: arc-runner-set
     env:
       RUBOCOP_CACHE_ROOT: tmp/rubocop
     steps:
+      - name: Prepare tool cache
+        run: sudo mkdir -p /opt/hostedtoolcache && sudo chmod -R 777 /opt/hostedtoolcache
+
+      - name: Install build dependencies
+        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y build-essential libpq-dev libyaml-dev
+
       - name: Checkout code
         uses: actions/checkout@v5
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
+
+      - name: Re-resolve fluyenta-ui from GitHub Packages
+        run: bundle lock --update fluyenta-ui
+
+      - name: Bundle install
+        run: bundle install --jobs 4
 
       - name: Prepare RuboCop cache
         uses: actions/cache@v4
@@ -58,7 +78,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres
+        image: timescale/timescaledb:latest-pg17
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -67,22 +87,29 @@ jobs:
         options: --health-cmd="pg_isready" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
-      - name: Install packages
-        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y libpq-dev
+      - name: Prepare tool cache
+        run: sudo mkdir -p /opt/hostedtoolcache && sudo chmod -R 777 /opt/hostedtoolcache
+
+      - name: Install build dependencies
+        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y build-essential libpq-dev libyaml-dev
 
       - name: Checkout code
         uses: actions/checkout@v5
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
+
+      - name: Re-resolve fluyenta-ui from GitHub Packages
+        run: bundle lock --update fluyenta-ui
+
+      - name: Bundle install
+        run: bundle install --jobs 4
 
       - name: Run tests
         env:
           RAILS_ENV: test
           DATABASE_URL: postgres://postgres:postgres@localhost:5432
-        run: bin/rails db:test:prepare test
+        run: bin/rails db:test:prepare && bundle exec rspec
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
